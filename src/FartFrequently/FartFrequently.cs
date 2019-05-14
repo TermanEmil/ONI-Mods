@@ -56,7 +56,7 @@ namespace FartFrequently
                         max = newConf.max;
                         if(min > max)
                         {
-                            Debug.Log("[FartFrequently]: (Config Loader) The minimum value is greater than the maximum, this may cause strange behavior");
+                           Debug.Log("[FartFrequently]: (Config Loader) The minimum value is greater than the maximum, this may cause strange behavior");
                         }
                     }
                 }
