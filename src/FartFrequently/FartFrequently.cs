@@ -15,14 +15,14 @@ namespace FartFrequently
         [HarmonyPatch(typeof(Flatulence), "OnPrefabInit")]
         public class Flatulence_OnPrefabInit_Patches
         {
-            public static void Prefix()
+            public static void Prefix(Flatulence __instance)
             {
                 ConfigReader conf = new ConfigReader();
                 conf.SetFromConfig();
                 Traverse.Create(typeof(TUNING.TRAITS)).Field("FLATULENCE_EMIT_INTERVAL_MIN").SetValue(conf.min);
                 Traverse.Create(typeof(TUNING.TRAITS)).Field("FLATULENCE_EMIT_INTERVAL_MAX").SetValue(conf.max);
                 var harmony = HarmonyInstance.Create("asquared31415.FartFrequently");
-                harmony.Patch((MethodBase)Traverse.Create(typeof(Flatulence)).Method("Emit").GetValue(), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
+                harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
             }
         }
         
@@ -34,15 +34,7 @@ namespace FartFrequently
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
                 List<CodeInstruction> instList = instructions.ToList();
-                for(var i=0;i<instList.Count;i++)
-                {
-                    Debug.Log(i + ": " + instList[i]);
-                }
                 instList[93] = new CodeInstruction(OpCodes.Ldsfld, typeof(Flatulence_Emit_Transpiler).GetField("GasEmitAmount"));
-                for (var i = 0; i < instList.Count; i++)
-                {
-                    Debug.Log(i + ": " + instList[i]);
-                }
                 return instList.AsEnumerable();
             }
         }
