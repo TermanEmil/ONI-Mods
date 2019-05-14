@@ -39,10 +39,11 @@ namespace FartFrequently
                 {
                     if (!File.Exists(path))
                     {
-                        var fs = File.Create(path);
-                        var text = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(this));
-                        fs.Write(text, 0, text.Length);
-                        fs.Dispose();
+                        using (var fs = File.Create(path))
+                        {
+                            var text = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(this));
+                            fs.Write(text, 0, text.Length);
+                        }
                     }
                     else
                     {
