@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -19,8 +18,8 @@ namespace FartFrequently
             {
                 ConfigReader conf = new ConfigReader();
                 conf.SetFromConfig();
-                Traverse.Create(typeof(TUNING.TRAITS)).Field("FLATULENCE_EMIT_INTERVAL_MIN").SetValue(conf.min);
-                Traverse.Create(typeof(TUNING.TRAITS)).Field("FLATULENCE_EMIT_INTERVAL_MAX").SetValue(conf.max);
+                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = conf.min;
+                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = conf.max;
                 var harmony = HarmonyInstance.Create("asquared31415.FartFrequently");
                 harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
             }
@@ -86,7 +85,7 @@ namespace FartFrequently
                             emitAmount = 0.1f;
                             Debug.Log("[FartFrequently]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.1");
                         }
-                        Traverse.Create(typeof(Flatulence_Emit_Transpiler)).Field("GasEmitAmount").SetValue(emitAmount);
+                        Flatulence_Emit_Transpiler.GasEmitAmount = emitAmount;
                     }
                 }
                 catch
