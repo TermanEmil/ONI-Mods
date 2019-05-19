@@ -38,7 +38,7 @@ namespace HeavyBreathing
         [HarmonyPatch(typeof(CO2Manager), "SpawnBreath")]
         public class CO2Manager_SpawnBreath_Patches
         {
-            public static float emitAmount = 0.002f;
+            public static float emitAmount = 0.02f;
 
             public static void Prefix(ref float mass)
             {
@@ -63,7 +63,7 @@ namespace HeavyBreathing
 
             public ConfigReader()
             {
-                emitAmount = 0.002f;
+                emitAmount = 0.02f;
             }
 
             public void SetFromConfig()
@@ -89,7 +89,7 @@ namespace HeavyBreathing
                         emitAmount = newConf.emitAmount;
                         if (emitAmount <= 0)
                         {
-                            emitAmount = 0.002f;
+                            emitAmount = 0.02f;
                             Debug.Log("[Heavy Breathing]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.02 Kg");
                         }
                     }
