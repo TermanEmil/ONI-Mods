@@ -11,17 +11,49 @@ namespace FartFrequently
 {
     class FartFrequently
     {
+        [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]
+        public class SplashMessageScreen_OnPrefabInit_Patches
+        {
+            public static ConfigReader conf = new ConfigReader();
+            public static FileSystemWatcher watcher = new FileSystemWatcher();
+
+            public static void Postfix()
+            {
+                watcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                watcher.NotifyFilter = NotifyFilters.LastWrite;
+
+                // Add event handlers.
+                watcher.Changed += OnChanged;
+
+                // Begin watching.
+                watcher.EnableRaisingEvents = true;
+                Flatulence_OnPrefabInit_Patches.SetValues();
+            }
+
+            private static void OnChanged(object source, FileSystemEventArgs a)
+            {
+                Flatulence_OnPrefabInit_Patches.SetValues();
+            }
+        }
+
         [HarmonyPatch(typeof(Flatulence), "OnPrefabInit")]
         public class Flatulence_OnPrefabInit_Patches
         {
             public static void Prefix(Flatulence __instance)
             {
-                ConfigReader conf = new ConfigReader();
-                conf.SetFromConfig();
-                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = conf.min;
-                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = conf.max;
+                SetValues();
+            }
+
+            public static void SetValues()
+            {
+                SplashMessageScreen_OnPrefabInit_Patches.conf.SetFromConfig();
+                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = SplashMessageScreen_OnPrefabInit_Patches.conf.min;
+                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MAX = SplashMessageScreen_OnPrefabInit_Patches.conf.max;
+                Flatulence_Emit_Transpiler.GasEmitAmount = SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount;
                 var harmony = HarmonyInstance.Create("asquared31415.FartFrequently");
                 harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
+                Debug.Log("[FartFrequently]: (Config Loader) The farting config has been changed to " + SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount + "Kg at a " + SplashMessageScreen_OnPrefabInit_Patches.conf.min + "-" + SplashMessageScreen_OnPrefabInit_Patches.conf.max + " interval");
             }
         }
         
@@ -85,7 +117,6 @@ namespace FartFrequently
                             emitAmount = 0.1f;
                             Debug.Log("[FartFrequently]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.1");
                         }
-                        Flatulence_Emit_Transpiler.GasEmitAmount = emitAmount;
                     }
                 }
                 catch
