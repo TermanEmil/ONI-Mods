@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using Harmony;
 using Newtonsoft.Json;
+using System;
 
 namespace FartFrequently
 {
@@ -53,7 +54,7 @@ namespace FartFrequently
                 Flatulence_Emit_Transpiler.GasEmitAmount = SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount;
                 var harmony = HarmonyInstance.Create("asquared31415.FartFrequently");
                 harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
-                Debug.Log("[FartFrequently]: (Config Loader) The farting config has been changed to " + SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount + "Kg at a " + SplashMessageScreen_OnPrefabInit_Patches.conf.min + "-" + SplashMessageScreen_OnPrefabInit_Patches.conf.max + " interval");
+                Debug.Log("[FartFrequently]: (Config Loader) The farting config has been changed to emit " + SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount + "Kg of " + Flatulence_Emit_Transpiler.EmitElement + " at a " + SplashMessageScreen_OnPrefabInit_Patches.conf.min + "-" + SplashMessageScreen_OnPrefabInit_Patches.conf.max + " interval");
             }
         }
         
@@ -61,20 +62,35 @@ namespace FartFrequently
         public class Flatulence_Emit_Transpiler
         {
             public static float GasEmitAmount = 0.1f;
+            public static SimHashes EmitElement = SimHashes.Methane;
 
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
                 List<CodeInstruction> instList = instructions.ToList();
+                instList[90] = new CodeInstruction(OpCodes.Ldsfld, typeof(Flatulence_Emit_Transpiler).GetField("EmitElement"));
                 instList[93] = new CodeInstruction(OpCodes.Ldsfld, typeof(Flatulence_Emit_Transpiler).GetField("GasEmitAmount"));
                 return instList.AsEnumerable();
             }
         }
-        
+
+        public static bool TryParse<TEnum>(string value, out TEnum result)
+            where TEnum : struct, IConvertible
+        {
+            var retValue = value == null ?
+                        false :
+                        Enum.IsDefined(typeof(TEnum), value);
+            result = retValue ?
+                        (TEnum)Enum.Parse(typeof(TEnum), value) :
+                        default(TEnum);
+            return retValue;
+        }
+
         public class ConfigReader
         {
             public float min;
             public float max;
             public float emitAmount;
+            public string element;
 
             public static string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+"/config.json";
 
@@ -83,6 +99,7 @@ namespace FartFrequently
                 min = 10f;
                 max = 40f;
                 emitAmount = 0.1f;
+                element = "Methane";
             }
 
             public void SetFromConfig()
@@ -108,6 +125,7 @@ namespace FartFrequently
                         min = newConf.min;
                         max = newConf.max;
                         emitAmount = newConf.emitAmount;
+                        element = newConf.element;
                         if(min > max)
                         {
                            Debug.Log("[FartFrequently]: (Config Loader) The minimum value is greater than the maximum, this may cause strange behavior");
@@ -117,6 +135,12 @@ namespace FartFrequently
                             emitAmount = 0.1f;
                             Debug.Log("[FartFrequently]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.1");
                         }
+                        if (!FartFrequently.TryParse(element, out SimHashes elementEnum))
+                        {
+                            elementEnum = SimHashes.Methane;
+
+                        }
+                        Debug.Log(elementEnum);
                     }
                 }
                 catch
@@ -124,6 +148,7 @@ namespace FartFrequently
                     min = 10f;
                     max = 40f;
                     emitAmount = 0.1f;
+                    element = "Methane";
                     Debug.Log("[FartFrequently]: (Config Loader) An error occured, please ensure you are using only numerical values in the config file");
                 }
             }
