@@ -59,9 +59,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomBreather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RealisticValuesIL.cs" />
+    <Compile Include="RealisticValues.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Changes.MD" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
