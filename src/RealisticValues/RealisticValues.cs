@@ -32,17 +32,13 @@ namespace RealisticValues
             [HarmonyPatch(typeof(CO2ScrubberConfig), "ConfigureBuildingTemplate")]
             public class CarbonSkimmerValuePatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject go)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
                     {
-                        if (!((codes[i].operand as int?)?.Equals(1832607973) ?? false)) continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 1.3f);
-                        break;
-                    }
-
-                    return codes;
+                        new ElementConverter.OutputElement(1.3f, SimHashes.DirtyWater, 0f, false, true)
+                    };
                 }
             }
         }
@@ -50,29 +46,8 @@ namespace RealisticValues
         public class OxygenGenBalances
         {
             // Dumb Algae Terrarium is broken
-            /*[HarmonyPatch(typeof(AlgaeHabitatConfig), "ConfigureBuildingTemplate")]
-            public class AlgaeTerrariumRatesPatch
-            {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-                {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if ((codes[i].operand as int?)?.Equals(1832607973) ?? false)
-                        {
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.29333333f);
-                            Console.WriteLine(i + "Patching with ldc.r4 0.2933333");
-                        }
-                        else if ((codes[i].operand as int?)?.Equals(1960575215) ?? false)
-                        {
-                            codes[i + 3] = new CodeInstruction(OpCodes.Ldc_R4, 0.00333333f);
-                            Console.WriteLine(i + "Patching with ldc.r4 0.0033333");
-                        }
-                    }
-
-                    return codes;
-                }
-            }*/
+            //[HarmonyPatch(typeof(AlgaeHabitatConfig), "ConfigureBuildingTemplate")]
+            
 
             [HarmonyPatch(typeof(MineralDeoxidizerConfig), "CreateBuildingDef")]
             public class DeoxidizerHeatPatch
@@ -100,41 +75,27 @@ namespace RealisticValues
                     var elementConverter = go.AddOrGet<ElementConverter>();
                     elementConverter.outputElements = new[]
                     {
-                        elementConverter.outputElements[0],
-                        new ElementConverter.OutputElement(0.05f, SimHashes.ContaminatedOxygen, 0f, false, false, 1f,
+                        new ElementConverter.OutputElement(0.5f, SimHashes.Oxygen, 0f, false, false,
+                            0f, 1f, 0.909f),
+                        new ElementConverter.OutputElement(0.05f, SimHashes.ContaminatedOxygen, 0f, false,
+                            false, 1f,
                             1f, 0.09f)
                     };
-                }
-
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-                {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if (!((codes[i].operand as int?)?.Equals(-1528777920) ?? false)) continue;
-                        codes[i + 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.0f);
-                        codes[i + 6] = new CodeInstruction(OpCodes.Ldc_R4, 0.909f);
-                        break;
-                    }
-
-                    return codes;
                 }
             }
 
             [HarmonyPatch(typeof(AirFilterConfig), "ConfigureBuildingTemplate")]
             public class DeodorizerElementPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject go)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
                     {
-                        if (!((codes[i].operand as int?)?.Equals(867327137) ?? false)) continue;
-                        codes[i] = new CodeInstruction(OpCodes.Ldc_I4, (int)SimHashes.ToxicSand);
-                        break;
-                    }
-
-                    return codes;
+                        new ElementConverter.OutputElement(0.143333346f, SimHashes.ToxicSand, 0f, false,
+                            true, 0f, 0.5f, 0.25f),
+                        elementConverter.outputElements[1]
+                    };
                 }
             }
 
@@ -233,7 +194,7 @@ namespace RealisticValues
             }
         }
 
-        public class MicrobeMusherPatches
+        public class FoodPatches
         {
             [HarmonyPatch(typeof(MicrobeMusherConfig), "CreateBuildingDef")]
             public class MusherHeatPatch
@@ -249,10 +210,7 @@ namespace RealisticValues
                     return codes;
                 }
             }
-        }
 
-        public class GrillPatches
-        {
             [HarmonyPatch(typeof(CookingStationConfig), "CreateBuildingDef")]
             public class GrillHeatPatch
             {
@@ -267,10 +225,7 @@ namespace RealisticValues
                     return codes;
                 }
             }
-        }
 
-        public class GasGrillPatches
-        {
             [HarmonyPatch(typeof(GourmetCookingStationConfig), "ConfigureBuildingTemplate")]
             public class GasRangeCo2Patch
             {
@@ -282,6 +237,19 @@ namespace RealisticValues
                         new ElementConverter.OutputElement(0.100f, SimHashes.CarbonDioxide, 348.15f, false,
                             false, 0f, 3f)
                     };
+                }
+            }
+
+            [HarmonyPatch(typeof(RefrigeratorConfig), "CreateBuildingDef")]
+            public class RefrigeratorHeatPatches
+            {
+                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                {
+                    var codes = new List<CodeInstruction>(instructions);
+                    for (var i = 0; i < codes.Count; ++i)
+                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
+                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
+                    return codes;
                 }
             }
         }
