@@ -9,46 +9,6 @@ namespace RealisticValues
 {
     internal class RealisticValues
     {
-        public class WaterPurifierPatches
-        {
-            [HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
-            public class WaterPurifierHeatPatch
-            {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-                {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false))
-                            continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
-                        break;
-                    }
-
-                    return codes;
-                }
-            }
-
-            [HarmonyPatch(typeof(WaterPurifierConfig), "ConfigureBuildingTemplate")]
-            public class WaterPurifierDirtPatch
-            {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-                {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        var operand = codes[i].operand as int?;
-                        if (operand?.Equals(869554203) ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 1.0f);
-                        else if (operand?.Equals(1836671383) ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 3.84615f);
-                    }
-
-                    return codes;
-                }
-            }
-        }
-
         public class CarbonSkimmerBalances
         {
             [HarmonyPatch(typeof(CO2ScrubberConfig), "CreateBuildingDef")]
@@ -141,7 +101,8 @@ namespace RealisticValues
                     elementConverter.outputElements = new[]
                     {
                         elementConverter.outputElements[0],
-                        new ElementConverter.OutputElement(0.05f, SimHashes.ContaminatedOxygen, 0f, false, false, 1f, 1f, 0.09f)
+                        new ElementConverter.OutputElement(0.05f, SimHashes.ContaminatedOxygen, 0f, false, false, 1f,
+                            1f, 0.09f)
                     };
                 }
 
@@ -180,15 +141,16 @@ namespace RealisticValues
             [HarmonyPatch(typeof(ElectrolyzerConfig), "ConfigureBuildingTemplate")]
             public class ElectrolyzerOutputPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject go)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as int?)?.Equals(-1528777920) ?? false)
-                            codes[i + 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.0f);
-                        else if ((codes[i].operand as int?)?.Equals(-1046145888) ?? false)
-                            codes[i + 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.0f);
-                    return codes;
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
+                    {
+                        new ElementConverter.OutputElement(0.888f, SimHashes.Oxygen, 0f, false, false,
+                            0f, 1f),
+                        new ElementConverter.OutputElement(0.111999989f, SimHashes.Hydrogen, 0f, false,
+                            false, 0f, 1f)
+                    };
                 }
             }
 
@@ -247,17 +209,10 @@ namespace RealisticValues
             [HarmonyPatch(typeof(FlushToiletConfig), "ConfigureBuildingTemplate")]
             public class ToiletMassPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject go)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("massEmittedPerUse") ?? false)) continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 6.5f);
-                        break;
-                    }
-
-                    return codes;
+                    var flushToilet = go.AddOrGet<FlushToilet>();
+                    flushToilet.massEmittedPerUse = 6.5f;
                 }
             }
         }
@@ -267,17 +222,13 @@ namespace RealisticValues
             [HarmonyPatch(typeof(ShowerConfig), "ConfigureBuildingTemplate")]
             public class ShowerMassPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject go)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
                     {
-                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("capacityKg") ?? false)) continue;
-                        codes[i - 18] = new CodeInstruction(OpCodes.Ldc_R4, 1.3f);
-                        Console.WriteLine("Thing found at" + i);
-                    }
-
-                    return codes;
+                        new ElementConverter.OutputElement(1.3f, SimHashes.DirtyWater, 0f, false, true)
+                    };
                 }
             }
         }
@@ -323,20 +274,87 @@ namespace RealisticValues
             [HarmonyPatch(typeof(GourmetCookingStationConfig), "ConfigureBuildingTemplate")]
             public class GasRangeCo2Patch
             {
+                public static void Postfix(ref GameObject go)
+                {
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
+                    {
+                        new ElementConverter.OutputElement(0.100f, SimHashes.CarbonDioxide, 348.15f, false,
+                            false, 0f, 3f)
+                    };
+                }
+            }
+        }
+
+        public class RefinementPatches
+        {
+            [HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
+            public class WaterPurifierHeatPatch
+            {
                 public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
                 {
                     var codes = new List<CodeInstruction>(instructions);
                     for (var i = 0; i < codes.Count; ++i)
                     {
-                        if (!((codes[i].operand as int?)?.Equals(1960575215) ?? false)) continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.100f);
+                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false))
+                            continue;
+                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
                         break;
                     }
 
                     return codes;
                 }
             }
+
+            [HarmonyPatch(typeof(WaterPurifierConfig), "ConfigureBuildingTemplate")]
+            public class WaterPurifierDirtPatch
+            {
+                public static void Postfix(ref GameObject go)
+                {
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
+                    {
+                        new ElementConverter.OutputElement(1.0f, SimHashes.ToxicSand, 0f, false, true,
+                            0f, 0.5f, 0.25f),
+                        new ElementConverter.OutputElement(3.84615f, SimHashes.Water, 0f, false, true,
+                            0f, 0.5f, 0.75f)
+                    };
+                }
+            }
+
+            [HarmonyPatch(typeof(AlgaeDistilleryConfig), "CreateBuildingDef")]
+            public class AlgaeDistilleryHeatPatch
+            {
+                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                {
+                    var codes = new List<CodeInstruction>(instructions);
+                    for (var i = 0; i < codes.Count; ++i)
+                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
+                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.040f);
+                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
+                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.080f);
+                    return codes;
+                }
+            }
+
+            [HarmonyPatch(typeof(AlgaeDistilleryConfig), "ConfigureBuildingTemplate")]
+            public class AlgaeDistilleryOutputPatch
+            {
+                public static void Postfix(ref GameObject go)
+                {
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
+                    {
+                        elementConverter.outputElements[0],
+                        new ElementConverter.OutputElement(0.35f, SimHashes.DirtyWater, 0f, false, true,
+                            0f, 0.5f, 0.875f),
+                        new ElementConverter.OutputElement(0.05f, SimHashes.Clay, 0f, false, false,
+                            0f, 0f, 0.125f)
+                    };
+                }
+            }
         }
+
 
         public class DuplicantBalancePatches
         {

@@ -17,6 +17,10 @@
  * 100% of sand input (1 kg) now converted to polluted dirt
  * Water output reduced to 3.8462 kg/s
 
+## Algae Distillery
+ * Polluted water output reduced to 350 g/s from 400 g/s
+ * Added clay output of 50 g/s
+
 ## Carbon Skimmer
  * Heat output reduced to 120 DTU/s
  * Polluted water creation increased to 1.3 kg/s
@@ -29,6 +33,9 @@
 ## Electrolyzer
  * Heat output reduced to 120 DTU/s
  * Minimum output temperatures removed
+
+## Deodorizer
+ * Output element changed to polluted dirt rather than clay
 
 ## Coal Generator
  * Energy output increased to 1000W
