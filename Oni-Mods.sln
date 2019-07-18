@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FartFrequently", "src\FartF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyBreathing", "src\HeavyBreathing\HeavyBreathing.csproj", "{440207F5-3CC0-4BAD-B7BC-05B15E98D192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealisticValues", "RealisticValues\RealisticValues.csproj", "{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealisticValues", "src\RealisticValues\RealisticValues.csproj", "{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
