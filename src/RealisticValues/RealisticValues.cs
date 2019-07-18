@@ -160,6 +160,23 @@ namespace RealisticValues
                 }
             }
 
+            [HarmonyPatch(typeof(AirFilterConfig), "ConfigureBuildingTemplate")]
+            public class DeodorizerElementPatch
+            {
+                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                {
+                    var codes = new List<CodeInstruction>(instructions);
+                    for (var i = 0; i < codes.Count; ++i)
+                    {
+                        if (!((codes[i].operand as int?)?.Equals(867327137) ?? false)) continue;
+                        codes[i] = new CodeInstruction(OpCodes.Ldc_I4, (int)SimHashes.ToxicSand);
+                        break;
+                    }
+
+                    return codes;
+                }
+            }
+
             [HarmonyPatch(typeof(ElectrolyzerConfig), "ConfigureBuildingTemplate")]
             public class ElectrolyzerOutputPatch
             {
