@@ -10,69 +10,71 @@ namespace HeavyBreathing
     class HeavyBreathing
     {
         [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]
-        public class SplashMessageScreen_OnPrefabInit_Patches
+        public class SplashMessageScreenOnPrefabInitPatches
         {
-            public static ConfigReader conf = new ConfigReader();
-            public static FileSystemWatcher watcher = new FileSystemWatcher();
+            public static ConfigReader Conf = new ConfigReader();
+            public static FileSystemWatcher Watcher = new FileSystemWatcher();
 
             public static void Postfix()
             {
-                watcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Watcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                Watcher.NotifyFilter = NotifyFilters.LastWrite;
 
                 // Add event handlers.
-                watcher.Changed += OnChanged;
+                Watcher.Changed += OnChanged;
 
                 // Begin watching.
-                watcher.EnableRaisingEvents = true;
-                CO2Manager_SpawnBreath_Patches.SetValues();
+                Watcher.EnableRaisingEvents = true;
+                Co2ManagerSpawnBreathPatches.SetValues();
             }
 
             private static void OnChanged(object source, FileSystemEventArgs a)
             {
-                CO2Manager_SpawnBreath_Patches.SetValues();
+                Co2ManagerSpawnBreathPatches.SetValues();
             }
         }
 
         [HarmonyPatch(typeof(CO2Manager), "SpawnBreath")]
-        public class CO2Manager_SpawnBreath_Patches
+        public class Co2ManagerSpawnBreathPatches
         {
-            public static float emitAmount = 0.02f;
+            public static float EmitAmount = 0.02f;
 
             public static void Prefix(ref float mass)
             {
                 Debug.Log(mass);
-                mass = emitAmount;
+                mass = EmitAmount;
                 Debug.Log(mass);
             }
 
             public static void SetValues()
             {
-                SplashMessageScreen_OnPrefabInit_Patches.conf.SetFromConfig();
-                CO2Manager_SpawnBreath_Patches.emitAmount = SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount;
-                Debug.Log("[Heavy Breathing]: (Config Loader) The emit amount has been changed to " + SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount + "Kg");
+                SplashMessageScreenOnPrefabInitPatches.Conf.SetFromConfig();
+                EmitAmount = SplashMessageScreenOnPrefabInitPatches.Conf.EmitAmount;
+                Debug.Log("[Heavy Breathing]: (Config Loader) The emit amount has been changed to " +
+                          SplashMessageScreenOnPrefabInitPatches.Conf.EmitAmount + "Kg");
             }
         }
 
         public class ConfigReader
         {
-            public float emitAmount;
+            public float EmitAmount;
 
-            public static string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/config.json";
+            public static string Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                        "/config.json";
 
             public ConfigReader()
             {
-                emitAmount = 0.02f;
+                EmitAmount = 0.02f;
             }
 
             public void SetFromConfig()
             {
                 try
                 {
-                    if (!File.Exists(path))
+                    if (!File.Exists(Path))
                     {
-                        using (var fs = File.Create(path))
+                        using (var fs = File.Create(Path))
                         {
                             var text = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(this));
                             fs.Write(text, 0, text.Length);
@@ -80,24 +82,25 @@ namespace HeavyBreathing
                     }
                     else
                     {
-                        string json = "";
-                        using (var sr = new StreamReader(path))
+                        string json;
+                        using (var sr = new StreamReader(Path))
                         {
                             json = sr.ReadToEnd();
                         }
+
                         var newConf = JsonConvert.DeserializeObject<ConfigReader>(json);
-                        emitAmount = newConf.emitAmount;
-                        if (emitAmount <= 0)
-                        {
-                            emitAmount = 0.02f;
-                            Debug.Log("[Heavy Breathing]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.02 Kg");
-                        }
+                        EmitAmount = newConf.EmitAmount;
+                        if (!(EmitAmount <= 0)) return;
+                        EmitAmount = 0.02f;
+                        Debug.Log(
+                            "[Heavy Breathing]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.02 Kg");
                     }
                 }
                 catch
                 {
-                    emitAmount = 0.002f;
-                    Debug.Log("[Heavy Breathing]: (Config Loader) An error occured, please ensure you are using only numerical values in the config file");
+                    EmitAmount = 0.002f;
+                    Debug.Log(
+                        "[Heavy Breathing]: (Config Loader) An error occured, please ensure you are using only numerical values in the config file");
                 }
             }
         }

@@ -71,6 +71,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetDir) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\FartFrequently</PostBuildEvent>
+    <PostBuildEvent>copy /Y $(TargetDir) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)</PostBuildEvent>
   </PropertyGroup>
 </Project>

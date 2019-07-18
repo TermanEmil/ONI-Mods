@@ -1,45 +1,55 @@
-﻿using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using System.Linq;
 using Harmony;
 using Newtonsoft.Json;
-using System;
+using TUNING;
+using UnityEngine;
 
 namespace FartFrequently
 {
-    class FartFrequently
+    internal class FartFrequently
     {
-        [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]
-        public class SplashMessageScreen_OnPrefabInit_Patches
+        public static bool TryParse<TEnum>(string value, out TEnum result)
+            where TEnum : struct, IConvertible
         {
-            public static ConfigReader conf = new ConfigReader();
-            public static FileSystemWatcher watcher = new FileSystemWatcher();
+            var retValue = value != null && Enum.IsDefined(typeof(TEnum), value);
+            result = retValue ? (TEnum) Enum.Parse(typeof(TEnum), value) : default(TEnum);
+            return retValue;
+        }
+
+        [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]
+        public class SplashMessageScreenOnPrefabInitPatches
+        {
+            public static ConfigReader Conf = new ConfigReader();
+            public static FileSystemWatcher Watcher = new FileSystemWatcher();
 
             public static void Postfix()
             {
-                watcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Watcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                Watcher.NotifyFilter = NotifyFilters.LastWrite;
 
                 // Add event handlers.
-                watcher.Changed += OnChanged;
+                Watcher.Changed += OnChanged;
 
                 // Begin watching.
-                watcher.EnableRaisingEvents = true;
-                Flatulence_OnPrefabInit_Patches.SetValues();
+                Watcher.EnableRaisingEvents = true;
+                FlatulenceOnPrefabInitPatches.SetValues();
             }
 
             private static void OnChanged(object source, FileSystemEventArgs a)
             {
-                Flatulence_OnPrefabInit_Patches.SetValues();
+                FlatulenceOnPrefabInitPatches.SetValues();
             }
         }
 
         [HarmonyPatch(typeof(Flatulence), "OnPrefabInit")]
-        public class Flatulence_OnPrefabInit_Patches
+        public class FlatulenceOnPrefabInitPatches
         {
             public static void Prefix(Flatulence __instance)
             {
@@ -48,67 +58,63 @@ namespace FartFrequently
 
             public static void SetValues()
             {
-                SplashMessageScreen_OnPrefabInit_Patches.conf.SetFromConfig();
-                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = SplashMessageScreen_OnPrefabInit_Patches.conf.min;
-                TUNING.TRAITS.FLATULENCE_EMIT_INTERVAL_MAX = SplashMessageScreen_OnPrefabInit_Patches.conf.max;
-                Flatulence_Emit_Transpiler.GasEmitAmount = SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount;
+                SplashMessageScreenOnPrefabInitPatches.Conf.SetFromConfig();
+                TRAITS.FLATULENCE_EMIT_INTERVAL_MIN = SplashMessageScreenOnPrefabInitPatches.Conf.Min;
+                TRAITS.FLATULENCE_EMIT_INTERVAL_MAX = SplashMessageScreenOnPrefabInitPatches.Conf.Max;
+                FlatulenceEmitTranspiler.GasEmitAmount = SplashMessageScreenOnPrefabInitPatches.Conf.EmitAmount;
                 var harmony = HarmonyInstance.Create("asquared31415.FartFrequently");
-                harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null, new HarmonyMethod(typeof(Flatulence_Emit_Transpiler).GetMethod("Transpiler")));
-                Debug.Log("[FartFrequently]: (Config Loader) The farting config has been changed to emit " + SplashMessageScreen_OnPrefabInit_Patches.conf.emitAmount + "Kg of " + Flatulence_Emit_Transpiler.EmitElement + " at a " + SplashMessageScreen_OnPrefabInit_Patches.conf.min + "-" + SplashMessageScreen_OnPrefabInit_Patches.conf.max + " interval");
+                harmony.Patch(AccessTools.Method(typeof(Flatulence), "Emit"), null, null,
+                    new HarmonyMethod(typeof(FlatulenceEmitTranspiler).GetMethod("Transpiler")));
+                Debug.Log("[FartFrequently]: (Config Loader) The farting config has been changed to emit " +
+                          SplashMessageScreenOnPrefabInitPatches.Conf.EmitAmount + "Kg of " +
+                          FlatulenceEmitTranspiler.EmitElement + " at a " +
+                          SplashMessageScreenOnPrefabInitPatches.Conf.Min + "-" +
+                          SplashMessageScreenOnPrefabInitPatches.Conf.Max + " interval");
             }
         }
-        
 
-        public class Flatulence_Emit_Transpiler
+
+        public class FlatulenceEmitTranspiler
         {
             public static float GasEmitAmount = 0.1f;
             public static SimHashes EmitElement = SimHashes.Methane;
 
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
-                List<CodeInstruction> instList = instructions.ToList();
-                instList[90] = new CodeInstruction(OpCodes.Ldsfld, typeof(Flatulence_Emit_Transpiler).GetField("EmitElement"));
-                instList[93] = new CodeInstruction(OpCodes.Ldsfld, typeof(Flatulence_Emit_Transpiler).GetField("GasEmitAmount"));
+                var instList = instructions.ToList();
+                instList[90] = new CodeInstruction(OpCodes.Ldsfld,
+                    typeof(FlatulenceEmitTranspiler).GetField("EmitElement"));
+                instList[93] = new CodeInstruction(OpCodes.Ldsfld,
+                    typeof(FlatulenceEmitTranspiler).GetField("GasEmitAmount"));
                 return instList.AsEnumerable();
             }
         }
 
-        public static bool TryParse<TEnum>(string value, out TEnum result)
-            where TEnum : struct, IConvertible
-        {
-            var retValue = value == null ?
-                        false :
-                        Enum.IsDefined(typeof(TEnum), value);
-            result = retValue ?
-                        (TEnum)Enum.Parse(typeof(TEnum), value) :
-                        default(TEnum);
-            return retValue;
-        }
-
         public class ConfigReader
         {
-            public float min;
-            public float max;
-            public float emitAmount;
-            public string element;
+            public static string Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                        "/config.json";
 
-            public static string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+"/config.json";
+            public string Element;
+            public float EmitAmount;
+            public float Max;
+            public float Min;
 
             public ConfigReader()
             {
-                min = 10f;
-                max = 40f;
-                emitAmount = 0.1f;
-                element = "Methane";
+                Min = 10f;
+                Max = 40f;
+                EmitAmount = 0.1f;
+                Element = "Methane";
             }
 
             public void SetFromConfig()
             {
                 try
                 {
-                    if (!File.Exists(path))
+                    if (!File.Exists(Path))
                     {
-                        using (var fs = File.Create(path))
+                        using (var fs = File.Create(Path))
                         {
                             var text = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(this));
                             fs.Write(text, 0, text.Length);
@@ -116,40 +122,39 @@ namespace FartFrequently
                     }
                     else
                     {
-                        string json = "";
-                        using (var sr = new StreamReader(path))
+                        string json;
+                        using (var sr = new StreamReader(Path))
                         {
                             json = sr.ReadToEnd();
                         }
-                        var newConf = JsonConvert.DeserializeObject<ConfigReader>(json);
-                        min = newConf.min;
-                        max = newConf.max;
-                        emitAmount = newConf.emitAmount;
-                        element = newConf.element;
-                        if(min > max)
-                        {
-                           Debug.Log("[FartFrequently]: (Config Loader) The minimum value is greater than the maximum, this may cause strange behavior");
-                        }
-                        if(emitAmount <= 0)
-                        {
-                            emitAmount = 0.1f;
-                            Debug.Log("[FartFrequently]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.1");
-                        }
-                        if (!FartFrequently.TryParse(element, out SimHashes elementEnum))
-                        {
-                            elementEnum = SimHashes.Methane;
 
+                        var newConf = JsonConvert.DeserializeObject<ConfigReader>(json);
+                        Min = newConf.Min;
+                        Max = newConf.Max;
+                        EmitAmount = newConf.EmitAmount;
+                        Element = newConf.Element;
+                        if (Min > Max)
+                            Debug.Log(
+                                "[FartFrequently]: (Config Loader) The minimum value is greater than the maximum, this may cause strange behavior");
+                        if (EmitAmount <= 0)
+                        {
+                            EmitAmount = 0.1f;
+                            Debug.Log(
+                                "[FartFrequently]: (Config Loader) The emit amount is set to a negative or zero value, resetting to 0.1");
                         }
+
+                        if (!TryParse(Element, out SimHashes elementEnum)) elementEnum = SimHashes.Methane;
                         Debug.Log(elementEnum);
                     }
                 }
                 catch
                 {
-                    min = 10f;
-                    max = 40f;
-                    emitAmount = 0.1f;
-                    element = "Methane";
-                    Debug.Log("[FartFrequently]: (Config Loader) An error occured, please ensure you are using only numerical values in the config file");
+                    Min = 10f;
+                    Max = 40f;
+                    EmitAmount = 0.1f;
+                    Element = "Methane";
+                    Debug.Log(
+                        "[FartFrequently]: (Config Loader) An error occured, please ensure you are using only numerical values in the config file");
                 }
             }
         }
