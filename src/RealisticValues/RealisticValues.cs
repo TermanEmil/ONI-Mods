@@ -693,6 +693,19 @@ namespace RealisticValues
             }
         }
 
+        public class RocketryBalancePatches
+        {
+            [HarmonyPatch(typeof(GantryConfig), "CreateBuildingDef")]
+            public class GantryHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.600f;
+                    __result.SelfHeatKilowattsWhenActive = 0.600f;
+                }
+            }
+        }
+
         public class DuplicantBalancePatches
         {
             [HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]

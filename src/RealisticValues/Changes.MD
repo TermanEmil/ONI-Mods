@@ -170,3 +170,7 @@
 	* Auto-Miner
 	    * Energy requirement increased to 600W
 		* Heat output reduced to 600 DTU/s
+
+* ## Rocketry
+    * Gantry
+	    * Reduced energy output to 1.2 kDTU/s
