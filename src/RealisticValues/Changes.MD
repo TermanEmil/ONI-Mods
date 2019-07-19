@@ -47,6 +47,14 @@
         * Polluted water creation reduced to 6.5 kg per use
     * Shower
         * Polluted water creation increased to 1.3 kg/s
+	* Liquid Pump
+	    * Heat output reduced to 240 DTU/s
+    * Liquid Filter
+	    * Heat output reduced to 120 DTU/s
+	* Mini Liquid Pump
+	    * Heat output reduced to 60 DTU/s
+	* Liquid Shutoff
+	    * Added heat output of 10 DTU/s
 
 * ## Refinement
     * Water Sieve
