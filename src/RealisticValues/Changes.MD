@@ -54,17 +54,17 @@
 	* Mini Liquid Pump
 	    * Heat output reduced to 60 DTU/s
 	* Liquid Shutoff
-	    * Added heat output of 10 DTU/s
+	    * New heat output of 10 DTU/s
 
 * ## Ventilation
     * Gas Pump
-	    * Added heat output of 240 DTU/s
+	    * New heat output of 240 DTU/s
 	* Mini Gas Pump
-	    * Added heat output of 60 DTU/s
+	    * New heat output of 60 DTU/s
 	* Gas Filter
-	    * Added heat output of 120 DTU/s
+	    * New heat output of 120 DTU/s
 	* Gas Shutoff
-	    * Added heat output of 10 DTU/s
+	    * New heat output of 10 DTU/s
 
 * ## Refinement
     * Water Sieve
@@ -77,7 +77,7 @@
 	    * Heat output reduced to 120 DTU/s
 	* Algae Distiller
         * Polluted water output reduced to 350 g/s from 400 g/s
-        * Added clay output of 50 g/s
+        * New clay output of 50 g/s
 	* Ethanol Distiller
 		* Heat output reduced to 240 DTU/s
 	* Rock Granulator
@@ -124,3 +124,25 @@
 	    * Heat output reduced to 1.2 kDTU/s
 	* Espresso Machine
 	    * Heat output reduced to 480 DTU/s
+
+* ## Stations
+    * Research Station
+	    * Heat output reduced to 60 DTU/s
+	* Super Computer
+	    * Heat output reduced to 120 DTU/s
+	* Virtual Planetarium
+	    * Heat output reduced to 120 DTU/s
+	* Telescope
+	    * Heat output reduced to 120 DTU/s
+	* Shearing Station
+	    * Heat output reduced to 60 DTU/s
+	* Skill Scrubber
+	    * Heat output reduced to 480 DTU/s
+	* Textile Loom
+	    * New heat output of 240 DTU/s
+	* Exosuit Forge
+        * New heat output of 480 DTU/s
+	* Atmo Suit Dock
+	    * New heat output of 120 DTU/s
+	* Jet Suit Dock
+	    * New heat output of 120 DTU/s

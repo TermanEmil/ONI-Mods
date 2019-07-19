@@ -523,6 +523,103 @@ namespace RealisticValues
             }
         }
 
+        public class StationsBalancePatches
+        {
+            [HarmonyPatch(typeof(ResearchCenterConfig), "CreateBuildingDef")]
+            public class ResearchHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.0007f;
+                    __result.SelfHeatKilowattsWhenActive = 0.0593f;
+                }
+            }
+
+            [HarmonyPatch(typeof(AdvancedResearchCenterConfig), "CreateBuildingDef")]
+            public class AdvancedResearchHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.01334f;
+                    __result.SelfHeatKilowattsWhenActive = 0.1066f;
+                }
+            }
+
+            [HarmonyPatch(typeof(CosmicResearchCenterConfig), "CreateBuildingDef")]
+            public class CosmicResearchHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.01334f;
+                    __result.SelfHeatKilowattsWhenActive = 0.1066f;
+                }
+            }
+
+            [HarmonyPatch(typeof(TelescopeConfig), "CreateBuildingDef")]
+            public class TelescopeHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.120f;
+                }
+            }
+
+            [HarmonyPatch(typeof(ShearingStationConfig), "CreateBuildingDef")]
+            public class ShearingStationHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.012f;
+                    __result.SelfHeatKilowattsWhenActive = 0.048f;
+                }
+            }
+
+            [HarmonyPatch(typeof(ResetSkillsStationConfig), "CreateBuildingDef")]
+            public class SkillScrubberHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.4266f;
+                    __result.SelfHeatKilowattsWhenActive = 0.0534f;
+                }
+            }
+
+            [HarmonyPatch(typeof(ClothingFabricatorConfig), "CreateBuildingDef")]
+            public class ClothingFabricatorHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.240f;
+                }
+            }
+
+            [HarmonyPatch(typeof(SuitFabricatorConfig), "CreateBuildingDef")]
+            public class ExosuitForgeHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.480f;
+                }
+            }
+
+            [HarmonyPatch(typeof(SuitLockerConfig), "CreateBuildingDef")]
+            public class AtmoSuitDockHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
+                }
+            }
+
+            [HarmonyPatch(typeof(JetSuitLockerConfig), "CreateBuildingDef")]
+            public class JetSuitDockHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
+                }
+            }
+        }
 
         public class DuplicantBalancePatches
         {
