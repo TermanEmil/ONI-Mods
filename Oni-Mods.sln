@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyBreathing", "src\Heavy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealisticValues", "src\RealisticValues\RealisticValues.csproj", "{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreCanisterFillersMod", "src\MoreCanisterFillersMod\MoreCanisterFillersMod.csproj", "{EB57BB22-F53B-44BA-9E78-6D8D9471E884}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A24EEAA-BCA6-40F0-BAEC-A0697B5D4434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB57BB22-F53B-44BA-9E78-6D8D9471E884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB57BB22-F53B-44BA-9E78-6D8D9471E884}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB57BB22-F53B-44BA-9E78-6D8D9471E884}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB57BB22-F53B-44BA-9E78-6D8D9471E884}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
