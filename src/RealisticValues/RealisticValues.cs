@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
+// ReSharper disable InconsistentNaming
 
 namespace RealisticValues
 {
@@ -14,18 +12,9 @@ namespace RealisticValues
             [HarmonyPatch(typeof(CO2ScrubberConfig), "CreateBuildingDef")]
             public class CarbonSkimmerHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false))
-                            continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
-                        break;
-                    }
-
-                    return codes;
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
                 }
             }
 
@@ -47,23 +36,15 @@ namespace RealisticValues
         {
             // Dumb Algae Terrarium is broken
             //[HarmonyPatch(typeof(AlgaeHabitatConfig), "ConfigureBuildingTemplate")]
-            
+
 
             [HarmonyPatch(typeof(MineralDeoxidizerConfig), "CreateBuildingDef")]
             public class DeoxidizerHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.040f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.080f);
-                    }
-
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.040f;
+                    __result.SelfHeatKilowattsWhenActive = 0.080f;
                 }
             }
 
@@ -118,15 +99,10 @@ namespace RealisticValues
             [HarmonyPatch(typeof(ElectrolyzerConfig), "CreateBuildingDef")]
             public class ElectrolyzerTempPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.024f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.096f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.024f;
+                    __result.SelfHeatKilowattsWhenActive = 0.096f;
                 }
             }
         }
@@ -136,13 +112,9 @@ namespace RealisticValues
             [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
             public class GeneratorEnergyPatches
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("GeneratorWattageRating") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 1000.0f);
-                    return codes;
+                    __result.GeneratorWattageRating = 1000.0f;
                 }
             }
         }
@@ -152,20 +124,15 @@ namespace RealisticValues
             [HarmonyPatch(typeof(HydrogenGeneratorConfig), "CreateBuildingDef")]
             public class GeneratorHeatPatches
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.200f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.200f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.200f;
+                    __result.SelfHeatKilowattsWhenActive = 0.200f;
                 }
             }
         }
 
-        public class FlushToiletPatches
+        public class PlumbingPatches
         {
             [HarmonyPatch(typeof(FlushToiletConfig), "ConfigureBuildingTemplate")]
             public class ToiletMassPatch
@@ -176,10 +143,7 @@ namespace RealisticValues
                     flushToilet.massEmittedPerUse = 6.5f;
                 }
             }
-        }
 
-        public class ShowerPatches
-        {
             [HarmonyPatch(typeof(ShowerConfig), "ConfigureBuildingTemplate")]
             public class ShowerMassPatch
             {
@@ -192,6 +156,43 @@ namespace RealisticValues
                     };
                 }
             }
+
+            [HarmonyPatch(typeof(LiquidPumpConfig), "CreateBuildingDef")]
+            public class LiquidPumpHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.240f;
+                }
+            }
+
+
+            [HarmonyPatch(typeof(LiquidFilterConfig), "CreateBuildingDef")]
+            public class LiquidFilterHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
+                }
+            }
+
+            [HarmonyPatch(typeof(LiquidMiniPumpConfig), "CreateBuildingDef")]
+            public class LiquidMiniPumpHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.060f;
+                }
+            }
+
+            [HarmonyPatch(typeof(LiquidLogicValveConfig), "CreateBuildingDef")]
+            public class LiquidLogicValveHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.010f;
+                }
+            }
         }
 
         public class FoodPatches
@@ -199,30 +200,20 @@ namespace RealisticValues
             [HarmonyPatch(typeof(MicrobeMusherConfig), "CreateBuildingDef")]
             public class MusherHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.048f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.192f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.048f;
+                    __result.SelfHeatKilowattsWhenActive = 0.192f;
                 }
             }
 
             [HarmonyPatch(typeof(CookingStationConfig), "CreateBuildingDef")]
             public class GrillHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.012f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.048f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.012f;
+                    __result.SelfHeatKilowattsWhenActive = 0.048f;
                 }
             }
 
@@ -243,13 +234,9 @@ namespace RealisticValues
             [HarmonyPatch(typeof(RefrigeratorConfig), "CreateBuildingDef")]
             public class RefrigeratorHeatPatches
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.120f;
                 }
             }
         }
@@ -259,18 +246,9 @@ namespace RealisticValues
             [HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
             public class WaterPurifierHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        if (!((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false))
-                            continue;
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.120f);
-                        break;
-                    }
-
-                    return codes;
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
                 }
             }
 
@@ -293,15 +271,10 @@ namespace RealisticValues
             [HarmonyPatch(typeof(AlgaeDistilleryConfig), "CreateBuildingDef")]
             public class AlgaeDistilleryHeatPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref BuildingDef __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                        if ((codes[i].operand as FieldInfo)?.Name.Equals("ExhaustKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.040f);
-                        else if ((codes[i].operand as FieldInfo)?.Name.Equals("SelfHeatKilowattsWhenActive") ?? false)
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.080f);
-                    return codes;
+                    __result.ExhaustKilowattsWhenActive = 0.040f;
+                    __result.SelfHeatKilowattsWhenActive = 0.080f;
                 }
             }
 
@@ -329,19 +302,10 @@ namespace RealisticValues
             [HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]
             public class MinionBreathPatch
             {
-                public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                public static void Postfix(ref GameObject __result)
                 {
-                    var codes = new List<CodeInstruction>(instructions);
-                    for (var i = 0; i < codes.Count; ++i)
-                    {
-                        var fieldInfo = codes[i].operand as FieldInfo;
-                        if ((fieldInfo?.Name.Equals("O2toCO2conversion") ?? false))
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.25f);
-                        if ((fieldInfo?.Name.Equals("minCO2ToEmit") ?? false))
-                            codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 0.100f);
-                    }
-
-                    return codes;
+                    __result.AddOrGet<OxygenBreather>().O2toCO2conversion = 0.25f;
+                    __result.AddOrGet<OxygenBreather>().minCO2ToEmit = 0.100f;
                 }
             }
 
@@ -351,9 +315,11 @@ namespace RealisticValues
                 public static void Postfix(Vector3 position, float mass, float temperature)
                 {
                     var cell = Grid.CellAbove(Grid.PosToCell(position));
-                    SimMessages.AddRemoveSubstance(cell, SimHashes.Oxygen, CellEventLogger.Instance.OxygenModifierSimUpdate,
+                    SimMessages.AddRemoveSubstance(cell, SimHashes.Oxygen,
+                        CellEventLogger.Instance.OxygenModifierSimUpdate,
                         mass, temperature + 0.911547f, byte.MaxValue, 0);
-                    Console.WriteLine("Adding warmer oxygen: " + mass + "kg at " + temperature + 0.911547f + "degrees Kelvin");
+                    Console.WriteLine("Adding warmer oxygen: " + mass + "kg at " + temperature + 0.911547f +
+                                      "degrees Kelvin");
                 }
             }
         }
