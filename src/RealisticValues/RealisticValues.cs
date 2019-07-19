@@ -132,6 +132,52 @@ namespace RealisticValues
             }
         }
 
+        public class FoodPatches
+        {
+            [HarmonyPatch(typeof(MicrobeMusherConfig), "CreateBuildingDef")]
+            public class MusherHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.048f;
+                    __result.SelfHeatKilowattsWhenActive = 0.192f;
+                }
+            }
+
+            [HarmonyPatch(typeof(CookingStationConfig), "CreateBuildingDef")]
+            public class GrillHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.012f;
+                    __result.SelfHeatKilowattsWhenActive = 0.048f;
+                }
+            }
+
+            [HarmonyPatch(typeof(GourmetCookingStationConfig), "ConfigureBuildingTemplate")]
+            public class GasRangeCo2Patch
+            {
+                public static void Postfix(ref GameObject go)
+                {
+                    var elementConverter = go.AddOrGet<ElementConverter>();
+                    elementConverter.outputElements = new[]
+                    {
+                        new ElementConverter.OutputElement(0.100f, SimHashes.CarbonDioxide, 348.15f, false,
+                            false, 0f, 3f)
+                    };
+                }
+            }
+
+            [HarmonyPatch(typeof(RefrigeratorConfig), "CreateBuildingDef")]
+            public class RefrigeratorHeatPatches
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.120f;
+                }
+            }
+        }
+
         public class PlumbingPatches
         {
             [HarmonyPatch(typeof(FlushToiletConfig), "ConfigureBuildingTemplate")]
@@ -195,48 +241,41 @@ namespace RealisticValues
             }
         }
 
-        public class FoodPatches
+        public class VentilationPatches
         {
-            [HarmonyPatch(typeof(MicrobeMusherConfig), "CreateBuildingDef")]
-            public class MusherHeatPatch
+            [HarmonyPatch(typeof(GasPumpConfig), "CreateBuildingDef")]
+            public class GasPumpHeatPatch
             {
                 public static void Postfix(ref BuildingDef __result)
                 {
-                    __result.ExhaustKilowattsWhenActive = 0.048f;
-                    __result.SelfHeatKilowattsWhenActive = 0.192f;
+                    __result.SelfHeatKilowattsWhenActive = 0.240f;
                 }
             }
 
-            [HarmonyPatch(typeof(CookingStationConfig), "CreateBuildingDef")]
-            public class GrillHeatPatch
+            [HarmonyPatch(typeof(GasMiniPumpConfig), "CreateBuildingDef")]
+            public class MiniGasPumpHeatPatch
             {
                 public static void Postfix(ref BuildingDef __result)
                 {
-                    __result.ExhaustKilowattsWhenActive = 0.012f;
-                    __result.SelfHeatKilowattsWhenActive = 0.048f;
+                    __result.SelfHeatKilowattsWhenActive = 0.060f;
                 }
             }
 
-            [HarmonyPatch(typeof(GourmetCookingStationConfig), "ConfigureBuildingTemplate")]
-            public class GasRangeCo2Patch
-            {
-                public static void Postfix(ref GameObject go)
-                {
-                    var elementConverter = go.AddOrGet<ElementConverter>();
-                    elementConverter.outputElements = new[]
-                    {
-                        new ElementConverter.OutputElement(0.100f, SimHashes.CarbonDioxide, 348.15f, false,
-                            false, 0f, 3f)
-                    };
-                }
-            }
-
-            [HarmonyPatch(typeof(RefrigeratorConfig), "CreateBuildingDef")]
-            public class RefrigeratorHeatPatches
+            [HarmonyPatch(typeof(GasFilterConfig), "CreateBuildingDef")]
+            public class GasFilterHeatPatch
             {
                 public static void Postfix(ref BuildingDef __result)
                 {
-                    __result.ExhaustKilowattsWhenActive = 0.120f;
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
+                }
+            }
+
+            [HarmonyPatch(typeof(GasLogicValveConfig), "CreateBuildingDef")]
+            public class GasShutoffHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.010f;
                 }
             }
         }
@@ -268,6 +307,25 @@ namespace RealisticValues
                 }
             }
 
+            [HarmonyPatch(typeof(DesalinatorConfig), "CreateBuildingDef")]
+            public class DesalinatorHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.480f;
+                }
+            }
+
+            [HarmonyPatch(typeof(FertilizerMakerConfig), "CreateBuildingDef")]
+            public class FertilizerMakerHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.040f;
+                    __result.SelfHeatKilowattsWhenActive = 0.080f;
+                }
+            }
+
             [HarmonyPatch(typeof(AlgaeDistilleryConfig), "CreateBuildingDef")]
             public class AlgaeDistilleryHeatPatch
             {
@@ -292,6 +350,172 @@ namespace RealisticValues
                         new ElementConverter.OutputElement(0.05f, SimHashes.Clay, 0f, false, false,
                             0f, 0f, 0.125f)
                     };
+                }
+            }
+
+            [HarmonyPatch(typeof(EthanolDistilleryConfig), "CreateBuildingDef")]
+            public class EthanolDistilleryHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.02667f;
+                    __result.SelfHeatKilowattsWhenActive = 0.21333f;
+                }
+            }
+
+            [HarmonyPatch(typeof(RockCrusherConfig), "CreateBuildingDef")]
+            public class RockGranulatorEnergyPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 560f;
+                    __result.SelfHeatKilowattsWhenActive = 0.560f;
+                }
+            }
+
+            [HarmonyPatch(typeof(MetalRefineryConfig), "CreateBuildingDef")]
+            public class MetalRefineryPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 1800f;
+                    __result.SelfHeatKilowattsWhenActive = 1.800f;
+                }
+            }
+
+            [HarmonyPatch(typeof(GlassForgeConfig), "CreateBuildingDef")]
+            public class GlassForgePatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 1800f;
+                    __result.SelfHeatKilowattsWhenActive = 1.800f;
+                }
+            }
+
+            [HarmonyPatch(typeof(OilRefineryConfig), "CreateBuildingDef")]
+            public class OilRefineryPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 800f;
+                    __result.SelfHeatKilowattsWhenActive = 0.800f;
+                }
+            }
+
+            [HarmonyPatch(typeof(PolymerizerConfig), "CreateBuildingDef")]
+            public class PolymerizerPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 1200f;
+                    __result.SelfHeatKilowattsWhenActive = 1.200f;
+                }
+            }
+
+            [HarmonyPatch(typeof(OxyliteRefineryConfig), "CreateBuildingDef")]
+            public class OxyliteRefineryPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 2000f;
+                    __result.SelfHeatKilowattsWhenActive = 2.000f;
+                }
+            }
+
+            [HarmonyPatch(typeof(SupermaterialRefineryConfig), "CreateBuildingDef")]
+            public class SupermaterialRefineryPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 2000f;
+                    __result.SelfHeatKilowattsWhenActive = 2.000f;
+                }
+            }
+        }
+
+        public class MedicineBalancePatches
+        {
+            public class SinkOutputsPatch
+            {
+
+            }
+
+            [HarmonyPatch(typeof(ApothecaryConfig), "CreateBuildingDef")]
+            public class ApothecaryHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.080f;
+                    __result.SelfHeatKilowattsWhenActive = 0.160f;
+                }
+            }
+
+            [HarmonyPatch(typeof(AdvancedDoctorStationConfig), "CreateBuildingDef")]
+            public class ClinicHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.160f;
+                    __result.SelfHeatKilowattsWhenActive = 0.320f;
+                }
+            }
+
+            [HarmonyPatch(typeof(MassageTableConfig), "CreateBuildingDef")]
+            public class MassageHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.ExhaustKilowattsWhenActive = 0.048f;
+                    __result.SelfHeatKilowattsWhenActive = 0.192f;
+                }
+            }
+        }
+
+        public class FurnitureBalancePatches
+        {
+            [HarmonyPatch(typeof(FloorLampConfig), "CreateBuildingDef")]
+            public class LampHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.008f;
+                }
+            }
+
+            [HarmonyPatch(typeof(CeilingLightConfig), "CreateBuildingDef")]
+            public class CeilingLightHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.010f;
+                }
+            }
+
+            [HarmonyPatch(typeof(PhonoboxConfig), "CreateBuildingDef")]
+            public class JukebotHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.960f;
+                }
+            }
+
+            [HarmonyPatch(typeof(ArcadeMachineConfig), "CreateBuildingDef")]
+            public class ArcadeHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 1.200f;
+                }
+            }
+
+            [HarmonyPatch(typeof(EspressoMachineConfig), "CreateBuildingDef")]
+            public class EspressoHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.480f;
                 }
             }
         }

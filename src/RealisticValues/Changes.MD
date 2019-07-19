@@ -56,6 +56,16 @@
 	* Liquid Shutoff
 	    * Added heat output of 10 DTU/s
 
+* ## Ventilation
+    * Gas Pump
+	    * Added heat output of 240 DTU/s
+	* Mini Gas Pump
+	    * Added heat output of 60 DTU/s
+	* Gas Filter
+	    * Added heat output of 120 DTU/s
+	* Gas Shutoff
+	    * Added heat output of 10 DTU/s
+
 * ## Refinement
     * Water Sieve
         * Heat output reduced to 120 DTU/s
