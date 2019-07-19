@@ -157,3 +157,16 @@
 	    * New heat output of 100 DTU/s
 	* Space Scanner
 	    * New heat output of 120 DTU/s
+
+* ## Shipping
+    * Auto-Sweeper
+	    * Energy requirement increased to 540W
+		* Heat output reduced to 540 DTU/s
+	* Conveyor Loader
+	    * Energy requirement increased to 180W
+		* Heat output reduced to 180 DTU/s
+	* Conveyor Shutoff
+	    * Heat output reduced to 10 DTU/s
+	* Auto-Miner
+	    * Energy requirement increased to 600W
+		* Heat output reduced to 600 DTU/s

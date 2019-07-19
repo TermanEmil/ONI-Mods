@@ -651,6 +651,48 @@ namespace RealisticValues
             }
         }
 
+        public class ShippingPatches
+        {
+            [HarmonyPatch(typeof(SolidTransferArmConfig), "CreateBuildingDef")]
+            public class SweeperHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 540f;
+                    __result.SelfHeatKilowattsWhenActive = 0.540f;
+                }
+            }
+
+            [HarmonyPatch(typeof(SolidConduitInboxConfig), "CreateBuildingDef")]
+            public class ConveyorLoaderHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 180f;
+                    __result.SelfHeatKilowattsWhenActive = 0.180f;
+                }
+            }
+
+            [HarmonyPatch(typeof(SolidLogicValveConfig), "CreateBuildingDef")]
+            public class ConveyorShutoffHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.010f;
+                }
+            }
+
+            [HarmonyPatch(typeof(AutoMinerConfig), "CreateBuildingDef")]
+            public class AutoMinerHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.EnergyConsumptionWhenActive = 600f;
+                    __result.SelfHeatKilowattsWhenActive = 0.600f;
+                }
+            }
+        }
+
         public class DuplicantBalancePatches
         {
             [HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]
