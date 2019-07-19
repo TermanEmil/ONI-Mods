@@ -71,6 +71,56 @@
         * Heat output reduced to 120 DTU/s
         * 100% of sand input (1 kg) now converted to polluted dirt
         * Water output reduced to 3.8462 kg/s
-    * Algae Distillery
+	* Desalinator
+	    *  Heat output reduced to 480 DTU/s
+	* Fertilizer Sythesizer
+	    * Heat output reduced to 120 DTU/s
+	* Algae Distiller
         * Polluted water output reduced to 350 g/s from 400 g/s
         * Added clay output of 50 g/s
+	* Ethanol Distiller
+		* Heat output reduced to 240 DTU/s
+	* Rock Granulator
+	    * Power requirement increased to 560W
+		* Heat output reduced to 560 DTU/s
+	* Metal Refinery
+	    * Power requirement increased to 1.8kW
+		* Heat output reduced to 1.8 kDTU/s
+		* TODO work with coolant and output
+	* Glass Forge
+	    * Power requirement increased to 1.8kW
+		* Heat output reduced to 1.8 kDTU/s
+	* Oil Refinery
+	    * Power requirement increased to 800W
+		* Heat output reduced to 800 DTU/s
+	* Polymer Press
+	    * Power requirement increased to 1.2kW
+		* Heat output reduced to 1.2 kDTU/s
+	* Oxylite Refinery
+	    * Power requirement increased to 2kW
+		* Heat output reduced to 2 kDTU/s
+	* Molecular Forge
+	    * Power requirement increased to 2kW
+		* Heat output reduced to 2 kDTU/s
+
+* ## Medicine
+    * Sink/wash basin
+	    * TODO IT'S A MESS WTF KLEI
+    * Apothecary
+	    * Heat output reduced to 240 DTU/s
+	* Disease Clinic
+	    * Heat output reduced to 480 DTU/s
+	* Massage Table
+	    * Heat output reduced to 240 DTU/s
+
+* ## Furniture
+    * Floor Lamp
+	    * Heat output reduced to 8 DTU/s
+	* Ceiling Lamp
+	    * Heat output reduced to 10 DTU/s
+	* Jukebot
+	    * Heat output reduced to 960 DTU/s
+	* Arcade Cabinet
+	    * Heat output reduced to 1.2 kDTU/s
+	* Espresso Machine
+	    * Heat output reduced to 480 DTU/s

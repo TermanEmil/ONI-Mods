@@ -399,7 +399,8 @@ namespace RealisticValues
                 public static void Postfix(ref BuildingDef __result)
                 {
                     __result.EnergyConsumptionWhenActive = 800f;
-                    __result.SelfHeatKilowattsWhenActive = 0.800f;
+                    __result.SelfHeatKilowattsWhenActive = 0.160f;
+                    __result.ExhaustKilowattsWhenActive = 0.840f;
                 }
             }
 
@@ -409,7 +410,8 @@ namespace RealisticValues
                 public static void Postfix(ref BuildingDef __result)
                 {
                     __result.EnergyConsumptionWhenActive = 1200f;
-                    __result.SelfHeatKilowattsWhenActive = 1.200f;
+                    __result.SelfHeatKilowattsWhenActive = 0.0185f;
+                    __result.ExhaustKilowattsWhenActive = 1.1815f;
                 }
             }
 
@@ -419,7 +421,8 @@ namespace RealisticValues
                 public static void Postfix(ref BuildingDef __result)
                 {
                     __result.EnergyConsumptionWhenActive = 2000f;
-                    __result.SelfHeatKilowattsWhenActive = 2.000f;
+                    __result.ExhaustKilowattsWhenActive = 0.6667f;
+                    __result.SelfHeatKilowattsWhenActive = 1.3333f;
                 }
             }
 
