@@ -621,6 +621,36 @@ namespace RealisticValues
             }
         }
 
+        public class AutomationBalancePatches
+        {
+            [HarmonyPatch(typeof(LogicElementSensorGasConfig), "CreateBuildingDef")]
+            public class GasSensorHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.025f;
+                }
+            }
+
+            [HarmonyPatch(typeof(CheckpointConfig), "CreateBuildingDef")]
+            public class CheckpointHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.100f;
+                }
+            }
+
+            [HarmonyPatch(typeof(CometDetectorConfig), "CreateBuildingDef")]
+            public class CometHeatPatch
+            {
+                public static void Postfix(ref BuildingDef __result)
+                {
+                    __result.SelfHeatKilowattsWhenActive = 0.120f;
+                }
+            }
+        }
+
         public class DuplicantBalancePatches
         {
             [HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]

@@ -146,3 +146,14 @@
 	    * New heat output of 120 DTU/s
 	* Jet Suit Dock
 	    * New heat output of 120 DTU/s
+
+* ## Utilities
+    * TODO: it's a mess balance wise
+
+* ## Automation
+    * Gas Element Sensor
+	    * New heat output of 25 DTU/s
+	* Duplicant Checkpoint
+	    * New heat output of 100 DTU/s
+	* Space Scanner
+	    * New heat output of 120 DTU/s
