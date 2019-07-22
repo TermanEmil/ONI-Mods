@@ -105,7 +105,9 @@
 
 * ## Medicine
     * Sink/wash basin
-	    * TODO IT'S A MESS WTF KLEI
+	    * Polluted water output increased to 6.5 kg per use
+		* (Note: This value is slightly higher because duplicants
+		use the sink for slightly too long, but the ratio is fine, and keeps a net water of 0)
     * Apothecary
 	    * Heat output reduced to 240 DTU/s
 	* Disease Clinic
