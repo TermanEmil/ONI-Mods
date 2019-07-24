@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
-using Console = System.Console;
 
 // ReSharper disable InconsistentNaming
 
 namespace RealisticValues
 {
-    internal class RealisticValues
+    class RealisticValues
     {
         public class CarbonSkimmerBalances
         {
@@ -461,7 +460,6 @@ namespace RealisticValues
                     codes.Insert(start + 6, new CodeInstruction(OpCodes.Mul));
                     codes.Insert(start + 7, new CodeInstruction(OpCodes.Br, 0x02));
                     return codes;
-
                 }
             }
 
@@ -748,8 +746,6 @@ namespace RealisticValues
                     SimMessages.AddRemoveSubstance(cell, SimHashes.Oxygen,
                         CellEventLogger.Instance.OxygenModifierSimUpdate,
                         mass, temperature + 0.911547f, byte.MaxValue, 0);
-                    Console.WriteLine("Adding warmer oxygen: " + mass + "kg at " + temperature + 0.911547f +
-                                      "degrees Kelvin");
                 }
             }
         }
