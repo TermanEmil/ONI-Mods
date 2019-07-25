@@ -47,7 +47,7 @@ namespace CustomWireLib
 
         public static void RegisterBuildings()
         {
-            foreach (var w in CustomBuildingMaker.customWires)
+            foreach (var w in CustomWireMaker.customWires)
             {
                 // Register buildings and add to plan screen
                 BuildingConfigManager.Instance.RegisterBuilding(w as IBuildingConfig);
@@ -60,7 +60,7 @@ namespace CustomWireLib
         }
     }
 
-    class CustomBuildingMaker
+    class CustomWireMaker
     {
         public static List<CustomWire> customWires = new List<CustomWire>();
 

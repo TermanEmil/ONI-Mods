@@ -94,7 +94,7 @@ namespace CustomWireLib
         {
             public static void Prefix(ref List<Type> types)
             {
-                types.Remove(typeof(CustomBuildingMaker.CustomWire));
+                types.Remove(typeof(CustomWireMaker.CustomWire));
             }
         }
     }

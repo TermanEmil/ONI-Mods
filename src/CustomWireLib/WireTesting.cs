@@ -9,9 +9,9 @@ namespace CustomWireLib
         {
             public static void Postfix()
             {
-                CustomBuildingMaker.CreateWireWithRating(13.37f);
-                CustomBuildingMaker.CreateWireWithRating(420f);
-                CustomBuildingMaker.CreateWireWithRating(9999f);
+                CustomWireMaker.CreateWireWithRating(13.37f);
+                CustomWireMaker.CreateWireWithRating(420f);
+                CustomWireMaker.CreateWireWithRating(9999f);
                 CustomWireValues.RegisterBuildings();
             }
         }
