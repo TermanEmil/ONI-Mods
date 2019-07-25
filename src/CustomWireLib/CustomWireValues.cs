@@ -94,8 +94,8 @@ namespace CustomWireLib
             public override BuildingDef CreateBuildingDef()
             {
                 id = rating + id;
-                mass[0] = rating / 100f;
-                return base.CreateBuildingDef(id, anim, construction_time, mass, insulation, BUILDINGS.DECOR.PENALTY.TIER0, noise);
+                mass[0] = Math.Max(rating / 50f, 25f);
+                return base.CreateBuildingDef(id, anim, construction_time, mass, insulation, TUNING.BUILDINGS.DECOR.PENALTY.TIER0, noise);
             }
 
             public override void DoPostConfigureComplete(GameObject go)
