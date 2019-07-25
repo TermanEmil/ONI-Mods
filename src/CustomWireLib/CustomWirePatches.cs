@@ -6,7 +6,7 @@ using Harmony;
 
 namespace CustomWireLib
 {
-    class CustomWirePatches
+    public class CustomWirePatches
     {
         [HarmonyPatch(typeof(Wire), "GetMaxWattageAsFloat")]
         public class WireWattageSwitchPatch

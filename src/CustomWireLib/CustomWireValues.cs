@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CustomWireLib
 {
-    class CustomWireValues
+    public class CustomWireValues
     {
         private static Dictionary<int, float> AdditionalWireValues = new Dictionary<int, float>();
 
@@ -61,7 +61,7 @@ namespace CustomWireLib
         }
     }
 
-    class CustomWireMaker
+    public class CustomWireMaker
     {
         // Any calls here should be made **AFTER** (or in a postfix of) GeneratedBuildings.LoadGeneratedBuildings.
         // RegisterBuildings must be called to properly register all buildings.
