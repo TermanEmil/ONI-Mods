@@ -45,6 +45,7 @@ namespace CustomWireLib
             return AdditionalWireValues.TryGetValue(index, out var val) ? val : -1f;
         }
 
+        // Call this to register all buildings created using the CustomWireMaker class.
         public static void RegisterBuildings()
         {
             foreach (var w in CustomWireMaker.customWires)
@@ -62,6 +63,8 @@ namespace CustomWireLib
 
     class CustomWireMaker
     {
+        // Any calls here should be made **AFTER** (or in a postfix of) GeneratedBuildings.LoadGeneratedBuildings.
+        // RegisterBuildings must be called to properly register all buildings.
         public static List<CustomWire> customWires = new List<CustomWire>();
 
         public static void CreateWireWithRating(int index)

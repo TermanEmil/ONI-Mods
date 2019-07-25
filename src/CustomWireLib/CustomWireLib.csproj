@@ -62,7 +62,6 @@
     <Compile Include="CustomWirePatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomWireValues.cs" />
-    <Compile Include="WireTesting.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
