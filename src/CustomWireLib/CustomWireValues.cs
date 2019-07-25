@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using STRINGS;
 using TUNING;
 using UnityEngine;
 
@@ -48,8 +49,13 @@ namespace CustomWireLib
         {
             foreach (var w in CustomBuildingMaker.customWires)
             {
+                // Register buildings and add to plan screen
                 BuildingConfigManager.Instance.RegisterBuilding(w as IBuildingConfig);
                 ModUtil.AddBuildingToPlanScreen("Power", w.id);
+                // Register strings
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.NAME", w.rating + "W Wire");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.DESC", "Electrical wire is used to connect generators, batteries, and buildings.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.EFFECT", "Connects buildings to " + UI.FormatAsLink("Power", "POWER") + " sources.\n\nCan be run through wall and floor tile.");
             }
         }
     }
