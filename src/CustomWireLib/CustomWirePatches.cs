@@ -39,11 +39,6 @@ namespace CustomWireLib
                     Console.WriteLine("An error occured adding to the wire list.");
                 return codes;
             }
-
-            public static void Postfix(ElectricalUtilityNetwork __instance)
-            {
-                Console.WriteLine("ABCDEF" + Traverse.Create(__instance).Field("wireGroups").GetValue());
-            }
         }
 
         [HarmonyPatch(typeof(ElectricalUtilityNetwork), "UpdateOverloadTime")]
@@ -100,19 +95,6 @@ namespace CustomWireLib
             public static void Prefix(ref List<Type> types)
             {
                 types.Remove(typeof(CustomBuildingMaker.CustomWire));
-            }
-        }
-
-
-        [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
-        public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
-        {
-            public static void Prefix()
-            {
-                foreach (var w in CustomBuildingMaker.customWires)
-                {
-                    ModUtil.AddBuildingToPlanScreen("Power", w.id);
-                }
             }
         }
     }
