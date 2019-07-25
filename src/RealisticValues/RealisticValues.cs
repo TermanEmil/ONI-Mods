@@ -111,27 +111,30 @@ namespace RealisticValues
             }
         }
 
-        public class CoalGeneratorPatches
+        public class PowerBalances
         {
-            [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
-            public class GeneratorEnergyPatches
+            public class CoalGeneratorPatches
             {
-                public static void Postfix(ref BuildingDef __result)
+                [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
+                public class GeneratorEnergyPatches
                 {
-                    __result.GeneratorWattageRating = 1000.0f;
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.GeneratorWattageRating = 1000.0f;
+                    }
                 }
             }
-        }
 
-        public class HydrogenGeneratorPatches
-        {
-            [HarmonyPatch(typeof(HydrogenGeneratorConfig), "CreateBuildingDef")]
-            public class GeneratorHeatPatches
+            public class HydrogenGeneratorPatches
             {
-                public static void Postfix(ref BuildingDef __result)
+                [HarmonyPatch(typeof(HydrogenGeneratorConfig), "CreateBuildingDef")]
+                public class GeneratorHeatPatches
                 {
-                    __result.ExhaustKilowattsWhenActive = 0.200f;
-                    __result.SelfHeatKilowattsWhenActive = 0.200f;
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.ExhaustKilowattsWhenActive = 0.200f;
+                        __result.SelfHeatKilowattsWhenActive = 0.200f;
+                    }
                 }
             }
         }
