@@ -32,7 +32,7 @@
     * Hydrogen Generator
 	    * Energy output increased to 1.4kW
         * Heat production increased to 6 kDTU/s
-		* Produces 10 g/s PH2O
+		* Produces 10 g/s Polluted Water
 
 * ## Food
     * Microbe Musher
