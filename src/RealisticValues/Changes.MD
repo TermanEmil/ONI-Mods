@@ -29,6 +29,10 @@
 * ## Power
     * Coal Generator
 	    * Energy output increased to 1000W
+	* Wood Generator
+	    * Energy output increased to 500W
+		* Heat production reduced to 7 kDTU/s
+		* Produces 10 g/s Polluted Water
     * Hydrogen Generator
 	    * Energy output increased to 1.4kW
         * Heat production increased to 6 kDTU/s

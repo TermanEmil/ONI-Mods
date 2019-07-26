@@ -137,6 +137,32 @@ namespace RealisticValues
                 }
             }
 
+            public class WoodBurnerPatches
+            {
+                [HarmonyPatch(typeof(WoodGasGeneratorConfig), "CreateBuildingDef")]
+                public class WoodBurnerDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        // Wood Burner: 500 W, 7kDTU/s
+                        __result.GeneratorWattageRating = 500f;
+                        __result.ExhaustKilowattsWhenActive = 6.222f;
+                        __result.SelfHeatKilowattsWhenActive = 0.778f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(WoodGasGeneratorConfig), "DoPostConfigureComplete")]
+                public class WoodBurnerOutputPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        var energyGenerator = go.AddOrGet<EnergyGenerator>();
+                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(WoodLogConfig.TAG,
+                            0.1f, 2f, SimHashes.DirtyWater, 0.012f, false, CellOffset.none);
+                    }
+                }
+            }
+
             public class HydrogenGeneratorPatches
             {
                 [HarmonyPatch(typeof(HydrogenGeneratorConfig), "CreateBuildingDef")]
@@ -157,17 +183,8 @@ namespace RealisticValues
                     public static void Postfix(GameObject go)
                     {
                         var energyGenerator = go.AddOrGet<EnergyGenerator>();
-                        energyGenerator.formula = new EnergyGenerator.Formula
-                        {
-                            inputs = new[]
-                            {
-                                new EnergyGenerator.InputItem(SimHashes.Hydrogen.CreateTag(), 0.1f, 2f)
-                            },
-                            outputs = new[]
-                            {
-                                new EnergyGenerator.OutputItem(SimHashes.DirtyWater, 0.01f, false, new CellOffset(0, 0))
-                            }
-                        };
+                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(SimHashes.Hydrogen.CreateTag(),
+                            0.1f, 2f, SimHashes.DirtyWater, 0.01f, false, CellOffset.none);
                     }
                 }
             }
