@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection.Emit;
 using CustomWireLib;
 using Harmony;
 using UnityEngine;
+
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable InconsistentNaming
 
@@ -39,7 +39,7 @@ namespace RealisticValues
 
         public class OxygenGenBalances
         {
-            // Dumb Algae Terrarium is broken
+            // TODO: Algae Terrarium
             //[HarmonyPatch(typeof(AlgaeHabitatConfig), "ConfigureBuildingTemplate")]
 
 
@@ -144,7 +144,6 @@ namespace RealisticValues
                 {
                     public static void Postfix(ref BuildingDef __result)
                     {
-
                         //Hydrogen Generator: 1.4 kW, 6kDTU/s heat
                         __result.GeneratorWattageRating = 1400f;
                         __result.ExhaustKilowattsWhenActive = 3f;
@@ -157,16 +156,16 @@ namespace RealisticValues
                 {
                     public static void Postfix(GameObject go)
                     {
-                        EnergyGenerator energyGenerator = go.AddOrGet<EnergyGenerator>();
+                        var energyGenerator = go.AddOrGet<EnergyGenerator>();
                         energyGenerator.formula = new EnergyGenerator.Formula
                         {
-                            inputs = new EnergyGenerator.InputItem[]
+                            inputs = new[]
                             {
                                 new EnergyGenerator.InputItem(SimHashes.Hydrogen.CreateTag(), 0.1f, 2f)
                             },
-                            outputs = new EnergyGenerator.OutputItem[]
+                            outputs = new[]
                             {
-                                new EnergyGenerator.OutputItem(SimHashes.DirtyWater, 0.01f, false, new CellOffset(0, 0), 0)
+                                new EnergyGenerator.OutputItem(SimHashes.DirtyWater, 0.01f, false, new CellOffset(0, 0))
                             }
                         };
                     }
@@ -488,12 +487,12 @@ namespace RealisticValues
                 {
                     var codes = new List<CodeInstruction>(instr);
                     // TODO: find the appropriate method and use that as an offset
-                    var start = 101;
+                    const int start = 101;
                     codes.Insert(start + 0, new CodeInstruction(OpCodes.Dup));
-                    codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int)SimHashes.DirtyWater));
+                    codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
                     codes.Insert(start + 2, new CodeInstruction(OpCodes.Ceq));
                     codes.Insert(start + 3, new CodeInstruction(OpCodes.Brfalse, 0x0D));
-                    codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte)6));
+                    codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte) 6));
                     codes.Insert(start + 5, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
                     codes.Insert(start + 6, new CodeInstruction(OpCodes.Mul));
                     codes.Insert(start + 7, new CodeInstruction(OpCodes.Br, 0x02));
