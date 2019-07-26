@@ -30,7 +30,7 @@ namespace CustomWireLib
             }
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
-                var field = typeof(CustomWireValues).GetField("newWireCount",
+                var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 if (field != null)
@@ -46,7 +46,7 @@ namespace CustomWireLib
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
-                var field = typeof(CustomWireValues).GetField("newWireCount",
+                var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 if (field != null)
@@ -62,7 +62,7 @@ namespace CustomWireLib
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
-                var field = typeof(CustomWireValues).GetField("newWireCount",
+                var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 if (field != null)
@@ -78,7 +78,7 @@ namespace CustomWireLib
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
-                var field = typeof(CustomWireValues).GetField("newWireCount",
+                var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 if (field != null)

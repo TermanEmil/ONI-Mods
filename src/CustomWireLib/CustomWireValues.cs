@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using Harmony;
 using STRINGS;
 using TUNING;
 using UnityEngine;
+using BUILDINGS = TUNING.BUILDINGS;
 
 namespace CustomWireLib
 {
     public class CustomWireValues
     {
-        private static Dictionary<int, float> AdditionalWireValues = new Dictionary<int, float>();
+        private static Dictionary<int, float> _additionalWireValues = new Dictionary<int, float>();
 
-        private static Dictionary<float, int> InvAdditionalWireValues = new Dictionary<float, int>();
+        private static Dictionary<float, int> _invAdditionalWireValues = new Dictionary<float, int>();
 
-        private static int newWireCount = (int) Wire.WattageRating.NumRatings;
+        private static int _newWireCount = (int) Wire.WattageRating.NumRatings;
 
         public static int GetAndUpdateWireCount ()
         {
-            newWireCount = (int) Wire.WattageRating.NumRatings + AdditionalWireValues.Count + 1;
-            return newWireCount;
+            _newWireCount = (int) Wire.WattageRating.NumRatings + _additionalWireValues.Count + 1;
+            return _newWireCount;
         }
 
         public static int AddOrGetWireWattageIndex(float rating)
@@ -26,15 +28,15 @@ namespace CustomWireLib
             var i = GetAndUpdateWireCount();
             try
             {
-                InvAdditionalWireValues.Add(rating, i);
-                AdditionalWireValues.Add(i, rating);
+                _invAdditionalWireValues.Add(rating, i);
+                _additionalWireValues.Add(i, rating);
                 Console.WriteLine("Added new rating of " + rating + "W at index " + i);
                 return i;
             }
             catch (ArgumentException)
             {
                 // Get the index from the value and give that to the user
-                i = InvAdditionalWireValues[rating];
+                i = _invAdditionalWireValues[rating];
                 Console.WriteLine("A wire with wattage " + rating + " already exists with index " + i);
                 return i;
             }
@@ -42,22 +44,23 @@ namespace CustomWireLib
 
         public static float GetWireRating(int index)
         {
-            return AdditionalWireValues.TryGetValue(index, out var val) ? val : -1f;
+            return _additionalWireValues.TryGetValue(index, out var val) ? val : -1f;
         }
 
         // Call this to register all buildings created using the CustomWireMaker class.
         public static void RegisterBuildings()
         {
-            foreach (var w in CustomWireMaker.customWires)
+            foreach (var w in CustomWireMaker.CustomWires)
             {
                 // Register buildings and add to plan screen
-                BuildingConfigManager.Instance.RegisterBuilding(w as IBuildingConfig);
-                ModUtil.AddBuildingToPlanScreen("Power", w.id);
+                BuildingConfigManager.Instance.RegisterBuilding(w);
+                ModUtil.AddBuildingToPlanScreen("Power", w.Id);
                 // Register strings
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.NAME", w.rating + "W Wire");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.DESC", "Electrical wire is used to connect generators, batteries, and buildings.");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.EFFECT", "Connects buildings to " + UI.FormatAsLink("Power", "POWER") + " sources.\n\nCan be run through wall and floor tile.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.NAME", w.Rating + "W Wire");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.DESC", "Electrical wire is used to connect generators, batteries, and buildings.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.EFFECT", "Connects buildings to " + UI.FormatAsLink("Power", "POWER") + " sources.\n\nCan be run through wall and floor tile.");
             }
+            CustomWireMaker.CustomWires.Clear();
         }
     }
 
@@ -65,7 +68,30 @@ namespace CustomWireLib
     {
         // Any calls here should be made **AFTER** (or in a postfix of) GeneratedBuildings.LoadGeneratedBuildings.
         // RegisterBuildings must be called to properly register all buildings.
-        public static List<CustomWire> customWires = new List<CustomWire>();
+        public static List<CustomWire> CustomWires = new List<CustomWire>();
+
+        public static BuildingDef GetBuildingDef(int index)
+        {
+            var r = CustomWireValues.GetWireRating(index);
+            if (r != -1f)
+            {
+                return GetBuildingDef(r);
+            }
+            Console.WriteLine("Error getting rating from index " + index);
+            return null;
+        }
+
+        public static BuildingDef GetBuildingDef(float rating)
+        {
+            foreach (var w in CustomWires)
+            {
+                if (w.Rating != rating) continue;
+                var traverse = (Dictionary<IBuildingConfig, BuildingDef>)Traverse.Create(BuildingConfigManager.Instance).Field("configTable").GetValue();
+                return traverse[w];
+            }
+            Console.WriteLine("Error finding wire with rating " + rating);
+            return null;
+        }
 
         public static void CreateWireWithRating(int index)
         {
@@ -76,34 +102,34 @@ namespace CustomWireLib
         {
             var w = new CustomWire
             {
-                rating = rating
+                Rating = rating
             };
-            customWires.Add(w);
+            CustomWires.Add(w);
         }
 
         public class CustomWire : BaseWireConfig
         {
-            public float rating = 0;
-            public string id = "Wire";
-            string anim = "utilities_electric_kanim";
-            float construction_time = 3f;
-            float[] mass = new float[]
-            {
+            public float Rating;
+            public string Id = "Wire";
+            readonly string _anim = "utilities_electric_kanim";
+            float _constructionTime = 3f;
+            float[] mass = {
                 25f
             };
-            float insulation = 0.05f;
-            EffectorValues noise = NOISE_POLLUTION.NONE;
+
+            readonly float _insulation = 0.05f;
+            readonly EffectorValues _noise = NOISE_POLLUTION.NONE;
 
             public override BuildingDef CreateBuildingDef()
             {
-                id = rating + id;
-                mass[0] = Math.Max(rating / 50f, 25f);
-                return base.CreateBuildingDef(id, anim, construction_time, mass, insulation, TUNING.BUILDINGS.DECOR.PENALTY.TIER0, noise);
+                Id = Rating + Id;
+                mass[0] = Math.Max(Rating / 50f, 25f);
+                return base.CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
             }
 
             public override void DoPostConfigureComplete(GameObject go)
             {
-                base.DoPostConfigureComplete((Wire.WattageRating)CustomWireValues.AddOrGetWireWattageIndex(rating), go);
+                base.DoPostConfigureComplete((Wire.WattageRating)CustomWireValues.AddOrGetWireWattageIndex(Rating), go);
             }
         }
     }
