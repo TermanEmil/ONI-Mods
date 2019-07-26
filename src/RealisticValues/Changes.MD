@@ -39,6 +39,10 @@
 		* Produces 10 g/s Polluted Water
 	* Natural Gas Generator
 	    * Energy output increased to 2kW
+	* Petroleum Generator
+	    * Energy output increased to 2.4kW
+		* Heat production reduced to 15 kDTU/s
+		* CO2 production increased to 1.25 kg/s
 
 * ## Food
     * Microbe Musher

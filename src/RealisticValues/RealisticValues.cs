@@ -201,6 +201,30 @@ namespace RealisticValues
                     }
                 }
             }
+
+            public class PetroleumGeneratorPatches
+            {
+                [HarmonyPatch(typeof(PetroleumGeneratorConfig), "CreateBuildingDef")]
+                public class GeneratorDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        // Petroleum Generator: 2.4kW, 15 kDTU/s power
+                        __result.GeneratorWattageRating = 2.400f;
+                        __result.ExhaustKilowattsWhenActive = 3f;
+                        __result.SelfHeatKilowattsWhenActive = 12f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(PetroleumGeneratorConfig), "DoPostConfigureComplete")]
+                public class GeneratorOutputPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        go.AddOrGet<EnergyGenerator>().formula.outputs[0].creationRate = 1.25f;
+                    }
+                }
+            }
         }
 
         public class FoodPatches
