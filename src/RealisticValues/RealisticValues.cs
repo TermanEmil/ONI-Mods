@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using CustomWireLib;
 using Harmony;
@@ -222,6 +223,77 @@ namespace RealisticValues
                     public static void Postfix(GameObject go)
                     {
                         go.AddOrGet<EnergyGenerator>().formula.outputs[0].creationRate = 1.25f;
+                    }
+                }
+            }
+
+            public class SmallBatteryPatches
+            {
+                [HarmonyPatch(typeof(BatteryConfig), "CreateBuildingDef", new Type[]{})]
+                public class BatteryDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.ExhaustKilowattsWhenActive = 0.5f;
+                        __result.SelfHeatKilowattsWhenActive = 2f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(BatteryConfig), "DoPostConfigureComplete")]
+                public class BatteryCapacityPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        var battery = go.AddOrGet<Battery>();
+                        battery.capacity = 50000f;
+                        battery.joulesLostPerSecond = battery.capacity * 0.1f / 600f;
+                    }
+                }
+            }
+
+            public class LargeBatteryPatches
+            {
+                [HarmonyPatch(typeof(BatteryMediumConfig), "CreateBuildingDef", new Type[] { })]
+                public class BatteryDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.ExhaustKilowattsWhenActive = 0.5f;
+                        __result.SelfHeatKilowattsWhenActive = 2f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(BatteryMediumConfig), "DoPostConfigureComplete")]
+                public class BatteryCapacityPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        var battery = go.AddOrGet<Battery>();
+                        battery.capacity = 200000f;
+                        battery.joulesLostPerSecond = battery.capacity * 0.05f / 600f;
+                    }
+                }
+            }
+
+            public class SmartBatteryPatches
+            {
+                [HarmonyPatch(typeof(BatterySmartConfig), "CreateBuildingDef", new Type[] { })]
+                public class BatteryDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.SelfHeatKilowattsWhenActive = 1f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(BatterySmartConfig), "DoPostConfigureComplete")]
+                public class BatteryCapacityPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        var battery = go.AddOrGet<Battery>();
+                        battery.capacity = 10000f;
+                        battery.joulesLostPerSecond = battery.capacity * 0.02f / 600f;
                     }
                 }
             }

@@ -43,6 +43,18 @@
 	    * Energy output increased to 2.4kW
 		* Heat production reduced to 15 kDTU/s
 		* CO2 production increased to 1.25 kg/s
+	* Battery
+	    * Energy capacity increased to 50kJ
+		* Power runoff increased to 5kJ/cycle
+		* Heat production increased to 2.5 kDTU/s
+	* Large Battery
+	    * Energy capacity increased to 200kJ
+		* Power runoff increased to 10 kJ/cycle
+		* Heat production increased to 2.5 kDTU/s
+	* Smart Battery
+	    * Energy capacity increased to 100kJ
+		* Power runoff increased to 0.2kJ/cycle
+		* Heat production increased to 1kDTU/s
 
 * ## Food
     * Microbe Musher
