@@ -30,7 +30,9 @@
     * Coal Generator
 	    * Energy output increased to 1000W
     * Hydrogen Generator
-        * Heat production reduced to 400 DTU/s
+	    * Energy output increased to 1.4kW
+        * Heat production increased to 6 kDTU/s
+		* Produces 10 g/s PH2O
 
 * ## Food
     * Microbe Musher

@@ -140,12 +140,35 @@ namespace RealisticValues
             public class HydrogenGeneratorPatches
             {
                 [HarmonyPatch(typeof(HydrogenGeneratorConfig), "CreateBuildingDef")]
-                public class GeneratorHeatPatches
+                public class GeneratorDefPatches
                 {
                     public static void Postfix(ref BuildingDef __result)
                     {
-                        __result.ExhaustKilowattsWhenActive = 0.200f;
-                        __result.SelfHeatKilowattsWhenActive = 0.200f;
+
+                        //Hydrogen Generator: 1.4 kW, 6kDTU/s heat
+                        __result.GeneratorWattageRating = 1400f;
+                        __result.ExhaustKilowattsWhenActive = 3f;
+                        __result.SelfHeatKilowattsWhenActive = 3f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(HydrogenGeneratorConfig), "DoPostConfigureComplete")]
+                public class GeneratorOutputPatches
+                {
+                    public static void Postfix(GameObject go)
+                    {
+                        EnergyGenerator energyGenerator = go.AddOrGet<EnergyGenerator>();
+                        energyGenerator.formula = new EnergyGenerator.Formula
+                        {
+                            inputs = new EnergyGenerator.InputItem[]
+                            {
+                                new EnergyGenerator.InputItem(SimHashes.Hydrogen.CreateTag(), 0.1f, 2f)
+                            },
+                            outputs = new EnergyGenerator.OutputItem[]
+                            {
+                                new EnergyGenerator.OutputItem(SimHashes.DirtyWater, 0.01f, false, new CellOffset(0, 0), 0)
+                            }
+                        };
                     }
                 }
             }
