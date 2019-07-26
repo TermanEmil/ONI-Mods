@@ -65,6 +65,13 @@
   <ItemGroup>
     <None Include="Changes.MD" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomWireLib\CustomWireLib.csproj">
+      <Project>{21189f93-b9ad-4ba3-afe1-cfe48ea6c0c2}</Project>
+      <Name>CustomWireLib</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /F /R /Y /I $(TargetPath) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\</PostBuildEvent>

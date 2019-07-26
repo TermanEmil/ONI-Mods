@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using CustomWireLib;
 using Harmony;
 using UnityEngine;
 
@@ -113,6 +114,17 @@ namespace RealisticValues
 
         public class PowerBalances
         {
+            [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
+            public class AddWires
+            {
+                public static void Postfix()
+                {
+                    // Custom 100 kW wire
+                    CustomWireMaker.CreateWireWithRating(100000f);
+                    CustomWireValues.RegisterBuildings();
+                }
+            }
+
             public class CoalGeneratorPatches
             {
                 [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
