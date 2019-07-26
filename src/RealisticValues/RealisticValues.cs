@@ -188,6 +188,19 @@ namespace RealisticValues
                     }
                 }
             }
+
+            public class NaturalGasGeneratorPatches
+            {
+                [HarmonyPatch(typeof(MethaneGeneratorConfig), "CreateBuildingDef")]
+                public class GeneratorDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        // Natural Gas Generator: 2kW
+                        __result.GeneratorWattageRating = 2000f;
+                    }
+                }
+            }
         }
 
         public class FoodPatches

@@ -37,6 +37,8 @@
 	    * Energy output increased to 1.4kW
         * Heat production increased to 6 kDTU/s
 		* Produces 10 g/s Polluted Water
+	* Natural Gas Generator
+	    * Energy output increased to 2kW
 
 * ## Food
     * Microbe Musher
