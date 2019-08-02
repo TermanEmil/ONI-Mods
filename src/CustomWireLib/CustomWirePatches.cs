@@ -13,11 +13,9 @@ namespace CustomWireLib
         {
             public static void Postfix(Wire.WattageRating rating, ref float __result)
             {
-                if (__result == 0.0f)
-                {
-                    var r = CustomWireValues.GetWireRating((int) rating);
-                    __result = r != -1 ? r : (float)Wire.WattageRating.Max1000;
-                }
+                if (__result != 0.0f) return;
+                var r = CustomWireValues.GetWireRating((int) rating);
+                __result = r != -1 ? r : (float)Wire.WattageRating.Max1000;
             }
         }
 
@@ -49,10 +47,15 @@ namespace CustomWireLib
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
-                if (field != null)
-                    codes[56] = new CodeInstruction(OpCodes.Ldsfld, field);
-                else
-                    Console.WriteLine("An error occured fixing wire overloads.");
+                for (var i = 0; i < codes.Count; ++i)
+                {
+                    if (!codes[i].opcode.Equals(OpCodes.Ldloc_3)) continue;
+                    if (!codes[i + 1].opcode.Equals(OpCodes.Ldc_I4_5)) continue;
+                    // Found index count at i + 1
+                    codes[i + 1] = new CodeInstruction(OpCodes.Ldsfld, field);
+                    return codes;
+                }
+                Console.WriteLine("An error occured fixing wire overloads.");
                 return codes;
             }
         }
@@ -65,10 +68,15 @@ namespace CustomWireLib
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
-                if (field != null)
-                    codes[67] = new CodeInstruction(OpCodes.Ldsfld, field);
-                else
-                    Console.WriteLine("An error occured fixing wire resets.");
+                for (var i = 0; i < codes.Count; ++i)
+                {
+                    if (!codes[i].opcode.Equals(OpCodes.Ldloc_0)) continue;
+                    if (!codes[i + 1].opcode.Equals(OpCodes.Ldc_I4_5)) continue;
+                    // Found index count at i + 1
+                    codes[i + 1] = new CodeInstruction(OpCodes.Ldsfld, field);
+                    return codes;
+                }
+                Console.WriteLine("An error occured fixing wire resets.");
                 return codes;
             }
         }
