@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using STRINGS;
 using TUNING;
 using UnityEngine;
+using BUILDINGS = TUNING.BUILDINGS;
 
 namespace MoreCanisterFillersMod
 {
@@ -9,9 +11,11 @@ namespace MoreCanisterFillersMod
         public const string Id = "ConveyorBottleEmptier";
         public const string DisplayName = "Conveyor Loaded Canister Emptier";
         public const string Description = "";
-        public const string Effect = "";
 
         public const ConduitType EmptierConduitType = ConduitType.Solid;
+
+        public static readonly string Effect = "Unloads bottles from a " +
+                                               UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") + " into the world.";
 
         public override BuildingDef CreateBuildingDef()
         {

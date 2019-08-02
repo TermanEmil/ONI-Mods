@@ -1,15 +1,21 @@
 ﻿using System.Collections.Generic;
+using STRINGS;
 using TUNING;
 using UnityEngine;
+using BUILDINGS = TUNING.BUILDINGS;
 
 namespace MoreCanisterFillersMod
 {
     internal class ConveyorCanisterLoaderConfig : IBuildingConfig
     {
         public const string Id = "ConveyorBottleLoader";
-        public const string DisplayName = "Bottle Conveyor Loader";
+        public const string DisplayName = "Conveyor Canister Loader";
         public const string Description = "";
-        public const string Effect = "";
+
+        public static readonly string Effect = "Loads bottles onto " +
+                                               UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") +
+                                               " for transport.\n\nOnly loads the resources of your choosing.";
+
         public ConduitType LoaderConduitType = ConduitType.Solid;
 
         public override BuildingDef CreateBuildingDef()
