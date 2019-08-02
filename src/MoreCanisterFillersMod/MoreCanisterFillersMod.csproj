@@ -59,7 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConveyorBottleLoaderConfig.cs" />
+    <Compile Include="ConveyorCanisterLoaderConfig.cs" />
     <Compile Include="ConveyorLoadedCanisterEmptierConfig.cs" />
     <Compile Include="MoreCanisterFillers.cs" />
     <Compile Include="PipedLiquidBottler.cs" />
