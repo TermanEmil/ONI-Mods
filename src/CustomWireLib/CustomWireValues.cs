@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony;
 using STRINGS;
 using TUNING;
 using UnityEngine;
@@ -48,7 +47,7 @@ namespace CustomWireLib
         }
 
         // Call this to register all buildings created using the CustomWireMaker class.
-        public static void RegisterBuildings()
+        public static List<CustomWireMaker.CustomWire> RegisterBuildings()
         {
             foreach (var w in CustomWireMaker.CustomWires)
             {
@@ -57,10 +56,15 @@ namespace CustomWireLib
                 ModUtil.AddBuildingToPlanScreen("Power", w.Id);
                 // Register strings
                 Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.NAME", w.Rating + "W Wire");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.DESC", "Electrical wire is used to connect generators, batteries, and buildings.");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.EFFECT", "Connects buildings to " + UI.FormatAsLink("Power", "POWER") + " sources.\n\nCan be run through wall and floor tile.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.DESC",
+                    "Electrical wire is used to connect generators, batteries, and buildings.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.Id.ToUpperInvariant()}.EFFECT",
+                    "Connects buildings to " + UI.FormatAsLink("Power", "POWER") +
+                    " sources.\n\nCan be run through wall and floor tile.");
             }
+            var outList = CustomWireMaker.CustomWires;
             CustomWireMaker.CustomWires.Clear();
+            return outList;
         }
     }
 
