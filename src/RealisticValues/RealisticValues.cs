@@ -121,8 +121,18 @@ namespace RealisticValues
                 public static void Postfix()
                 {
                     // Custom 100 kW wire
-                    CustomWireMaker.CreateWireWithRating(100000f);
-                    CustomWireValues.RegisterBuildings();
+                    var w = CustomWireMaker.CreateWireWithRating(100000f);
+                    w.def.Mass = new[]
+                    {
+                        500f
+                    };
+                    var registered = CustomWireValues.RegisterBuildings();
+                    foreach (var d in registered)
+                    {
+                        Console.WriteLine(d);
+                        Console.WriteLine(d.def);
+                        Console.WriteLine(d.def.Mass[0]);
+                    }
                 }
             }
 
