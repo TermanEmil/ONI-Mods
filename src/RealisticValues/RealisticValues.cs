@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace RealisticValues
 {
-    class RealisticValues
+    public class RealisticValues
     {
         public class CarbonSkimmerBalances
         {
@@ -229,7 +229,7 @@ namespace RealisticValues
 
             public class SmallBatteryPatches
             {
-                [HarmonyPatch(typeof(BatteryConfig), "CreateBuildingDef", new Type[]{})]
+                [HarmonyPatch(typeof(BatteryConfig), "CreateBuildingDef", new Type[] { })]
                 public class BatteryDefPatches
                 {
                     public static void Postfix(ref BuildingDef __result)
@@ -613,7 +613,24 @@ namespace RealisticValues
                 {
                     var codes = new List<CodeInstruction>(instr);
                     // TODO: find the appropriate method and use that as an offset
-                    const int start = 101;
+                    var outputElementFieldInfo = AccessTools.Field(typeof(HandSanitizer), "outputElement");
+                    var start = -1;
+                    for (var i = 0; i < codes.Count; ++i)
+                    {
+                        if (!codes[i].opcode.Equals(OpCodes.Ldfld) ||
+                            !codes[i].operand.Equals(outputElementFieldInfo) ||
+                            !codes[i + 1].opcode.Equals(OpCodes.Ldloc_S) ||
+                            !codes[i].operand.Equals(6)) continue;
+
+                        start = i - 2;
+                    }
+
+                    if (start == -1)
+                    {
+                        Console.WriteLine("An error occured while patching sink values, index could not be found.");
+                        return codes;
+                    }
+
                     codes.Insert(start + 0, new CodeInstruction(OpCodes.Dup));
                     codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
                     codes.Insert(start + 2, new CodeInstruction(OpCodes.Ceq));
