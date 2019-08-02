@@ -74,45 +74,24 @@ namespace CustomWireLib
         // RegisterBuildings must be called to properly register all buildings.
         public static List<CustomWire> CustomWires = new List<CustomWire>();
 
-        public static BuildingDef GetBuildingDef(int index)
+        public static CustomWire CreateWireWithRating(int index)
         {
-            var r = CustomWireValues.GetWireRating(index);
-            if (r != -1f)
-            {
-                return GetBuildingDef(r);
-            }
-            Console.WriteLine("Error getting rating from index " + index);
-            return null;
+            return CreateWireWithRating(CustomWireValues.GetWireRating(index));
         }
 
-        public static BuildingDef GetBuildingDef(float rating)
-        {
-            foreach (var w in CustomWires)
-            {
-                if (w.Rating != rating) continue;
-                var traverse = (Dictionary<IBuildingConfig, BuildingDef>)Traverse.Create(BuildingConfigManager.Instance).Field("configTable").GetValue();
-                return traverse[w];
-            }
-            Console.WriteLine("Error finding wire with rating " + rating);
-            return null;
-        }
-
-        public static void CreateWireWithRating(int index)
-        {
-            CreateWireWithRating(CustomWireValues.GetWireRating(index));
-        }
-
-        public static void CreateWireWithRating(float rating)
+        public static CustomWire CreateWireWithRating(float rating)
         {
             var w = new CustomWire
             {
                 Rating = rating
             };
             CustomWires.Add(w);
+            return w;
         }
 
         public class CustomWire : BaseWireConfig
         {
+            public BuildingDef def;
             public float Rating;
             public string Id = "Wire";
             readonly string _anim = "utilities_electric_kanim";
@@ -128,7 +107,8 @@ namespace CustomWireLib
             {
                 Id = Rating + Id;
                 mass[0] = Math.Max(Rating / 50f, 25f);
-                return base.CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
+                this.def = base.CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
+                return this.def;
             }
 
             public override void DoPostConfigureComplete(GameObject go)
