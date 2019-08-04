@@ -89,10 +89,17 @@ namespace CustomWireLib
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
-                if (field != null)
-                    codes[35] = new CodeInstruction(OpCodes.Ldsfld, field);
-                else
-                    Console.WriteLine("An error occured fixing wire overloads in bridges.");
+                for (var i = 0; i < codes.Count; ++i)
+                {
+                    if (!codes[i].opcode.Equals(OpCodes.Newarr) || (bool)!codes[i].operand?.Equals(typeof(List<WireUtilityNetworkLink>))) continue;
+                    // Found index count at i - 1
+                    if (field != null)
+                        codes[i - 1] = new CodeInstruction(OpCodes.Ldsfld, field);
+                    else
+                        Console.WriteLine("An error occured fixing wire overloads in bridges.");
+                    return codes;
+                }
+                Console.WriteLine("An error occured fixing wire overloads in bridges.");
                 return codes;
             }
         }
