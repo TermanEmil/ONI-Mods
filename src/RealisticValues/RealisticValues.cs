@@ -622,17 +622,26 @@ namespace RealisticValues
                 public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
                 {
                     var codes = new List<CodeInstruction>(instr);
-                    // TODO: find the appropriate method and use that as an offset
                     var outputElementFieldInfo = AccessTools.Field(typeof(HandSanitizer), "outputElement");
                     var start = -1;
-                    for (var i = 0; i < codes.Count; ++i)
+                    for (var i = 0; i < codes.Count - 1; ++i)
                     {
-                        if (!codes[i].opcode.Equals(OpCodes.Ldfld) ||
-                            !codes[i].operand.Equals(outputElementFieldInfo) ||
-                            !codes[i + 1].opcode.Equals(OpCodes.Ldloc_S) ||
-                            !codes[i].operand.Equals(6)) continue;
+                        /*Console.WriteLine("i opcode: " + codes[i].opcode + " operand: " + codes[i].operand);
+                        Console.WriteLine("i + 1 opcode: " + codes[i + 1].opcode + " operand: " + codes[i + 1].operand);
+                        Console.WriteLine("code i target? " + (codes[i].opcode == OpCodes.Ldfld) + " " + (codes[i].operand == outputElementFieldInfo) + " " + (codes[i].operand as LocalBuilder)?.LocalIndex);
+                        Console.WriteLine("code i+1 target? " + (codes[i + 1].opcode == OpCodes.Ldloc_S) + " " + ((codes[i + 1].operand as LocalBuilder)?.LocalIndex == 5) + " " + (codes[i + 1].operand as LocalBuilder)?.LocalIndex);
+                        Console.WriteLine("Types: " + (codes[i].operand as LocalBuilder)?.LocalIndex.GetType() + " " + 5.GetType() + " Equal? " + ((codes[i].operand as LocalBuilder)?.LocalIndex.GetType() == 5.GetType()));
+                        */
+                        if (!(codes[i].opcode == OpCodes.Ldfld) ||
+                            !(codes[i].operand == outputElementFieldInfo) ||
+                            !(codes[i + 1].opcode == OpCodes.Ldloc_S) ||
+                            !((codes[i + 1].operand as LocalBuilder)?.LocalIndex == 5))
+                        {
+                            continue;
+                        }
 
-                        start = i - 2;
+                        start = i + 1;
+                        break;
                     }
 
                     if (start == -1)
@@ -645,10 +654,11 @@ namespace RealisticValues
                     codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
                     codes.Insert(start + 2, new CodeInstruction(OpCodes.Ceq));
                     codes.Insert(start + 3, new CodeInstruction(OpCodes.Brfalse, 0x0D));
-                    codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte) 6));
+                    codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte) 5));
                     codes.Insert(start + 5, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
                     codes.Insert(start + 6, new CodeInstruction(OpCodes.Mul));
                     codes.Insert(start + 7, new CodeInstruction(OpCodes.Br, 0x02));
+
                     return codes;
                 }
             }
