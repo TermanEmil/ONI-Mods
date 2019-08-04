@@ -127,12 +127,6 @@ namespace RealisticValues
                         500f
                     };
                     var registered = CustomWireValues.RegisterBuildings();
-                    foreach (var d in registered)
-                    {
-                        Console.WriteLine(d);
-                        Console.WriteLine(d.def);
-                        Console.WriteLine(d.def.Mass[0]);
-                    }
                 }
             }
 
