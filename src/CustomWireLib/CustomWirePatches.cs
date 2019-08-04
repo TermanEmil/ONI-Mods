@@ -97,17 +97,6 @@ namespace CustomWireLib
             }
         }
 
-        [HarmonyPatch(typeof(CircuitManager), "Rebuild")]
-        public class CircuitManagerRebuildLogging
-        {
-            public static void Prefix(CircuitManager __instance)
-            {
-                var trav = Traverse.Create(__instance);
-                var l = trav.Field("circuitInfo").GetValue();
-                Console.WriteLine(l);
-            }
-        }
-
         [HarmonyPatch(typeof(LegacyModMain), "LoadBuildings")]
         public class UnRegisterBaseWire
         {
