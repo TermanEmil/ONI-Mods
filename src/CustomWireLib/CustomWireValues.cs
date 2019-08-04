@@ -81,10 +81,7 @@ namespace CustomWireLib
 
         public static CustomWire CreateWireWithRating(float rating)
         {
-            var w = new CustomWire
-            {
-                Rating = rating
-            };
+            var w = new CustomWire(rating);
             CustomWires.Add(w);
             return w;
         }
@@ -93,22 +90,28 @@ namespace CustomWireLib
         {
             public BuildingDef def;
             public float Rating;
-            public string Id = "Wire";
+            public string Id;
             readonly string _anim = "utilities_electric_kanim";
-            float _constructionTime = 3f;
-            float[] mass = {
-                25f
-            };
+            private float _constructionTime = 3f;
+            public float[] mass;
 
             readonly float _insulation = 0.05f;
             readonly EffectorValues _noise = NOISE_POLLUTION.NONE;
 
+            public CustomWire(float rating)
+            {
+                Rating = rating;
+                Id = rating + "Wire";
+                mass = new[]
+                {
+                    Math.Max(rating / 50f, 25f)
+                };
+                def = CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
+            }
+
             public override BuildingDef CreateBuildingDef()
             {
-                Id = Rating + Id;
-                mass[0] = Math.Max(Rating / 50f, 25f);
-                this.def = base.CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
-                return this.def;
+                return def;
             }
 
             public override void DoPostConfigureComplete(GameObject go)
