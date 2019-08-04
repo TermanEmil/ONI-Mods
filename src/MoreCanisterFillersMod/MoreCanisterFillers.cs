@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System.Collections.Generic;
+using Harmony;
 using STRINGS;
 
 namespace MoreCanisterFillersMod
@@ -42,6 +43,17 @@ namespace MoreCanisterFillersMod
                 ModUtil.AddBuildingToPlanScreen("Plumbing", PipedLiquidBottlerConfig.Id);
                 ModUtil.AddBuildingToPlanScreen("Conveyance", ConveyorLoadedCanisterEmptierConfig.Id);
                 ModUtil.AddBuildingToPlanScreen("Conveyance", ConveyorCanisterLoaderConfig.Id);
+            }
+        }
+
+        [HarmonyPatch(typeof(Db), "Initialize")]
+        public static class Db_Initialize_Patch
+        {
+            public static void Prefix()
+            {
+                Database.Techs.TECH_GROUPING["LiquidPiping"] = new List<string>(Database.Techs.TECH_GROUPING["LiquidPiping"]) { PipedLiquidBottlerConfig.Id }.ToArray();
+                Database.Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Database.Techs.TECH_GROUPING["SolidTransport"]) { ConveyorCanisterLoaderConfig.Id }.ToArray();
+                Database.Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Database.Techs.TECH_GROUPING["SolidTransport"]) { ConveyorLoadedCanisterEmptierConfig.Id }.ToArray();
             }
         }
     }
