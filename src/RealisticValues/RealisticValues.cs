@@ -215,7 +215,7 @@ namespace RealisticValues
                     public static void Postfix(ref BuildingDef __result)
                     {
                         // Petroleum Generator: 2.4kW, 15 kDTU/s power
-                        __result.GeneratorWattageRating = 2.400f;
+                        __result.GeneratorWattageRating = 2400f;
                         __result.ExhaustKilowattsWhenActive = 3f;
                         __result.SelfHeatKilowattsWhenActive = 12f;
                     }
