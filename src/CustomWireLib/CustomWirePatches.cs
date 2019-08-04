@@ -90,7 +90,7 @@ namespace CustomWireLib
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 if (field != null)
-                    codes[38] = new CodeInstruction(OpCodes.Ldsfld, field);
+                    codes[35] = new CodeInstruction(OpCodes.Ldsfld, field);
                 else
                     Console.WriteLine("An error occured fixing wire overloads in bridges.");
                 return codes;
