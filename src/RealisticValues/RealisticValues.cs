@@ -231,6 +231,42 @@ namespace RealisticValues
                 }
             }
 
+            public class SolarGenPatches
+            {
+                [HarmonyPatch(typeof(SolarPanelConfig), nameof(SolarPanelConfig.CreateBuildingDef))]
+                public class SolarGenDefPatches
+                {
+                    public static void Postfix(ref BuildingDef __result)
+                    {
+                        __result.GeneratorWattageRating = 2000f;
+                    }
+                }
+
+                [HarmonyPatch(typeof(SolarPanel), nameof(SolarPanel.EnergySim200ms))]
+                public class SolarGenPowerPatches
+                {
+                    // Half light effeciency, 2kW max power
+                    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+                    {
+                        var codes = new List<CodeInstruction>(instructions);
+
+                        for (int i = 0; i < codes.Count; ++i)
+                        {
+                            var c = codes[i];
+                            if (c.opcode.Equals(OpCodes.Ldc_R4) && (bool)c.operand?.Equals(0.00053f))
+                            {
+                                c = new CodeInstruction(OpCodes.Ldc_R4, 0.00026f);
+                            } else if (c.opcode.Equals(OpCodes.Call) && (bool)c.operand?.Equals(typeof(Mathf).GetMethod("Clamp", new Type[]{typeof(float), typeof(float), typeof(float) })))
+                            {
+                                codes[i - 1].operand = 2000f;
+                            }
+                        }
+
+                        return codes;
+                    }
+                }
+            }
+
             public class SmallBatteryPatches
             {
                 [HarmonyPatch(typeof(BatteryConfig), "CreateBuildingDef", new Type[] { })]
