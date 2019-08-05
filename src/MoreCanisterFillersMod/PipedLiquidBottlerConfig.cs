@@ -24,7 +24,7 @@ namespace MoreCanisterFillersMod
                 BUILDINGS.DECOR.PENALTY.TIER1, NOISE_POLLUTION.NOISY.TIER0);
             buildingDef.InputConduitType = BottlerConduitType;
             buildingDef.Floodable = false;
-            buildingDef.ViewMode = OverlayModes.GasConduits.ID;
+            buildingDef.ViewMode = OverlayModes.LiquidConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.PermittedRotations = PermittedRotations.FlipH;
             buildingDef.UtilityInputOffset = new CellOffset(0, 0);
