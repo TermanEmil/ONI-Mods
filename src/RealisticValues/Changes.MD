@@ -2,6 +2,7 @@
 
 * ## Heat and Energy
     * Most buildings' heat outputs balanced to the energy input
+	* A 100kW wire was added to help move more power around
 
 * ## Water
     * Polluted water is created in a 1.3 to 1 ratio from water
@@ -43,6 +44,9 @@
 	    * Energy output increased to 2.4kW
 		* Heat production reduced to 15 kDTU/s
 		* CO2 production increased to 1.25 kg/s
+	* Solar Generator
+	    * Maximum energy output increased to 2kW
+		* Production rate based on light levels halved
 	* Battery
 	    * Energy capacity increased to 50kJ
 		* Power runoff increased to 5kJ/cycle
