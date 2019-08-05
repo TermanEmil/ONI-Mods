@@ -620,12 +620,6 @@ namespace RealisticValues
                     var start = -1;
                     for (var i = 0; i < codes.Count - 1; ++i)
                     {
-                        /*Console.WriteLine("i opcode: " + codes[i].opcode + " operand: " + codes[i].operand);
-                        Console.WriteLine("i + 1 opcode: " + codes[i + 1].opcode + " operand: " + codes[i + 1].operand);
-                        Console.WriteLine("code i target? " + (codes[i].opcode == OpCodes.Ldfld) + " " + (codes[i].operand == outputElementFieldInfo) + " " + (codes[i].operand as LocalBuilder)?.LocalIndex);
-                        Console.WriteLine("code i+1 target? " + (codes[i + 1].opcode == OpCodes.Ldloc_S) + " " + ((codes[i + 1].operand as LocalBuilder)?.LocalIndex == 5) + " " + (codes[i + 1].operand as LocalBuilder)?.LocalIndex);
-                        Console.WriteLine("Types: " + (codes[i].operand as LocalBuilder)?.LocalIndex.GetType() + " " + 5.GetType() + " Equal? " + ((codes[i].operand as LocalBuilder)?.LocalIndex.GetType() == 5.GetType()));
-                        */
                         if (!(codes[i].opcode == OpCodes.Ldfld) ||
                             !(codes[i].operand == outputElementFieldInfo) ||
                             !(codes[i + 1].opcode == OpCodes.Ldloc_S) ||
