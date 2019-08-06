@@ -1,11 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Harmony;
 using STRINGS;
+using TUNING;
 
 namespace MoreCanisterFillersMod
 {
     public class MoreCanisterFillers
     {
+        // Allows the Transfer Arm to pick up liquids and gasses
+        [HarmonyPatch(typeof(SolidTransferArm), MethodType.Constructor)]
+        public class TransferArmFix
+        {
+            public static void Postfix(ref SolidTransferArm __instance)
+            {
+                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD).Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray<Tag>());
+            }
+        }
+
         [HarmonyPatch(typeof(GeneratedBuildings), nameof(GeneratedBuildings.LoadGeneratedBuildings))]
         public static class RegisterBuildings
         {
