@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Reflection;
 using System.Text;
-using Newtonsoft.Json;
 using Harmony;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace HeavyBreathing
 {
-    class HeavyBreathing
+    internal class HeavyBreathing
     {
         [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]
         public class SplashMessageScreenOnPrefabInitPatches
@@ -58,10 +58,10 @@ namespace HeavyBreathing
 
         public class ConfigReader
         {
-            public float EmitAmount;
-
             public static string Path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                         "/config.json";
+
+            public float EmitAmount;
 
             public ConfigReader()
             {
