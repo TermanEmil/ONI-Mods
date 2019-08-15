@@ -1,4 +1,6 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
+using STRINGS;
 
 namespace MassBasedDigging
 {
@@ -7,7 +9,7 @@ namespace MassBasedDigging
     {
         public static void Postfix(ref Workable __instance, ref float __result)
         {
-            __result *= 1800 / Grid.Mass[Grid.PosToCell(__instance)];
+            if (__instance is Diggable) __result *= 1800 / Grid.Mass[Grid.PosToCell(__instance)];
         }
     }
 }
