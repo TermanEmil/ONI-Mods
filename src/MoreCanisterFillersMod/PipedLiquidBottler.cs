@@ -1,21 +1,53 @@
-﻿namespace MoreCanisterFillersMod
+﻿using UnityEngine;
+
+namespace MoreCanisterFillersMod
 {
     public class PipedLiquidBottler : Workable
     {
+        public bool AutoDropBottles;
         public Controller.Instance Smi;
         public Storage Storage;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            this.Smi = new Controller.Instance(this);
-            this.Smi.StartSM();
+            Subscribe((int) GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+            Subscribe((int) GameHashes.OnStorageChange, StorageChanged);
+            Smi = new Controller.Instance(this);
+            Smi.StartSM();
         }
 
         protected override void OnCleanUp()
         {
-            Smi?.StopSM(nameof(OnCleanUp));    
+            Smi?.StopSM(nameof(OnCleanUp));
             base.OnCleanUp();
+        }
+
+        public void StorageChanged(object data)
+        {
+            if (!AutoDropBottles) return;
+            var storage = GetComponent<Storage>();
+            if ((data as GameObject)?.GetComponent<Pickupable>().TotalAmount >= storage.capacityKg - 0.01)
+                storage.DropAll();
+        }
+
+        public void OnRefreshUserMenu(object _)
+        {
+            var autoDroppingStr = AutoDropBottles ? "Disable Auto-Drop" : "Enable Auto-Drop";
+            var autoDroppingTooltip = AutoDropBottles
+                ? "Disable this building from dropping bottles when full"
+                : "Enable this building to drop bottles when full";
+            var buttonInfo = new KIconButtonMenu.ButtonInfo("action_building_disabled", autoDroppingStr,
+                OnChangeAutoDropBottles,
+                Action.NumActions, null, null, null, autoDroppingTooltip);
+            Game.Instance.userMenu.AddButton(gameObject, buttonInfo);
+        }
+
+        private void OnChangeAutoDropBottles()
+        {
+            AutoDropBottles = !AutoDropBottles;
+            if (AutoDropBottles) GetComponent<Storage>().DropAll();
+            Smi.MakeUnoperational();
         }
 
         public class Controller : GameStateMachine<Controller, Controller.Instance, PipedLiquidBottler>
@@ -51,6 +83,11 @@
             {
                 public Instance(PipedLiquidBottler master) : base(master)
                 {
+                }
+
+                public void MakeUnoperational()
+                {
+                    GoTo(sm.defaultState);
                 }
             }
         }
