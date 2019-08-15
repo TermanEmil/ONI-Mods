@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Database;
 using Harmony;
 using STRINGS;
 using TUNING;
@@ -14,7 +15,8 @@ namespace MoreCanisterFillersMod
         {
             public static void Postfix(ref SolidTransferArm __instance)
             {
-                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD).Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray<Tag>());
+                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
+                    .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
             }
         }
 
@@ -63,9 +65,12 @@ namespace MoreCanisterFillersMod
         {
             public static void Prefix()
             {
-                Database.Techs.TECH_GROUPING["LiquidPiping"] = new List<string>(Database.Techs.TECH_GROUPING["LiquidPiping"]) { PipedLiquidBottlerConfig.Id }.ToArray();
-                Database.Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Database.Techs.TECH_GROUPING["SolidTransport"]) { ConveyorCanisterLoaderConfig.Id }.ToArray();
-                Database.Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Database.Techs.TECH_GROUPING["SolidTransport"]) { ConveyorLoadedCanisterEmptierConfig.Id }.ToArray();
+                Techs.TECH_GROUPING["LiquidPiping"] = new List<string>(Techs.TECH_GROUPING["LiquidPiping"])
+                    {PipedLiquidBottlerConfig.Id}.ToArray();
+                Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Techs.TECH_GROUPING["SolidTransport"])
+                    {ConveyorCanisterLoaderConfig.Id}.ToArray();
+                Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Techs.TECH_GROUPING["SolidTransport"])
+                    {ConveyorLoadedCanisterEmptierConfig.Id}.ToArray();
             }
         }
     }
