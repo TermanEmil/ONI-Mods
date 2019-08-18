@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreathTraitsAffectBreathing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infinispeed", "src\Infinispeed\Infinispeed.csproj", "{BF4D5ABD-55E5-412B-940D-66EB5F1B437A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackOfAllTrades", "JackOfAllTrades\JackOfAllTrades.csproj", "{72A06C8C-12A2-48C7-A475-3142135083DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{BF4D5ABD-55E5-412B-940D-66EB5F1B437A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF4D5ABD-55E5-412B-940D-66EB5F1B437A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4D5ABD-55E5-412B-940D-66EB5F1B437A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A06C8C-12A2-48C7-A475-3142135083DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A06C8C-12A2-48C7-A475-3142135083DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A06C8C-12A2-48C7-A475-3142135083DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A06C8C-12A2-48C7-A475-3142135083DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
