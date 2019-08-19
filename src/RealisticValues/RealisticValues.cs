@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
-using Console = System.Console;
 
 // ReSharper disable InconsistentNaming
 
@@ -21,15 +19,14 @@ namespace RealisticValues
                 // TODO: find the appropriate method and use that as an offset
                 var start = 101;
                 codes.Insert(start + 0, new CodeInstruction(OpCodes.Dup));
-                codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int)SimHashes.DirtyWater));
+                codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
                 codes.Insert(start + 2, new CodeInstruction(OpCodes.Ceq));
                 codes.Insert(start + 3, new CodeInstruction(OpCodes.Brfalse, 0x0D));
-                codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte)6));
+                codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte) 6));
                 codes.Insert(start + 5, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
                 codes.Insert(start + 6, new CodeInstruction(OpCodes.Mul));
                 codes.Insert(start + 7, new CodeInstruction(OpCodes.Br, 0x02));
                 return codes;
-                
             }
         }
 
@@ -467,7 +464,6 @@ namespace RealisticValues
         {
             public class SinkOutputsPatch
             {
-
             }
 
             [HarmonyPatch(typeof(ApothecaryConfig), "CreateBuildingDef")]

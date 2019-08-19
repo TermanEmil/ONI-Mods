@@ -23,9 +23,7 @@ namespace JackOfAllTrades
 
                 pointsLeft -= increase;
                 foreach (var l in __instance.StartingLevels)
-                {
                     Console.WriteLine("StartingLevels: " + l.Key + " " + l.Value);
-                }
                 foreach (var attribute in keyValuePair.Key.relevantAttributes)
                 {
                     Console.WriteLine(attribute);
@@ -42,7 +40,7 @@ namespace JackOfAllTrades
     {
         public static void Postfix(CharacterContainer __instance, Transform ___attributeLabelAptitude)
         {
-            Console.WriteLine(__instance.attributeLabelAptitude.gameObject);
+            Console.WriteLine(___attributeLabelAptitude.gameObject);
         }
     }
 }

@@ -6,7 +6,7 @@ using Harmony;
 
 namespace CustomWireLib
 {
-    class CustomWirePatches
+    internal class CustomWirePatches
     {
         [HarmonyPatch(typeof(Wire), "GetMaxWattageAsFloat")]
         public class WireWattageSwitchPatch
@@ -16,7 +16,7 @@ namespace CustomWireLib
                 if (__result == 0.0f)
                 {
                     var r = CustomWireValues.GetWireRating((int) rating);
-                    __result = r != -1 ? r : (float)Wire.WattageRating.Max1000;
+                    __result = r != -1 ? r : (float) Wire.WattageRating.Max1000;
                 }
             }
         }
@@ -28,6 +28,7 @@ namespace CustomWireLib
             {
                 CustomWireValues.GetAndUpdateWireCount();
             }
+
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
                 var field = typeof(CustomWireValues).GetField("newWireCount",
@@ -98,6 +99,4 @@ namespace CustomWireLib
             }
         }
     }
-
-    
 }

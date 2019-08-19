@@ -1,6 +1,4 @@
-﻿using System;
-using Harmony;
-using STRINGS;
+﻿using Harmony;
 
 namespace MassBasedDigging
 {

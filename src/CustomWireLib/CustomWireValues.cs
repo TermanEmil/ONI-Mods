@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using STRINGS;
-using TUNING;
-using UnityEngine;
 
 namespace CustomWireLib
 {
-    class CustomWireValues
+    internal class CustomWireValues
     {
-        private static Dictionary<int, float> AdditionalWireValues = new Dictionary<int, float>();
+        private static readonly Dictionary<int, float> AdditionalWireValues = new Dictionary<int, float>();
 
-        private static Dictionary<float, int> InvAdditionalWireValues = new Dictionary<float, int>();
+        private static readonly Dictionary<float, int> InvAdditionalWireValues = new Dictionary<float, int>();
 
         private static int newWireCount = (int) Wire.WattageRating.NumRatings;
 
-        public static int GetAndUpdateWireCount ()
+        public static int GetAndUpdateWireCount()
         {
             newWireCount = (int) Wire.WattageRating.NumRatings + AdditionalWireValues.Count + 1;
             return newWireCount;
@@ -55,13 +52,16 @@ namespace CustomWireLib
                 ModUtil.AddBuildingToPlanScreen("Power", w.id);
                 // Register strings
                 Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.NAME", w.rating + "W Wire");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.DESC", "Electrical wire is used to connect generators, batteries, and buildings.");
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.EFFECT", "Connects buildings to " + UI.FormatAsLink("Power", "POWER") + " sources.\n\nCan be run through wall and floor tile.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.DESC",
+                    "Electrical wire is used to connect generators, batteries, and buildings.");
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{w.id.ToUpperInvariant()}.EFFECT",
+                    "Connects buildings to " + UI.FormatAsLink("Power", "POWER") +
+                    " sources.\n\nCan be run through wall and floor tile.");
             }
         }
     }
 
-    class CustomWireMaker
+    internal class CustomWireMaker
     {
         // Any calls here should be made **AFTER** (or in a postfix of) GeneratedBuildings.LoadGeneratedBuildings.
         // RegisterBuildings must be called to properly register all buildings.
@@ -83,27 +83,31 @@ namespace CustomWireLib
 
         public class CustomWire : BaseWireConfig
         {
-            public float rating = 0;
+            private readonly string anim = "utilities_electric_kanim";
+            private readonly float construction_time = 3f;
             public string id = "Wire";
-            string anim = "utilities_electric_kanim";
-            float construction_time = 3f;
-            float[] mass = new float[]
+            private readonly float insulation = 0.05f;
+
+            private readonly float[] mass =
             {
                 25f
             };
-            float insulation = 0.05f;
-            EffectorValues noise = NOISE_POLLUTION.NONE;
+
+            private readonly EffectorValues noise = NOISE_POLLUTION.NONE;
+            public float rating;
 
             public override BuildingDef CreateBuildingDef()
             {
                 id = rating + id;
                 mass[0] = Math.Max(rating / 50f, 25f);
-                return base.CreateBuildingDef(id, anim, construction_time, mass, insulation, TUNING.BUILDINGS.DECOR.PENALTY.TIER0, noise);
+                return base.CreateBuildingDef(id, anim, construction_time, mass, insulation,
+                    TUNING.BUILDINGS.DECOR.PENALTY.TIER0, noise);
             }
 
             public override void DoPostConfigureComplete(GameObject go)
             {
-                base.DoPostConfigureComplete((Wire.WattageRating)CustomWireValues.AddOrGetWireWattageIndex(rating), go);
+                base.DoPostConfigureComplete((Wire.WattageRating) CustomWireValues.AddOrGetWireWattageIndex(rating),
+                    go);
             }
         }
     }
