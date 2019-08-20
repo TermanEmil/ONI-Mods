@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackOfAllTrades", "src\Jack
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllJoules", "src\AllJoules\AllJoules.csproj", "{4AC12CAB-F9F6-4515-83CA-234A9761A369}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diode", "src\Diode\Diode.csproj", "{A427411C-0787-4DEF-8C9B-A2E09719C6DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{4AC12CAB-F9F6-4515-83CA-234A9761A369}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AC12CAB-F9F6-4515-83CA-234A9761A369}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AC12CAB-F9F6-4515-83CA-234A9761A369}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A427411C-0787-4DEF-8C9B-A2E09719C6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A427411C-0787-4DEF-8C9B-A2E09719C6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A427411C-0787-4DEF-8C9B-A2E09719C6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A427411C-0787-4DEF-8C9B-A2E09719C6DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
