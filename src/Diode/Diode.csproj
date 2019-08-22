@@ -31,7 +31,7 @@
     <OutputPath>..\..\Mods\Diode\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -48,13 +48,9 @@
     </Reference>
     <Reference Include="CaiLib">
       <HintPath>..\..\lib\CaiLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
@@ -70,11 +66,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ILMergeConsolePath) /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
+    <PostBuildEvent>$(ILMergeConsolePath) /lib:$(SolutionDir)/lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
 
 echo F | xcopy /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(TargetName).dll"
 
-xcopy /F /R /Y /I $(TargetPath) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\</PostBuildEvent>
+xcopy /F /R /Y /I $(TargetPath) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+
+del $(OutDir)$(TargetName)-merged*</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -18,7 +18,7 @@ namespace Diode
             var constructionMaterials = MATERIALS.REFINED_METALS;
             var meltingPoint = 1600f;
             var buildLocationRule = BuildLocationRule.Anywhere;
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 1, 2, _anim, hitpoints, constructionTime,
+            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 2, 1, _anim, hitpoints, constructionTime,
                 BUILDINGS.CONSTRUCTION_MASS_KG.TIER1, constructionMaterials, meltingPoint, buildLocationRule, BUILDINGS.DECOR.PENALTY.TIER0, NOISE_POLLUTION.NOISY.TIER1);
             buildingDef.Floodable = false;
             buildingDef.RequiresPowerInput = true;
