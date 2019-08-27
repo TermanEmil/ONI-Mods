@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diode", "src\Diode\Diode.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignableShowers", "src\AssignableShowers\AssignableShowers.csproj", "{7D6B9CA6-2E0A-4CCA-8258-1E9CFC9A97FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldCritterWrangler", "src\OldCritterWrangler\OldCritterWrangler.csproj", "{739C76C5-3A34-4D44-8236-EC5E4B443C7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7D6B9CA6-2E0A-4CCA-8258-1E9CFC9A97FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D6B9CA6-2E0A-4CCA-8258-1E9CFC9A97FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D6B9CA6-2E0A-4CCA-8258-1E9CFC9A97FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739C76C5-3A34-4D44-8236-EC5E4B443C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739C76C5-3A34-4D44-8236-EC5E4B443C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739C76C5-3A34-4D44-8236-EC5E4B443C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739C76C5-3A34-4D44-8236-EC5E4B443C7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
