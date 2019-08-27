@@ -9,7 +9,7 @@ namespace Diode
         public const string DisplayName = "Diode";
         public const string Description = "Diodes separate circuits and transfer power in one direction";
         public const string Effect = "TODO";
-        private readonly string _anim = "valvegas_logic_kanim";
+        private readonly string _anim = "diode_kanim";
 
         public override BuildingDef CreateBuildingDef()
         {
