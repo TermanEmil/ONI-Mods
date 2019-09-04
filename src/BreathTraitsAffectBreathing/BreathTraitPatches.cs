@@ -16,6 +16,9 @@ namespace BreathTraitsAffectBreathing
             else if (minionIdentity.GetComponent<Traits>().HasTrait("MouthBreather"))
                 __instance.holdingbreath = new AttributeModifier(Db.Get().Amounts.Breath.deltaAttribute.Id, -1.8181818f,
                     DUPLICANTS.MODIFIERS.HOLDINGBREATH.NAME);
+            else if (minionIdentity.GetComponent<Traits>().HasTrait("DeeperDiversLungs"))
+                __instance.holdingbreath = new AttributeModifier(Db.Get().Amounts.Breath.deltaAttribute.Id, -0.454545f,
+                    DUPLICANTS.MODIFIERS.HOLDINGBREATH.NAME);
         }
     }
 }
