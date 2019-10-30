@@ -37,12 +37,16 @@ namespace ShinebugReactor
             buildingDef.ViewMode = OverlayModes.Power.ID;
             buildingDef.GeneratorWattageRating = 1250f;
             buildingDef.GeneratorBaseCapacity = buildingDef.GeneratorWattageRating;
+            buildingDef.UtilityInputOffset = new CellOffset(-4, 1);
+            buildingDef.InputConduitType = ConduitType.Solid;
 
             return buildingDef;
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
+            var storage = go.AddOrGet<Storage>();
+            storage.showInUI = true;
             var reactor = go.AddOrGet<ShinebugReactor>();
         }
     }

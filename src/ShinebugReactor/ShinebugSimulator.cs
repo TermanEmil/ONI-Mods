@@ -4,6 +4,7 @@
     {
         public float Age;
         public bool IsDying;
+        public bool IsBaby;
         public float Lux;
         public float MaxAge;
 
@@ -36,7 +37,13 @@
 
             IsDying = true;
             Lux = 0;
+            Debug.Log($"Killing {this}");
             return false;
+        }
+
+        public override string ToString()
+        {
+            return $"(FakeShinebug) {Age}s/{MaxAge}s {Lux} Lux";
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ShinebugReactor
         {
             base.OnSpawn();
             Subscribe(824508782, OnActiveChanged);
-            Shinebugs.Add(new ShinebugSimulator(0, 10, 99999f));
+            Shinebugs.Add(new ShinebugSimulator(0f, 5.0f, 999999999f));
             _accumulator = Game.Instance.accumulators.Add("Element", this);
             // Meter controller
         }
@@ -35,28 +35,27 @@ namespace ShinebugReactor
             if (!operational.IsOperational)
                 return;
 
-            var result = 0.0;
+            var joulesPerS = 0.0f;
             Debug.Log($"Reactor has {Shinebugs.Count} shinebugs");
             for (var i = 0; i < Shinebugs.Count; i++)
             {
                 var shinebug = Shinebugs[i];
-                if (!shinebug.Simulate(dt * 1000)) Shinebugs.Remove(shinebug);
-
-                result += shinebug.Lux * 0.0015f;
+                Debug.Log(shinebug);
+                joulesPerS += shinebug.Lux * 0.0015f;
+                if (!shinebug.Simulate(dt)) Shinebugs.Remove(shinebug);
             }
 
-            Debug.Log($"Total j/s is {result}");
-
-            var joulesPerS = (float) result;
-            operational.SetActive(joulesPerS > 0.0);
+            Debug.Log($"Total j/s is {joulesPerS}");
             joulesPerS = Mathf.Clamp(joulesPerS, 0.0f, 1200.0f);
-            Debug.Log($"Generation capped to {joulesPerS}");
 
+            operational.SetActive(joulesPerS > 0.0);
             Game.Instance.accumulators.Accumulate(_accumulator, joulesPerS * dt);
+
             if (joulesPerS > 0.0)
             {
-                GenerateJoules(Mathf.Max(joulesPerS * dt, 1f * dt));
-                Debug.Log($"Generating {joulesPerS * dt}");
+                var toGen = joulesPerS * dt;
+                GenerateJoules(Mathf.Max(toGen, dt));
+                Debug.Log($"Generating {toGen} over {dt} seconds");
             }
 
             UpdateStatusItem();
