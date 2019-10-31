@@ -22,7 +22,7 @@ namespace ShinebugReactor
                 Id,
                 10,
                 5,
-                "solar_panel_kanim",
+                "shinebug_reactor_kanim",
                 BUILDINGS.HITPOINTS.TIER4,
                 BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                 new[] {500f, 1500f, 750f},
@@ -47,6 +47,7 @@ namespace ShinebugReactor
         {
             var storage = go.AddOrGet<Storage>();
             storage.showInUI = true;
+            go.AddOrGet<SolidConduitConsumer>();
             var reactor = go.AddOrGet<ShinebugReactor>();
         }
     }

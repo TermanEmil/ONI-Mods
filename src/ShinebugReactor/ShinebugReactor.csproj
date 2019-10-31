@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShinebugEggSimulator.cs" />
     <Compile Include="ShinebugReactor.cs" />
     <Compile Include="ShinebugReactorConfig.cs" />
     <Compile Include="ShinebugReactorPatches.cs" />

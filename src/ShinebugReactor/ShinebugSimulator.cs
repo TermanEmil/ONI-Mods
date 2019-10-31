@@ -26,7 +26,7 @@
         }
 
         public ShinebugSimulator(int age = 0, int maxAge = 0, float lux = 0.0f) :
-            this(age * 600000f, maxAge * 600000f, lux)
+            this(age * 600f, maxAge * 600f, lux)
         {
         }
 
@@ -37,7 +37,7 @@
 
             IsDying = true;
             Lux = 0;
-            Debug.Log($"Killing {this}");
+            //Debug.Log($"Killing {this}");
             return false;
         }
 
