@@ -2,26 +2,17 @@
 {
     internal class ShinebugSimulator
     {
-        public float Age;
-        public bool IsDying;
-        public bool IsBaby;
+        private float _maxAge;
+        private float _age;
         public float Lux;
-        public float MaxAge;
 
         public ShinebugSimulator(float age = 0, float maxAge = 0, float lux = 0)
         {
             if (maxAge <= 0)
-            {
                 Debug.LogWarning("[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age.");
-                IsDying = true;
-            }
-            else
-            {
-                IsDying = false;
-            }
 
-            Age = age;
-            MaxAge = maxAge;
+            _age = age;
+            _maxAge = maxAge;
             Lux = lux;
         }
 
@@ -32,10 +23,9 @@
 
         public bool Simulate(float dt)
         {
-            Age += dt;
-            if (!(Age >= MaxAge)) return true;
+            _age += dt;
+            if (!(_age >= _maxAge)) return true;
 
-            IsDying = true;
             Lux = 0;
             //Debug.Log($"Killing {this}");
             return false;
@@ -43,7 +33,7 @@
 
         public override string ToString()
         {
-            return $"(FakeShinebug) {Age}s/{MaxAge}s {Lux} Lux";
+            return $"(FakeShinebug) {_age}s/{_maxAge}s {Lux} Lux";
         }
     }
 }

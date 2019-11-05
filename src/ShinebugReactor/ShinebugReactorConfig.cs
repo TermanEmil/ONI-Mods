@@ -12,7 +12,7 @@ namespace ShinebugReactor
         public const string DisplayName = "Shinebug Reactor";
         public const string Description = "";
 
-        public static string Effect =
+        public static readonly string Effect =
             $"Stores {CREATURES.SPECIES.LIGHTBUG.NAME} and generates {UI.PRE_KEYWORD} Power + {UI.PST_KEYWORD} passively using their light";
 
 
@@ -48,7 +48,7 @@ namespace ShinebugReactor
             var storage = go.AddOrGet<Storage>();
             storage.showInUI = true;
             go.AddOrGet<SolidConduitConsumer>();
-            var reactor = go.AddOrGet<ShinebugReactor>();
+            go.AddOrGet<ShinebugReactor>();
         }
     }
 }

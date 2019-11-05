@@ -82,6 +82,7 @@
 
 echo F | xcopy /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(TargetName).dll"
 
+xcopy /F /R /Y /I /S $(SolutionDir)\Assets\$(ProjectName) $(OutDir)
 xcopy /F /R /Y /I $(TargetPath) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
 
 del $(OutDir)$(TargetName)-merged*</PostBuildEvent>

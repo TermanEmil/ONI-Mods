@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using STRINGS;
-
-namespace ShinebugReactor
+﻿namespace ShinebugReactor
 {
-    class ShinebugEggSimulator
+    internal class ShinebugEggSimulator
     {
-        public float TimeToHatch;
         public float GrownLifeTime;
         public float LuxToGive;
+        private float _timeToHatch;
 
         public ShinebugEggSimulator(float timeToHatch = 0, float grownLifeTime = 0, float lux = 0)
         {
             if (grownLifeTime <= 0)
-            {
-                Debug.LogWarning("[Shinebug Reactor] Shinebug egg simulator was provided a zero or negative max timeToHatch.");
-            }
+                Debug.LogWarning(
+                    "[Shinebug Reactor] Shinebug egg simulator was provided a zero or negative max timeToHatch.");
 
-            TimeToHatch = timeToHatch;
+            _timeToHatch = timeToHatch;
             GrownLifeTime = grownLifeTime;
             LuxToGive = lux;
         }
@@ -31,16 +24,15 @@ namespace ShinebugReactor
 
         public bool Simulate(float dt)
         {
-            TimeToHatch -= dt;
-            if (!(TimeToHatch < 0)) return false;
+            _timeToHatch -= dt;
+            return _timeToHatch < 0;
 
             //Debug.Log($"Hatching {this}");
-            return true;
         }
 
         public override string ToString()
         {
-            return $"(FakeShinebugEgg) {TimeToHatch}s left, will give {LuxToGive} Lux for {GrownLifeTime}s";
+            return $"(FakeShinebugEgg) {_timeToHatch}s left, will give {LuxToGive} Lux for {GrownLifeTime}s";
         }
     }
 }
