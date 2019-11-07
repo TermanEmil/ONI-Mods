@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using STRINGS;
 using TUNING;
 using UnityEngine;
@@ -9,15 +10,15 @@ namespace CustomWireLib
 {
     public class CustomWireValues
     {
-        private static Dictionary<int, float> _additionalWireValues = new Dictionary<int, float>();
+        private static readonly Dictionary<int, float> AdditionalWireValues = new Dictionary<int, float>();
 
-        private static Dictionary<float, int> _invAdditionalWireValues = new Dictionary<float, int>();
+        private static readonly Dictionary<float, int> InvAdditionalWireValues = new Dictionary<float, int>();
 
         private static int _newWireCount = (int) Wire.WattageRating.NumRatings;
 
-        public static int GetAndUpdateWireCount ()
+        public static int GetAndUpdateWireCount()
         {
-            _newWireCount = (int) Wire.WattageRating.NumRatings + _additionalWireValues.Count + 1;
+            _newWireCount = (int) Wire.WattageRating.NumRatings + AdditionalWireValues.Count + 1;
             return _newWireCount;
         }
 
@@ -27,15 +28,15 @@ namespace CustomWireLib
             var i = GetAndUpdateWireCount();
             try
             {
-                _invAdditionalWireValues.Add(rating, i);
-                _additionalWireValues.Add(i, rating);
+                InvAdditionalWireValues.Add(rating, i);
+                AdditionalWireValues.Add(i, rating);
                 Console.WriteLine("Added new rating of " + rating + "W at index " + i);
                 return i;
             }
             catch (ArgumentException)
             {
                 // Get the index from the value and give that to the user
-                i = _invAdditionalWireValues[rating];
+                i = InvAdditionalWireValues[rating];
                 Console.WriteLine("A wire with wattage " + rating + " already exists with index " + i);
                 return i;
             }
@@ -43,11 +44,11 @@ namespace CustomWireLib
 
         public static float GetWireRating(int index)
         {
-            return _additionalWireValues.TryGetValue(index, out var val) ? val : -1f;
+            return AdditionalWireValues.TryGetValue(index, out var val) ? val : -1f;
         }
 
-        // Call this to register all buildings created using the CustomWireMaker class.
-        public static List<CustomWireMaker.CustomWire> RegisterBuildings()
+
+        public static void RegisterBuildings()
         {
             foreach (var w in CustomWireMaker.CustomWires)
             {
@@ -62,17 +63,15 @@ namespace CustomWireLib
                     "Connects buildings to " + UI.FormatAsLink("Power", "POWER") +
                     " sources.\n\nCan be run through wall and floor tile.");
             }
-            var outList = CustomWireMaker.CustomWires;
+
             CustomWireMaker.CustomWires.Clear();
-            return outList;
         }
     }
 
     public class CustomWireMaker
     {
-        // Any calls here should be made **AFTER** (or in a postfix of) GeneratedBuildings.LoadGeneratedBuildings.
-        // RegisterBuildings must be called to properly register all buildings.
-        public static List<CustomWire> CustomWires = new List<CustomWire>();
+        //Should register wire types OnLoad or before buildings are processed.
+        public static readonly List<CustomWire> CustomWires = new List<CustomWire>();
 
         public static CustomWire CreateWireWithRating(int index)
         {
@@ -86,37 +85,48 @@ namespace CustomWireLib
             return w;
         }
 
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
+        [SuppressMessage("ReSharper", "ConvertToConstant.Global")]
         public class CustomWire : BaseWireConfig
         {
-            public BuildingDef def;
-            public float Rating;
-            public string Id;
-            readonly string _anim = "utilities_electric_kanim";
-            private float _constructionTime = 3f;
-            public float[] mass;
+            // To change the anim, set this property on the instance, don't manually set things
+            public string Anim = "utilities_electric_insulated_kanim";
 
-            readonly float _insulation = 0.05f;
-            readonly EffectorValues _noise = NOISE_POLLUTION.NONE;
+            public float ConstructionTime = 3f;
+            public BuildingDef Def;
+            public string Id;
+            public float Insulation = 0.05f;
+            public float[] Mass;
+            public EffectorValues Noise = NOISE_POLLUTION.NONE;
+            public float Rating;
 
             public CustomWire(float rating)
             {
                 Rating = rating;
                 Id = rating + "Wire";
-                mass = new[]
+                Mass = new[]
                 {
                     Math.Max(rating / 50f, 25f)
                 };
-                def = CreateBuildingDef(Id, _anim, _constructionTime, mass, _insulation, BUILDINGS.DECOR.PENALTY.TIER0, _noise);
+                // anim is empty here because this is too early to load animations.
+                // The animation is set in CreateBuildingDef when the animations are loaded.
+                Def = CreateBuildingDef(Id, "", ConstructionTime, Mass, Insulation, BUILDINGS.DECOR.PENALTY.TIER0,
+                    Noise);
             }
 
             public override BuildingDef CreateBuildingDef()
             {
-                return def;
+                Def.AnimFiles = new[]
+                {
+                    Assets.GetAnim(Anim)
+                };
+                return Def;
             }
 
             public override void DoPostConfigureComplete(GameObject go)
             {
-                base.DoPostConfigureComplete((Wire.WattageRating)CustomWireValues.AddOrGetWireWattageIndex(Rating), go);
+                base.DoPostConfigureComplete((Wire.WattageRating) CustomWireValues.AddOrGetWireWattageIndex(Rating), go);
             }
         }
     }

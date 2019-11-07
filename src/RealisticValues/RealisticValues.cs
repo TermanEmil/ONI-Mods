@@ -13,6 +13,17 @@ namespace RealisticValues
 {
     public class RealisticValues
     {
+        public static void OnLoad()
+        {
+            // Custom 100 kW wire
+            var w = CustomWireMaker.CreateWireWithRating(100000f);
+            w.Def.Mass = new[]
+            {
+                500f
+            };
+            //var registered = CustomWireValues.RegisterBuildings();
+        }
+
         public class CarbonSkimmerBalances
         {
             [HarmonyPatch(typeof(CO2ScrubberConfig), "CreateBuildingDef")]
@@ -115,21 +126,6 @@ namespace RealisticValues
 
         public class PowerBalances
         {
-            [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
-            public class AddWires
-            {
-                public static void Postfix()
-                {
-                    // Custom 100 kW wire
-                    var w = CustomWireMaker.CreateWireWithRating(100000f);
-                    w.def.Mass = new[]
-                    {
-                        500f
-                    };
-                    var registered = CustomWireValues.RegisterBuildings();
-                }
-            }
-
             public class CoalGeneratorPatches
             {
                 [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
@@ -657,9 +653,9 @@ namespace RealisticValues
                     for (var i = 0; i < codes.Count - 1; ++i)
                     {
                         if (!(codes[i].opcode == OpCodes.Ldfld) ||
-                            !(codes[i].operand == outputElementFieldInfo) ||
+                            codes[i].operand != outputElementFieldInfo ||
                             !(codes[i + 1].opcode == OpCodes.Ldloc_S) ||
-                            !((codes[i + 1].operand as LocalBuilder)?.LocalIndex == 5))
+                            (codes[i + 1].operand as LocalBuilder)?.LocalIndex != 5)
                         {
                             continue;
                         }
@@ -670,7 +666,7 @@ namespace RealisticValues
 
                     if (start == -1)
                     {
-                        Console.WriteLine("An error occured while patching sink values, index could not be found.");
+                        Debug.LogError("An error occured while patching sink values, index could not be found.");
                         return codes;
                     }
 

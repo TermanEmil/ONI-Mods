@@ -15,7 +15,7 @@ namespace CustomWireLib
             {
                 if (__result != 0.0f) return;
                 var r = CustomWireValues.GetWireRating((int) rating);
-                __result = r != -1 ? r : (float)Wire.WattageRating.Max1000;
+                __result = r != -1 ? r : (float) Wire.WattageRating.Max1000;
             }
         }
 
@@ -26,6 +26,7 @@ namespace CustomWireLib
             {
                 CustomWireValues.GetAndUpdateWireCount();
             }
+
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
@@ -34,7 +35,7 @@ namespace CustomWireLib
                 if (field != null)
                     codes[1] = new CodeInstruction(OpCodes.Ldsfld, field);
                 else
-                    Console.WriteLine("An error occured adding to the wire list.");
+                    Debug.LogError("An error occured adding to the wire list.");
                 return codes;
             }
         }
@@ -42,20 +43,37 @@ namespace CustomWireLib
         [HarmonyPatch(typeof(ElectricalUtilityNetwork), "UpdateOverloadTime")]
         public class WireOverloadFix
         {
+
+            public static int PatchNum = 1;
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
+                System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+                Debug.Log($"Stack:");
+                foreach (var stackFrame in t.GetFrames())
+                {
+                    Debug.Log($"\t{stackFrame}");
+                }
+                Debug.LogWarning($"Executing patch for {PatchNum} time");
+                ++PatchNum;
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 for (var i = 0; i < codes.Count; ++i)
                 {
+                    Debug.Log($"[{i}]: {codes[i].opcode}");
                     if (!codes[i].opcode.Equals(OpCodes.Ldloc_3)) continue;
                     if (!codes[i + 1].opcode.Equals(OpCodes.Ldc_I4_5)) continue;
+                    Debug.Log($"Found at index {i+1}, opcode {codes[i+1].opcode}");
                     // Found index count at i + 1
                     codes[i + 1] = new CodeInstruction(OpCodes.Ldsfld, field);
+                    Debug.Log($"New opcode: {codes[i+1].opcode}");
                     return codes;
                 }
-                Console.WriteLine("An error occured fixing wire overloads.");
+
+                Debug.LogError("An error occured fixing wire overloads." +
+                               "  Odds are the game is being dumb?" +
+                               $"  Expected index 50 to be `ldc.i4.5`, but it was actually {codes[50].opcode}." +
+                               $"We expect the value after patching to be {OpCodes.Ldsfld}");
                 return codes;
             }
         }
@@ -76,7 +94,8 @@ namespace CustomWireLib
                     codes[i + 1] = new CodeInstruction(OpCodes.Ldsfld, field);
                     return codes;
                 }
-                Console.WriteLine("An error occured fixing wire resets.");
+
+                Debug.LogError("An error occured fixing wire resets.");
                 return codes;
             }
         }
@@ -91,15 +110,17 @@ namespace CustomWireLib
                 var codes = new List<CodeInstruction>(instr);
                 for (var i = 0; i < codes.Count; ++i)
                 {
-                    if (!codes[i].opcode.Equals(OpCodes.Newarr) || (bool)!codes[i].operand?.Equals(typeof(List<WireUtilityNetworkLink>))) continue;
+                    if (!codes[i].opcode.Equals(OpCodes.Newarr) ||
+                        (bool) !codes[i].operand?.Equals(typeof(List<WireUtilityNetworkLink>))) continue;
                     // Found index count at i - 1
                     if (field != null)
                         codes[i - 1] = new CodeInstruction(OpCodes.Ldsfld, field);
                     else
-                        Console.WriteLine("An error occured fixing wire overloads in bridges.");
+                        Debug.LogError("An error occured fixing wire overloads in bridges.");
                     return codes;
                 }
-                Console.WriteLine("An error occured fixing wire overloads in bridges.");
+
+                Debug.LogError("An error occured fixing wire overloads in bridges.");
                 return codes;
             }
         }
@@ -110,9 +131,8 @@ namespace CustomWireLib
             public static void Prefix(ref List<Type> types)
             {
                 types.Remove(typeof(CustomWireMaker.CustomWire));
+                CustomWireValues.RegisterBuildings();
             }
         }
     }
-
-    
 }
