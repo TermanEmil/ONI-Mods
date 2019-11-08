@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayAnything", "src\Disp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShinebugReactor", "src\ShinebugReactor\ShinebugReactor.csproj", "{6A219D77-87C3-4104-88ED-57EC43E7EAE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetPips", "src\PetPips\PetPips.csproj", "{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,18 @@ Global
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Release|x64.Build.0 = Release|Any CPU
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Release|x86.Build.0 = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Debug|x86.Build.0 = Debug|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|x64.Build.0 = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
