@@ -12,7 +12,7 @@ namespace MoreCanisterFillersMod
         public const string DisplayName = "Conveyor Loaded Canister Emptier";
         public const string Description = "";
 
-        public const ConduitType EmptierConduitType = ConduitType.Solid;
+        private const ConduitType EmptierConduitType = ConduitType.Solid;
 
         public static readonly string Effect = "Unloads bottles from a " +
                                                UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") + " into the world.";
@@ -51,6 +51,7 @@ namespace MoreCanisterFillersMod
             storage.showDescriptor = true;
             storage.capacityKg = 200f;
             storage.allowItemRemoval = false;
+            go.AddOrGet<DropAllWorkable>();
 
             var conduitConsumer = go.AddOrGet<SolidConduitConsumer>();
             conduitConsumer.storage = storage;

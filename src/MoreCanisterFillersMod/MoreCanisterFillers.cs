@@ -1,14 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CaiLib.Utils;
 using Database;
 using Harmony;
 using STRINGS;
 using TUNING;
+using UnityEngine;
 
 namespace MoreCanisterFillersMod
 {
     public class MoreCanisterFillers
     {
+        [HarmonyPatch(typeof(GasBottlerConfig), nameof(GasBottlerConfig.DoPostConfigureComplete))]
+        public class GasFillerPatches
+        {
+            public static void Postfix(GameObject go)
+            {
+                go.AddOrGet<DropAllWorkable>();
+            }
+        }
+
         // Allows the Transfer Arm to pick up liquids and gasses
         [HarmonyPatch(typeof(SolidTransferArm), MethodType.Constructor)]
         public class TransferArmFix
@@ -20,58 +31,44 @@ namespace MoreCanisterFillersMod
             }
         }
 
-        [HarmonyPatch(typeof(GeneratedBuildings), nameof(GeneratedBuildings.LoadGeneratedBuildings))]
-        public static class RegisterBuildings
+        public static void OnLoad()
         {
-            public static void Prefix()
-            {
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.NAME",
-                    UI.FormatAsLink(PipedLiquidBottlerConfig.DisplayName, PipedLiquidBottlerConfig.Id));
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.DESC",
-                    PipedLiquidBottlerConfig.Description);
-                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.EFFECT",
-                    PipedLiquidBottlerConfig.Effect);
+            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.NAME",
+                UI.FormatAsLink(PipedLiquidBottlerConfig.DisplayName, PipedLiquidBottlerConfig.Id));
+            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.DESC",
+                PipedLiquidBottlerConfig.Description);
+            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.EFFECT",
+                PipedLiquidBottlerConfig.Effect);
 
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.NAME",
-                    UI.FormatAsLink(ConveyorLoadedCanisterEmptierConfig.DisplayName,
-                        ConveyorLoadedCanisterEmptierConfig.Id));
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.DESC",
-                    ConveyorLoadedCanisterEmptierConfig.Description);
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.EFFECT",
-                    ConveyorLoadedCanisterEmptierConfig.Effect);
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.NAME",
+                UI.FormatAsLink(ConveyorLoadedCanisterEmptierConfig.DisplayName,
+                    ConveyorLoadedCanisterEmptierConfig.Id));
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.DESC",
+                ConveyorLoadedCanisterEmptierConfig.Description);
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.EFFECT",
+                ConveyorLoadedCanisterEmptierConfig.Effect);
 
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.NAME",
-                    UI.FormatAsLink(ConveyorCanisterLoaderConfig.DisplayName,
-                        ConveyorCanisterLoaderConfig.Id));
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.DESC",
-                    ConveyorCanisterLoaderConfig.Description);
-                Strings.Add(
-                    $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.EFFECT",
-                    ConveyorCanisterLoaderConfig.Effect);
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.NAME",
+                UI.FormatAsLink(ConveyorCanisterLoaderConfig.DisplayName,
+                    ConveyorCanisterLoaderConfig.Id));
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.DESC",
+                ConveyorCanisterLoaderConfig.Description);
+            Strings.Add(
+                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.EFFECT",
+                ConveyorCanisterLoaderConfig.Effect);
 
-                ModUtil.AddBuildingToPlanScreen("Plumbing", PipedLiquidBottlerConfig.Id);
-                ModUtil.AddBuildingToPlanScreen("Conveyance", ConveyorLoadedCanisterEmptierConfig.Id);
-                ModUtil.AddBuildingToPlanScreen("Conveyance", ConveyorCanisterLoaderConfig.Id);
-            }
-        }
+            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Plumbing, PipedLiquidBottlerConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping, ConveyorLoadedCanisterEmptierConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping, ConveyorCanisterLoaderConfig.Id);
 
-        [HarmonyPatch(typeof(Db), "Initialize")]
-        public static class Db_Initialize_Patch
-        {
-            public static void Prefix()
-            {
-                Techs.TECH_GROUPING["LiquidPiping"] = new List<string>(Techs.TECH_GROUPING["LiquidPiping"])
-                    {PipedLiquidBottlerConfig.Id}.ToArray();
-                Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Techs.TECH_GROUPING["SolidTransport"])
-                    {ConveyorCanisterLoaderConfig.Id}.ToArray();
-                Techs.TECH_GROUPING["SolidTransport"] = new List<string>(Techs.TECH_GROUPING["SolidTransport"])
-                    {ConveyorLoadedCanisterEmptierConfig.Id}.ToArray();
-            }
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Liquids.Plumbing, PipedLiquidBottlerConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport, ConveyorCanisterLoaderConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport, ConveyorLoadedCanisterEmptierConfig.Id);
         }
     }
 }

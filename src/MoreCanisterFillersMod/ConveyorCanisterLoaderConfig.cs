@@ -16,7 +16,7 @@ namespace MoreCanisterFillersMod
                                                UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") +
                                                " for transport.\n\nOnly loads the resources of your choosing.";
 
-        public ConduitType LoaderConduitType = ConduitType.Solid;
+        private const ConduitType LoaderConduitType = ConduitType.Solid;
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -76,6 +76,7 @@ namespace MoreCanisterFillersMod
             go.AddOrGet<TreeFilterable>();
             go.AddOrGet<SolidConduitInbox>();
             go.AddOrGet<SolidConduitDispenser>();
+            go.AddOrGet<DropAllWorkable>();
         }
     }
 }

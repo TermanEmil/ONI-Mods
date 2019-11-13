@@ -47,7 +47,8 @@ namespace MoreCanisterFillersMod
         {
             AutoDropBottles = !AutoDropBottles;
             if (AutoDropBottles) GetComponent<Storage>().DropAll();
-            Smi.MakeUnoperational();
+            // Reset smi
+            Smi.GoTo(Smi.sm.GetDefaultState());
         }
 
         public class Controller : GameStateMachine<Controller, Controller.Instance, PipedLiquidBottler>
@@ -83,11 +84,6 @@ namespace MoreCanisterFillersMod
             {
                 public Instance(PipedLiquidBottler master) : base(master)
                 {
-                }
-
-                public void MakeUnoperational()
-                {
-                    GoTo(sm.defaultState);
                 }
             }
         }
