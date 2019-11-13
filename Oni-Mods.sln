@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetPips", "src\PetPips\PetP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyStartingDupe", "src\AnyStartingDupe\AnyStartingDupe.csproj", "{1EA7778F-34A2-4101-9031-16366656AC4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdibleDuplicants", "src\EdibleDuplicants\EdibleDuplicants.csproj", "{482042F6-DB70-4921-BAF7-1077B6B5C12E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -279,6 +281,18 @@ Global
 		{1EA7778F-34A2-4101-9031-16366656AC4B}.Release|x64.Build.0 = Release|Any CPU
 		{1EA7778F-34A2-4101-9031-16366656AC4B}.Release|x86.ActiveCfg = Release|Any CPU
 		{1EA7778F-34A2-4101-9031-16366656AC4B}.Release|x86.Build.0 = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|x64.Build.0 = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Debug|x86.Build.0 = Debug|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|x64.ActiveCfg = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|x64.Build.0 = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|x86.ActiveCfg = Release|Any CPU
+		{482042F6-DB70-4921-BAF7-1077B6B5C12E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
