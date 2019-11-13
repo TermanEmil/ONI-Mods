@@ -5,19 +5,21 @@
         private float _maxAge;
         private float _age;
         public float Lux;
+        public string Name;
 
-        public ShinebugSimulator(float age = 0, float maxAge = 0, float lux = 0)
+        public ShinebugSimulator(string name = "", float age = 0, float maxAge = 0, float lux = 0)
         {
             if (maxAge <= 0)
                 Debug.LogWarning("[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age.");
 
+            Name = name;
             _age = age;
             _maxAge = maxAge;
             Lux = lux;
         }
 
-        public ShinebugSimulator(int age = 0, int maxAge = 0, float lux = 0.0f) :
-            this(age * 600f, maxAge * 600f, lux)
+        public ShinebugSimulator(string name = "", int age = 0, int maxAge = 0, float lux = 0.0f) :
+            this(name, age * 600f, maxAge * 600f, lux)
         {
         }
 
@@ -27,7 +29,6 @@
             if (!(_age >= _maxAge)) return true;
 
             Lux = 0;
-            //Debug.Log($"Killing {this}");
             return false;
         }
 
