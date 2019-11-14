@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,12 +13,14 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Mods\EdibleDuplicants\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,6 +32,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -43,6 +49,10 @@
       <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CaiLib">
+      <HintPath>..\..\lib\CaiLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,11 +65,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButcherTableConfig.cs" />
     <Compile Include="DuplicantMeatConfig.cs" />
+    <Compile Include="EdibleDuplicantsPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /F /R /Y /I $(TargetPath) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\</PostBuildEvent>
+    <PostBuildEvent>$(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
+
+echo F | xcopy /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(TargetName).dll"
+del $(OutDir)$(TargetName)-merged*
+
+xcopy /F /R /Y /I $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+
+</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))" />
+  </Target>
 </Project>
