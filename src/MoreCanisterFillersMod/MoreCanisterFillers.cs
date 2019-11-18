@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CaiLib.Utils;
-using Database;
 using Harmony;
 using STRINGS;
 using TUNING;
@@ -43,12 +41,36 @@ namespace MoreCanisterFillersMod
                 ConveyorCanisterLoaderConfig.Effect);
 
             ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Plumbing, PipedLiquidBottlerConfig.Id);
-            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping, ConveyorLoadedCanisterEmptierConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping,
+                ConveyorLoadedCanisterEmptierConfig.Id);
             ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping, ConveyorCanisterLoaderConfig.Id);
 
             BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Liquids.Plumbing, PipedLiquidBottlerConfig.Id);
-            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport, ConveyorCanisterLoaderConfig.Id);
-            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport, ConveyorLoadedCanisterEmptierConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport,
+                ConveyorCanisterLoaderConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport,
+                ConveyorLoadedCanisterEmptierConfig.Id);
+        }
+
+        [HarmonyPatch(typeof(GasBottlerConfig), nameof(GasBottlerConfig.ConfigureBuildingTemplate))]
+        public class GasFillerPatches
+        {
+            public static void Postfix(GameObject go)
+            {
+                go.AddOrGet<AutoDropInv>();
+            }
+        }
+
+
+        // Allows the Transfer Arm to pick up liquids and gasses
+        [HarmonyPatch(typeof(SolidTransferArm), MethodType.Constructor)]
+        public class TransferArmFix
+        {
+            public static void Postfix(ref SolidTransferArm __instance)
+            {
+                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
+                    .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
+            }
         }
     }
 }

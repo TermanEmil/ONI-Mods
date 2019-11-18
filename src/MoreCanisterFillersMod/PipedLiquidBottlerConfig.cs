@@ -39,6 +39,7 @@ namespace MoreCanisterFillersMod
             defaultStorage.capacityKg = 100f;
             defaultStorage.allowItemRemoval = false;
             go.AddOrGet<DropAllWorkable>();
+            go.AddOrGet<AutoDropInv>();
 
             var conduitConsumer = go.AddOrGet<ConduitConsumer>();
             conduitConsumer.storage = defaultStorage;

@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoDropInv.cs" />
     <Compile Include="ConveyorCanisterLoaderConfig.cs" />
     <Compile Include="ConveyorLoadedCanisterEmptierConfig.cs" />
     <Compile Include="MoreCanisterFillers.cs" />

@@ -12,11 +12,11 @@ namespace MoreCanisterFillersMod
         public const string DisplayName = "Conveyor Canister Loader";
         public const string Description = "";
 
+        private const ConduitType LoaderConduitType = ConduitType.Solid;
+
         public static readonly string Effect = "Loads bottles onto " +
                                                UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") +
                                                " for transport.\n\nOnly loads the resources of your choosing.";
-
-        private const ConduitType LoaderConduitType = ConduitType.Solid;
 
         public override BuildingDef CreateBuildingDef()
         {
