@@ -11,26 +11,6 @@ namespace MoreCanisterFillersMod
 {
     public class MoreCanisterFillers
     {
-        [HarmonyPatch(typeof(GasBottlerConfig), nameof(GasBottlerConfig.DoPostConfigureComplete))]
-        public class GasFillerPatches
-        {
-            public static void Postfix(GameObject go)
-            {
-                go.AddOrGet<DropAllWorkable>();
-            }
-        }
-
-        // Allows the Transfer Arm to pick up liquids and gasses
-        [HarmonyPatch(typeof(SolidTransferArm), MethodType.Constructor)]
-        public class TransferArmFix
-        {
-            public static void Postfix(ref SolidTransferArm __instance)
-            {
-                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
-                    .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
-            }
-        }
-
         public static void OnLoad()
         {
             Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.NAME",
