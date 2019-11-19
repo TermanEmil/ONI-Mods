@@ -11,6 +11,9 @@ namespace MoreCanisterFillersMod
     {
         public static void OnLoad()
         {
+            CaiLib.Logger.Logger.LogInit();
+
+            // Piped Liquid Bottler
             Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.NAME",
                 UI.FormatAsLink(PipedLiquidBottlerConfig.DisplayName, PipedLiquidBottlerConfig.Id));
             Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.DESC",
@@ -18,6 +21,7 @@ namespace MoreCanisterFillersMod
             Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.EFFECT",
                 PipedLiquidBottlerConfig.Effect);
 
+            // Conveyor Loaded Canister Emptier
             Strings.Add(
                 $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.NAME",
                 UI.FormatAsLink(ConveyorLoadedCanisterEmptierConfig.DisplayName,
@@ -29,6 +33,7 @@ namespace MoreCanisterFillersMod
                 $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.EFFECT",
                 ConveyorLoadedCanisterEmptierConfig.Effect);
 
+            // Conveyor Loaded Canister Loader
             Strings.Add(
                 $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.NAME",
                 UI.FormatAsLink(ConveyorCanisterLoaderConfig.DisplayName,

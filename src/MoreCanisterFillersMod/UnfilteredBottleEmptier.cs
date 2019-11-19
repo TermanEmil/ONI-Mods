@@ -31,7 +31,7 @@ namespace MoreCanisterFillersMod
                 Meter = new MeterController(GetComponent<KBatchedAnimController>(), "meter_target", nameof(Meter),
                     global::Meter.Offset.Infront, Grid.SceneLayer.NoLayer, "meter_target", "meter_arrow",
                     "meter_scale");
-                Subscribe(-1697596308, OnStorageChange);
+                Subscribe((int) GameHashes.OnStorageChange, OnStorageChange);
             }
 
             public MeterController Meter { get; }
