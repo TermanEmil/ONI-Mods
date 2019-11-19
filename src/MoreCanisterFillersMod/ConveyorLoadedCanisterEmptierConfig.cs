@@ -6,9 +6,28 @@ using BUILDINGS = TUNING.BUILDINGS;
 
 namespace MoreCanisterFillersMod
 {
-    internal class ConveyorLoadedCanisterEmptierConfig : IBuildingConfig
+    public class OldConveyorLoadedCanisterEmptierConfig : ConveyorLoadedCanisterEmptierConfig
     {
-        public const string Id = "ConveyorBottleEmptier";
+        private const string Id = "ConveyorBottleEmptier";
+
+        public override BuildingDef CreateBuildingDef()
+        {
+            var def = base.CreateBuildingDef();
+            def.PrefabID = Id;
+            return def;
+        }
+
+        public override void DoPostConfigureComplete(GameObject go)
+        {
+            base.DoPostConfigureComplete(go);
+            var def = go.GetComponent<Building>().Def;
+            def.PrefabID = ConveyorLoadedCanisterEmptierConfig.Id;
+        }
+    }
+
+    public class ConveyorLoadedCanisterEmptierConfig : IBuildingConfig
+    {
+        public const string Id = "asquared31415.ConveyorBottleEmptier";
         public const string DisplayName = "Conveyor Loaded Canister Emptier";
         public const string Description = "";
 

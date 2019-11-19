@@ -5,9 +5,28 @@ using BUILDINGS = TUNING.BUILDINGS;
 
 namespace MoreCanisterFillersMod
 {
+    public class OldPipedLiquidBottlerConfig : PipedLiquidBottlerConfig
+    {
+        private const string Id = "PipedLiquidBottler";
+
+        public override BuildingDef CreateBuildingDef()
+        {
+            var def = base.CreateBuildingDef();
+            def.PrefabID = Id;
+            return def;
+        }
+
+        public override void DoPostConfigureComplete(GameObject go)
+        {
+            base.DoPostConfigureComplete(go);
+            var def = go.GetComponent<Building>().Def;
+            def.PrefabID = PipedLiquidBottlerConfig.Id;
+        }
+    }
+
     public class PipedLiquidBottlerConfig : IBuildingConfig
     {
-        public const string Id = "PipedLiquidBottler";
+        public const string Id = "asquared31415.PipedLiquidBottler";
         public const string DisplayName = "Liquid Canister Filler";
         public const string Description = "Canisters allow Duplicants to manually deliver liquids from place to place.";
         private const ConduitType BottlerConduitType = ConduitType.Liquid;
