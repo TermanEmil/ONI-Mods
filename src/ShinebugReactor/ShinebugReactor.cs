@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KSerialization;
 using UnityEngine;
 
 namespace ShinebugReactor
@@ -9,7 +10,7 @@ namespace ShinebugReactor
         public static StatusItem ShinebugReactorWattageStatus;
     }
 
-    internal struct ShinebugEggData
+    public struct ShinebugEggData
     {
         public float TimeToHatch;
         public float AdultLife;
@@ -21,10 +22,9 @@ namespace ShinebugReactor
         }
     }
 
-    internal class ShinebugReactor : Generator
+    [SerializationConfig(MemberSerialization.OptIn)]
+    public class ShinebugReactor : Generator
     {
-        private readonly List<ShinebugEggSimulator> _shinebugEggs = new List<ShinebugEggSimulator>();
-
         private readonly Dictionary<string, ShinebugEggData> _shinebugEggValues =
             new Dictionary<string, ShinebugEggData>
             {
@@ -50,8 +50,8 @@ namespace ShinebugReactor
                     "LightBugEgg",
                     new ShinebugEggData
                     {
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
+                        TimeToHatch = 5f,
+                        AdultLife = 45f,
                         AdultLux = 1800f
                     }
                 },
@@ -93,10 +93,11 @@ namespace ShinebugReactor
                 }
             };
 
-        private readonly List<ShinebugSimulator> _shinebugs = new List<ShinebugSimulator>();
-
         private HandleVector<int>.Handle _accumulator = HandleVector<int>.InvalidHandle;
         private Guid _statusHandle;
+
+        [Serialize] private List<ShinebugEggSimulator> _shinebugEggs;
+        [Serialize] private List<ShinebugSimulator> _shinebugs;
 
         public float CurrentWattage;
 
@@ -104,10 +105,20 @@ namespace ShinebugReactor
         protected override void OnSpawn()
         {
             base.OnSpawn();
+            if (_shinebugs == null)
+                _shinebugs = new List<ShinebugSimulator>();
+            if (_shinebugEggs == null)
+                _shinebugEggs = new List<ShinebugEggSimulator>();
             Subscribe((int) GameHashes.ActiveChanged, OnActiveChanged);
             Subscribe((int) GameHashes.OnStorageChange, OnStorageChanged);
             // TODO: Meter controller
             _accumulator = Game.Instance.accumulators.Add("Element", this);
+            #if DEBUG
+            Debug.Log($"Eggs: {_shinebugEggs.Count}");
+            foreach (var egg in _shinebugEggs) Debug.Log($"\t{egg}");
+            Debug.Log($"Bugs: {_shinebugs.Count}");
+            foreach (var shinebug in _shinebugs) Debug.Log($"\t{shinebug}");
+            #endif
         }
 
         private void OnStorageChanged(object data)

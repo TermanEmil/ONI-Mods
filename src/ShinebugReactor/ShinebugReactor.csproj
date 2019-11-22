@@ -55,22 +55,13 @@
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\lib\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -97,7 +88,7 @@ echo F | xcopy /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(T
 del $(OutDir)$(TargetName)-merged*
 
 xcopy /F /R /Y /I /S $(SolutionDir)\Assets\$(ProjectName) $(OutDir)
-xcopy /F /R /Y /I $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+xcopy /FRSYI $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
 
 </PostBuildEvent>
   </PropertyGroup>

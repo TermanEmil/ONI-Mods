@@ -1,9 +1,11 @@
-﻿namespace ShinebugReactor
+﻿using System;
+
+namespace ShinebugReactor
 {
-    internal class ShinebugSimulator
+    public class ShinebugSimulator
     {
-        private float _maxAge;
-        private float _age;
+        public float MaxAge;
+        public float Age;
         public float Lux;
         public string Name;
 
@@ -13,8 +15,8 @@
                 Debug.LogWarning("[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age.");
 
             Name = name;
-            _age = age;
-            _maxAge = maxAge;
+            Age = age;
+            MaxAge = maxAge;
             Lux = lux;
         }
 
@@ -25,8 +27,8 @@
 
         public bool Simulate(float dt)
         {
-            _age += dt;
-            if (!(_age >= _maxAge)) return true;
+            Age += dt;
+            if (!(Age >= MaxAge)) return true;
 
             Lux = 0;
             return false;
@@ -34,7 +36,7 @@
 
         public override string ToString()
         {
-            return $"(FakeShinebug) {_age}s/{_maxAge}s {Lux} Lux";
+            return $"(FakeShinebug) {Name}: {Age}s/{MaxAge}s {Lux} Lux";
         }
     }
 }
