@@ -50,8 +50,8 @@ namespace ShinebugReactor
                     "LightBugEgg",
                     new ShinebugEggData
                     {
-                        TimeToHatch = 5f,
-                        AdultLife = 45f,
+                        TimeToHatch = 3000f,
+                        AdultLife = 15000f,
                         AdultLux = 1800f
                     }
                 },
