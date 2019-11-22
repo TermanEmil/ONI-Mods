@@ -1,0 +1,1 @@
+..\kanimal-cli.exe kanim -so ../../Assets/ShinebugReactor/anim/assets/shinebug_reactor shinebug_reactor.scml
