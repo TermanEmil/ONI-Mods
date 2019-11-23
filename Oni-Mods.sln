@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FartFrequently", "src\FartFrequently\FartFrequently.csproj", "{7163CBA4-822F-40B1-BFD0-FD913D12E08D}"
 EndProject
@@ -33,8 +33,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldCritterWrangler", "src\O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actions", "src\Actions\Actions.csproj", "{FC2720D8-96E5-41F5-92FB-60E45DB7947D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayAnything", "src\DisplayAnything\DisplayAnything.csproj", "{E7E6AB28-28FD-482D-B7FB-D84AE573493F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShinebugReactor", "src\ShinebugReactor\ShinebugReactor.csproj", "{6A219D77-87C3-4104-88ED-57EC43E7EAE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetPips", "src\PetPips\PetPips.csproj", "{EAC69829-6764-4665-9C0A-FEBFE6F99FEB}"
@@ -43,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyStartingDupe", "src\AnyS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdibleDuplicants", "src\EdibleDuplicants\EdibleDuplicants.csproj", "{482042F6-DB70-4921-BAF7-1077B6B5C12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotHeater", "..\ONI-Mods/src\SpotHeater\SpotHeater.csproj", "{F02A15B7-C847-444C-A098-4F7A917D04A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotHeater", "src\SpotHeater\SpotHeater.csproj", "{F02A15B7-C847-444C-A098-4F7A917D04A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -235,18 +233,6 @@ Global
 		{FC2720D8-96E5-41F5-92FB-60E45DB7947D}.Release|x64.Build.0 = Release|Any CPU
 		{FC2720D8-96E5-41F5-92FB-60E45DB7947D}.Release|x86.ActiveCfg = Release|Any CPU
 		{FC2720D8-96E5-41F5-92FB-60E45DB7947D}.Release|x86.Build.0 = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|x64.Build.0 = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Debug|x86.Build.0 = Debug|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|x64.ActiveCfg = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|x64.Build.0 = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|x86.ActiveCfg = Release|Any CPU
-		{E7E6AB28-28FD-482D-B7FB-D84AE573493F}.Release|x86.Build.0 = Release|Any CPU
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A219D77-87C3-4104-88ED-57EC43E7EAE1}.Debug|x64.ActiveCfg = Debug|Any CPU
