@@ -55,8 +55,7 @@ namespace MoreCanisterFillersMod
             var defaultStorage = BuildingTemplates.CreateDefaultStorage(go);
             defaultStorage.showDescriptor = true;
             defaultStorage.storageFilters = STORAGEFILTERS.LIQUIDS;
-            defaultStorage.capacityKg = 100f;
-            defaultStorage.allowItemRemoval = false;
+            defaultStorage.capacityKg = 1000f;
             go.AddOrGet<DropAllWorkable>();
             go.AddOrGet<AutoDropInv>();
 
