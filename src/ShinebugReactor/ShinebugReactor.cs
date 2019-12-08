@@ -124,18 +124,19 @@ namespace ShinebugReactor
         private void OnStorageChanged(object data)
         {
             var storage = gameObject.GetComponent<Storage>();
-            var nameStr = ((GameObject) data)?.name;
+            var go = data as GameObject;
+            var nameStr = go?.name ?? "invalid";
             if (!_shinebugEggValues.ContainsKey(nameStr))
             {
-                var go = storage.Drop((GameObject) data);
-                go.transform.SetPosition(transform.GetPosition() + new Vector3(-4f, 1f, 0));
+                var dropped = storage.Drop(go);
+                dropped.transform.SetPosition(transform.GetPosition() + new Vector3(-4f, 1f, 0));
             }
             else
             {
                 AddEggFromName(nameStr);
+                storage?.items?.Remove(go);
             }
 
-            storage?.items?.Remove((GameObject) data);
         }
 
         private void AddEggFromName(string nameStr)

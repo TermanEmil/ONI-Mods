@@ -46,7 +46,7 @@ namespace ShinebugReactor
         public override void DoPostConfigureComplete(GameObject go)
         {
             var storage = go.AddOrGet<Storage>();
-            storage.showInUI = true;
+            storage.showInUI = false;
             go.AddOrGet<SolidConduitConsumer>();
             go.AddOrGet<ShinebugReactor>();
         }
