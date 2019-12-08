@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using UnityEngine;
 
 namespace MassBasedDigging
 {
@@ -7,7 +8,8 @@ namespace MassBasedDigging
     {
         public static void Postfix(ref Workable __instance, ref float __result)
         {
-            if (__instance is Diggable) __result *= 1200 / Grid.Mass[Grid.PosToCell(__instance)];
+            if (__instance is Diggable)
+                __result *= Mathf.Clamp(1200f / Grid.Mass[Grid.PosToCell(__instance)], 0.25f, 10f);
         }
     }
 }
