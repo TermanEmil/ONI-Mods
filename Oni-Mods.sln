@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdibleDuplicants", "src\Edi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotHeater", "src\SpotHeater\SpotHeater.csproj", "{F02A15B7-C847-444C-A098-4F7A917D04A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnblockableRockets", "src\NeutroniumNoBlock\UnblockableRockets.csproj", "{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -293,6 +295,18 @@ Global
 		{F02A15B7-C847-444C-A098-4F7A917D04A4}.Release|x64.Build.0 = Release|Any CPU
 		{F02A15B7-C847-444C-A098-4F7A917D04A4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F02A15B7-C847-444C-A098-4F7A917D04A4}.Release|x86.Build.0 = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|x86.Build.0 = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|x86.ActiveCfg = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|x64.Build.0 = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|x86.Build.0 = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|x64.Build.0 = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ECE77403-D04A-4A7C-BA57-EB0BAA7CC589}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
