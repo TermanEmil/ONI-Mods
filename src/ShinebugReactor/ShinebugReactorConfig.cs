@@ -10,10 +10,13 @@ namespace ShinebugReactor
     {
         public const string Id = "ShinebugReactor";
         public const string DisplayName = "Shinebug Reactor";
-        public const string Description = "";
+
+        public const string Description =
+            "When eggs enter the reactor, they are stored inside unti they hatch.  The newly hatched shine bugs" +
+            " are then enslaved for your gain.";
 
         public static readonly string Effect =
-            $"Stores {CREATURES.SPECIES.LIGHTBUG.NAME} and generates {UI.PRE_KEYWORD} Power + {UI.PST_KEYWORD} passively using their light";
+            $"Receives {CREATURES.FAMILY_PLURAL.LIGHTBUGSPECIES} from a conveyor and generates {UI.PRE_KEYWORD} Power + {UI.PST_KEYWORD} passively using their light";
 
 
         public override BuildingDef CreateBuildingDef()
@@ -45,10 +48,10 @@ namespace ShinebugReactor
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            var storage = go.AddOrGet<Storage>();
-            storage.showInUI = false;
+            go.AddOrGet<Storage>();
             go.AddOrGet<SolidConduitConsumer>();
             go.AddOrGet<ShinebugReactor>();
+            go.AddOrGetDef<PoweredActiveController.Def>();
         }
     }
 }
