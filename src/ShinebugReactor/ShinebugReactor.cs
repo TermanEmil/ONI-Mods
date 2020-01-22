@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Klei.AI;
 using KSerialization;
 using UnityEngine;
 
@@ -121,6 +122,14 @@ namespace ShinebugReactor
             Subscribe((int) GameHashes.DeconstructComplete, OnDeconstruct);
             _storage = gameObject.GetComponent<Storage>();
             // TODO: Meter controller
+            foreach (var shinebug in _shinebugs)
+                if (shinebug.Item != null)
+                    DestroyImmediate(shinebug.Item.GetComponent<Modifiers>());
+
+            foreach (var egg in _shinebugEggs)
+                if (egg.Item != null)
+                    DestroyImmediate(egg.Item.GetComponent<Modifiers>());
+
             _accumulator = Game.Instance.accumulators.Add("Element", this);
 #if DEBUG
             Debug.Log($"Eggs when loaded: {_shinebugEggs.Count}");
@@ -151,6 +160,7 @@ namespace ShinebugReactor
             else
             {
                 DestroyImmediate(go.GetComponent<StateMachineController>());
+                DestroyImmediate(go.GetComponent<Modifiers>());
                 var values = _shinebugEggValues[nameStr];
                 _shinebugEggs.Add(new ShinebugEggSimulator(nameStr, values.TimeToHatch, values.AdultLife,
                     values.AdultLux, go));
@@ -200,21 +210,33 @@ namespace ShinebugReactor
                 }
                 else if (egg.Shinebug != null)
                 {
+#if DEBUG
+                    Debug.Log($"name shine, no item {egg.Name}");
+#endif
                     var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(egg.Name),
                         Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
                         Grid.SceneLayer.Front);
+#if DEBUG
+                    Debug.Log($"Object shine, no item {eggItem}");
+#endif
                     egg.Shinebug.Item = eggItem;
                     _shinebugs.Add(egg.Shinebug);
-                    _storage.Store(eggItem);
+                    _storage.Store(eggItem, true);
                 }
                 else
                 {
+#if DEBUG
+                    Debug.Log($"name none {egg.Name}");
+#endif
                     var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(egg.Name),
                         Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
                         Grid.SceneLayer.Front);
+#if DEBUG
+                    Debug.Log($"Object none {eggItem}");
+#endif
                     egg.Item = eggItem;
                     _shinebugs.Add(new ShinebugSimulator(egg.Name, 0, egg.GrownLifeTime, egg.LuxToGive, egg, egg.Item));
-                    _storage.Store(eggItem);
+                    _storage.Store(eggItem, true);
                 }
 
 
@@ -254,10 +276,17 @@ namespace ShinebugReactor
                 }
                 else
                 {
+                    shinebug.Name = shinebug.Name.Replace("Egg", "");
+#if DEBUG
+                    Debug.Log($"name none shine {shinebug.Name}");
+#endif
                     var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(shinebug.Name + "Egg"),
                         Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
                         Grid.SceneLayer.Front);
-                    _storage.Store(eggItem);
+#if DEBUG
+                    Debug.Log($"Object none shine {eggItem}");
+#endif
+                    _storage.Store(eggItem, true);
 #if DEBUG
                     Debug.Log($"Had to manually add egg for {shinebug}");
 #endif
