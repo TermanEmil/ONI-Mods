@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using KSerialization;
@@ -144,7 +142,7 @@ namespace ShinebugReactor
         {
             var go = data as GameObject;
             if (go == null) return;
-            var nameStr = go.name ?? "invalid";
+            var nameStr = go.name;
             if (!_shinebugEggValues.ContainsKey(nameStr))
             {
                 var dropped = _storage.Drop(go);
@@ -171,21 +169,21 @@ namespace ShinebugReactor
                 }
 
             foreach (var shinebug in _shinebugs)
-            {
                 GameUtil.KInstantiate(Assets.GetPrefab(shinebug.Name.Replace("Egg", "")),
                     Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Creatures),
                     Grid.SceneLayer.Creatures).SetActive(true);
-            }
         }
 
         public override void EnergySim200ms(float dt)
         {
             base.EnergySim200ms(dt);
             var circuitId = CircuitID;
-
             operational.SetFlag(wireConnectedFlag, circuitId != ushort.MaxValue);
             if (!operational.IsOperational)
+            {
+                operational.SetActive(false);
                 return;
+            }
 
             for (var i = 0; i < _shinebugEggs.Count; ++i)
             {
@@ -202,11 +200,11 @@ namespace ShinebugReactor
                 }
                 else if (egg.Shinebug != null)
                 {
-                    _shinebugs.Add(egg.Shinebug);
                     var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(egg.Name),
                         Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
                         Grid.SceneLayer.Front);
-                    egg.Item = eggItem;
+                    egg.Shinebug.Item = eggItem;
+                    _shinebugs.Add(egg.Shinebug);
                     _storage.Store(eggItem);
                 }
                 else
@@ -238,7 +236,11 @@ namespace ShinebugReactor
                 if (shinebug.Egg != null)
                 {
                     _shinebugEggs.Add(shinebug.Egg);
-                    _storage.items.Add(shinebug.Egg.Item);
+                    if (shinebug.Egg.Item != null)
+                        _storage.items.Add(shinebug.Egg.Item);
+                    else
+                        Debug.LogWarning(
+                            "[ShinebugReactor] Null item, but we had an egg, is this an old version of the mod?");
                 }
                 else if (shinebug.Item != null)
                 {
@@ -272,8 +274,7 @@ namespace ShinebugReactor
 
             operational.SetActive(CurrentWattage > 0.0f);
             Game.Instance.accumulators.Accumulate(_accumulator, CurrentWattage * dt);
-
-            if (CurrentWattage > 0.0)
+            if (CurrentWattage > 0.0f)
             {
                 var toGen = CurrentWattage * dt;
                 GenerateJoules(Mathf.Max(toGen, dt));

@@ -1,1 +1,2 @@
-..\kanimal-cli.exe kanim -so ../../Assets/ShinebugReactor/anim/assets/shinebug_reactor shinebug_reactor.scml
+..\kanimal-cli.exe kanim -iso ../../Assets/ShinebugReactor/anim/assets/shinebug_reactor shinebug_reactor.scml
+pause
