@@ -5,14 +5,11 @@ namespace ShinebugReactor
     public class ShinebugSimulator
     {
         public float Age;
-        public ShinebugEggSimulator Egg;
-        public GameObject Item;
         public float Lux;
         public float MaxAge;
         public string Name;
 
-        public ShinebugSimulator(string name = "", float age = 0, float maxAge = 0, float lux = 0,
-            ShinebugEggSimulator egg = null, GameObject item = null)
+        public ShinebugSimulator(string name = "", float age = 0, float maxAge = 0, float lux = 0)
         {
             if (maxAge <= 0)
                 Debug.LogWarning("[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age.");
@@ -21,8 +18,6 @@ namespace ShinebugReactor
             Age = age;
             MaxAge = maxAge;
             Lux = lux;
-            Egg = egg;
-            Item = item;
         }
 
         /// <summary>

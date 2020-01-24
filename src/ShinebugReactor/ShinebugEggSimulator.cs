@@ -9,10 +9,9 @@ namespace ShinebugReactor
         public float LuxToGive;
         public float TimeToHatch;
         public string Name;
-        public ShinebugSimulator Shinebug;
-        public GameObject Item;
+        public GameObject EggItem;
 
-        public ShinebugEggSimulator(string name = "", float timeToHatch = 0, float grownLifeTime = 0, float lux = 0, ShinebugSimulator shinebug = null)
+        public ShinebugEggSimulator(string name = "", float timeToHatch = 0, float grownLifeTime = 0, float lux = 0, GameObject egg = null)
         {
             if (grownLifeTime <= 0)
                 Debug.LogWarning(
@@ -22,20 +21,7 @@ namespace ShinebugReactor
             TimeToHatch = timeToHatch;
             GrownLifeTime = grownLifeTime;
             LuxToGive = lux;
-            Shinebug = shinebug;
-        }
-
-        public ShinebugEggSimulator(string name = "", float timeToHatch = 0, float grownLifeTime = 0, float lux = 0, GameObject item = null)
-        {
-            if (grownLifeTime <= 0)
-                Debug.LogWarning(
-                    "[Shinebug Reactor] Shinebug egg simulator was provided a zero or negative max timeToHatch.");
-
-            Name = name;
-            TimeToHatch = timeToHatch;
-            GrownLifeTime = grownLifeTime;
-            LuxToGive = lux;
-            Item = item;
+            EggItem = egg;
         }
 
         /// <summary>

@@ -26,8 +26,6 @@ namespace ShinebugReactor
 
             ConfigManager = new ConfigManager<ReactorConfig>();
             ConfigManager.ReadConfig();
-            Debug.Log(
-                $"Read Shinebug Reactor config.  Should reproduce in building? {ConfigManager.Config.ShouldReproduce}");
 
             StringUtils.AddBuildingStrings(ShinebugReactorConfig.Id, ShinebugReactorConfig.DisplayName,
                 ShinebugReactorConfig.Description, ShinebugReactorConfig.Effect);
