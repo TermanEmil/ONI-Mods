@@ -160,7 +160,7 @@ namespace ShinebugReactor
                 Destroy(go.GetComponent<Modifiers>());
                 var values = _shinebugEggValues[nameStr];
                 _shinebugEggs.Add(new ShinebugEggSimulator(nameStr, values.TimeToHatch, values.AdultLife,
-                    values.AdultLux));
+                    values.AdultLux, go));
             }
         }
 
@@ -200,7 +200,7 @@ namespace ShinebugReactor
 #endif
                 _shinebugs.Add(new ShinebugSimulator(egg.Name.Replace("Egg", ""), 0, egg.GrownLifeTime, egg.LuxToGive));
                 var eggShell = Util.KInstantiate(Assets.GetPrefab((Tag) "EggShell"), gameObject.transform.GetPosition());
-                eggShell.GetComponent<PrimaryElement>().Mass = 100f;
+                eggShell.GetComponent<PrimaryElement>().Mass = 0.1f;
                 eggShell.SetActive(true);
                 toRemove.Add(egg);
             }
