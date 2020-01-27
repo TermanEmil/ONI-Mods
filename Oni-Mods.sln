@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnblockableRockets", "src\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriorityZero", "src\PriorityZero\PriorityZero.csproj", "{6DEAED3C-2E4E-43DD-9C91-61736F5314FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendedTagBits", "src\ExtendedTagBits\ExtendedTagBits.csproj", "{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{6DEAED3C-2E4E-43DD-9C91-61736F5314FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DEAED3C-2E4E-43DD-9C91-61736F5314FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DEAED3C-2E4E-43DD-9C91-61736F5314FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
