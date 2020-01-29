@@ -81,15 +81,18 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
-
-echo F | xcopy /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(TargetName).dll"
-del $(OutDir)$(TargetName)-merged*
-
-xcopy /F /R /Y /I /S $(SolutionDir)\Assets\$(ProjectName) $(OutDir)
-xcopy /FRSYI $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
-
-</PostBuildEvent>
+    <PostBuildEvent>
+      $(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
+      
+      xcopy /F /Y /R /Q "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)\$(TargetName).dll"
+      del $(TargetName)-merged.dll
+      del $(TargetName)-merged.pdb
+      xcopy /F /R /Y /I /S $(SolutionDir)Assets\$(ProjectName) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+      xcopy /F /R /Y /I $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+      tasklist /FI "IMAGENAME eq OxygenNotIncluded.exe" 2>NUL | find /I /N "OxygenNotIncluded.exe">NUL
+      if "%ERRORLEVEL%"=="0" taskkill /f /im OxygenNotIncluded.exe
+      steam -applaunch 457140
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
