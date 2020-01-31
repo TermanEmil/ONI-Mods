@@ -124,6 +124,12 @@ namespace ShinebugReactor
             _storage = gameObject.GetComponent<Storage>();
             // TODO: Meter controller
 
+            foreach (var item in _storage.items)
+            {
+                Destroy(item.GetComponent<StateMachineController>());
+                Destroy(item.GetComponent<Modifiers>());
+            }
+
             foreach (var shinebug in _shinebugs)
                 shinebug.Name = shinebug.Name.Replace("Egg", "");
 
@@ -147,6 +153,7 @@ namespace ShinebugReactor
         private void OnStorageChanged(object data)
         {
             var go = data as GameObject;
+
             if (go == null) return;
             var nameStr = go.name;
             if (!_shinebugEggValues.ContainsKey(nameStr))
@@ -193,13 +200,18 @@ namespace ShinebugReactor
             }
 
             var toRemove = new List<ShinebugEggSimulator>();
-            foreach (var egg in _shinebugEggs.Where(egg => egg.Simulate(dt)))
+#if DEBUG
+            Debug.Log($"Started with {_shinebugEggs.Count} eggs and {_shinebugs.Count} shinebugs");
+#endif
+            foreach (var egg in _shinebugEggs)
             {
+                if (!egg.Simulate(dt)) continue;
 #if DEBUG
                 Debug.Log($"Egg name {egg.Name}");
 #endif
                 _shinebugs.Add(new ShinebugSimulator(egg.Name.Replace("Egg", ""), 0, egg.GrownLifeTime, egg.LuxToGive));
-                var eggShell = Util.KInstantiate(Assets.GetPrefab((Tag) "EggShell"), gameObject.transform.GetPosition());
+                var eggShell =
+                    Util.KInstantiate(Assets.GetPrefab((Tag) "EggShell"), gameObject.transform.GetPosition());
                 eggShell.GetComponent<PrimaryElement>().Mass = 0.1f;
                 eggShell.SetActive(true);
                 toRemove.Add(egg);
@@ -209,11 +221,17 @@ namespace ShinebugReactor
             {
                 _shinebugEggs.Remove(r);
                 _storage.items.Remove(r.EggItem);
-                Trigger((int) GameHashes.OnStorageChange, r);
             }
+
+#if DEBUG
+            Debug.Log($"Ended with {_shinebugEggs.Count} eggs and {_shinebugs.Count} shinebugs");
+#endif
 
             CurrentWattage = 0.0f;
             var shinebugsRemove = new List<ShinebugSimulator>();
+#if DEBUG
+            Debug.Log($"Reactor contains {_shinebugs.Count} bugs");
+#endif
             foreach (var shinebug in _shinebugs)
             {
                 CurrentWattage += shinebug.Lux * 0.00159f;
@@ -234,7 +252,7 @@ namespace ShinebugReactor
                 var eggStats = _shinebugEggValues[eggName];
                 _shinebugEggs.Add(new ShinebugEggSimulator(eggName, eggStats.TimeToHatch, eggStats.AdultLife,
                     eggStats.AdultLux, eggItem));
-                _storage.Store(eggItem, true);
+                _storage.items.Add(eggItem);
                 shinebugsRemove.Add(shinebug);
             }
 

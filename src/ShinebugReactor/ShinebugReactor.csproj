@@ -84,13 +84,13 @@
     <PostBuildEvent>
       $(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
 
-      xcopy /FRY "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)$(TargetName).dll"
+      xcopy /RY "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)$(TargetName).dll"
       del $(TargetName)-merged.dll
       del $(TargetName)-merged.pdb
       tasklist /FI "IMAGENAME eq OxygenNotIncluded.exe" 2&gt;NUL | find /I /N "OxygenNotIncluded.exe"&gt;NUL
       if "%ERRORLEVEL%"=="0" taskkill /f /im OxygenNotIncluded.exe
-      xcopy /FRYIS $(SolutionDir)Assets\$(ProjectName) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
-      xcopy /FRYIS $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+      xcopy /RYIS $(SolutionDir)Assets\$(ProjectName) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
+      xcopy /RYIS $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
       steam -applaunch 457140
     </PostBuildEvent>
   </PropertyGroup>
