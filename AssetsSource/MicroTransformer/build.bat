@@ -1,2 +1,2 @@
-..\kanimal-cli.exe kanim -iso ../../Assets/MicroTransformer/anim/assets/micro_transformer micro_transformer.scml
+..\kanimal-cli.exe kanim -iso ../../Mods/MicroTransformer/anim/assets/micro_transformer micro_transformer.scml
 pause
