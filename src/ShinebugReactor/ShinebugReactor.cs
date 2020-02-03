@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Klei.AI;
 using KSerialization;
-using STRINGS;
 using UnityEngine;
 
 namespace ShinebugReactor
@@ -127,7 +126,9 @@ namespace ShinebugReactor
             foreach (var item in _storage.items)
             {
                 Destroy(item.GetComponent<StateMachineController>());
-                Destroy(item.GetComponent<Modifiers>());
+                var modiferComponents = item.GetComponents<Modifiers>();
+                foreach (var modifier in modiferComponents)
+                    Destroy(modifier);
             }
 
             foreach (var shinebug in _shinebugs)
@@ -164,7 +165,9 @@ namespace ShinebugReactor
             else
             {
                 Destroy(go.GetComponent<StateMachineController>());
-                Destroy(go.GetComponent<Modifiers>());
+                var modiferComponents = go.GetComponents<Modifiers>();
+                foreach (var modifier in modiferComponents)
+                    Destroy(modifier);
                 var values = _shinebugEggValues[nameStr];
                 _shinebugEggs.Add(new ShinebugEggSimulator(nameStr, values.TimeToHatch, values.AdultLife,
                     values.AdultLux, go));
@@ -246,6 +249,9 @@ namespace ShinebugReactor
                 var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(eggName),
                     Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
                     Grid.SceneLayer.Front);
+                var modiferComponents = eggItem.GetComponents<Modifiers>();
+                foreach (var modifier in modiferComponents)
+                    Destroy(modifier);
 #if DEBUG
                 Debug.Log($"Shinebug Egg: {eggItem}");
 #endif

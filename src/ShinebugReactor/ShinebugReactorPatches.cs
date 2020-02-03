@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using CaiLib.Config;
 using CaiLib.Utils;
@@ -14,7 +15,10 @@ namespace ShinebugReactor
 
         public static void OnLoad()
         {
-            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Debug.Log(
+                $"[ShinebugReactor] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
             var confFile = Path.Combine(assemblyPath, "Config.json");
             var defaultConf = Path.Combine(assemblyPath, "Config_Default.json");
             if (!File.Exists(confFile))
