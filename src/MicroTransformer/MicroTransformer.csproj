@@ -76,7 +76,6 @@
       del $(TargetName)-merged.pdb
       tasklist /FI "IMAGENAME eq OxygenNotIncluded.exe" 2&gt;NUL | find /I /N "OxygenNotIncluded.exe"&gt;NUL
       if "%ERRORLEVEL%"=="0" taskkill /f /im OxygenNotIncluded.exe
-      xcopy /FRYIS $(SolutionDir)Assets\$(ProjectName) $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
       xcopy /FRYIS $(TargetDir)* $(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\$(ProjectName)\
       steam -applaunch 457140
     </PostBuildEvent>
