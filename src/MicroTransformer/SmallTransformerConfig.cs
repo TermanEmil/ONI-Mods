@@ -19,18 +19,18 @@ namespace MicroTransformer
         public override BuildingDef CreateBuildingDef()
         {
             var buildingDef = BuildingTemplates.CreateBuildingDef(
-                id: Id,
-                width: 2,
-                height: 1,
-                anim: "micro_transformer_kanim",
-                hitpoints: BUILDINGS.HITPOINTS.TIER2,
+                Id,
+                2,
+                1,
+                "micro_transformer_kanim",
+                BUILDINGS.HITPOINTS.TIER2,
                 BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER0,
-                construction_mass: BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
-                construction_materials: MATERIALS.ALL_METALS,
-                melting_point: BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-                build_location_rule: BuildLocationRule.Anywhere,
-                decor: BUILDINGS.DECOR.PENALTY.TIER1,
-                noise: NOISE_POLLUTION.NOISY.TIER0
+                BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
+                MATERIALS.ALL_METALS,
+                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
+                BuildLocationRule.Anywhere,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                NOISE_POLLUTION.NOISY.TIER0
             );
 
             buildingDef.RequiresPowerInput = true;
