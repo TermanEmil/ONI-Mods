@@ -77,7 +77,7 @@
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <PropertyGroup>
         <PostBuildEvent>
-            $(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727
+            $(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:\Windows\Microsoft.NET\Framework64\v4.0.30319
 
             xcopy /RY "$(TargetDir)$(TargetName)-merged.dll" "$(TargetDir)$(TargetName).dll"
             del $(TargetName)-merged.dll
