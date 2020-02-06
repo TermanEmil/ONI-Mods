@@ -68,13 +68,19 @@ namespace MoreCanisterFillersMod
 
 
         // Allows the Transfer Arm to pick up liquids and gasses
-        [HarmonyPatch(typeof(SolidTransferArm), MethodType.Constructor)]
+        [HarmonyPatch(typeof(SolidTransferArm), "IsPickupableRelevantToMyInterests")]
         public class TransferArmFix
         {
-            public static void Postfix(ref SolidTransferArm __instance)
+            private static bool _hasPatched;
+
+            public static void Prefix(ref SolidTransferArm __instance)
             {
-                SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
-                    .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
+                if (!_hasPatched)
+                {
+                    _hasPatched = true;
+                    SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
+                        .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
+                }
             }
         }
     }
