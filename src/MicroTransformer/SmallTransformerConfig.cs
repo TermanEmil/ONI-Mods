@@ -39,7 +39,7 @@ namespace MicroTransformer
             buildingDef.PowerOutputOffset = new CellOffset(1, 0);
             buildingDef.ElectricalArrowOffset = new CellOffset(1, 0);
             buildingDef.ExhaustKilowattsWhenActive = 0.0f;
-            buildingDef.SelfHeatKilowattsWhenActive = 1f;
+            buildingDef.SelfHeatKilowattsWhenActive = 0.75f;
             buildingDef.ViewMode = OverlayModes.Power.ID;
             buildingDef.Entombable = true;
             buildingDef.GeneratorWattageRating = 750f;

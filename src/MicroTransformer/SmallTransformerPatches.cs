@@ -6,6 +6,8 @@ namespace MicroTransformer
     {
         public static void OnLoad()
         {
+            CaiLib.Logger.Logger.LogInit();
+            
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Power, SmallTransformerConfig.Id);
             BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Food.Ranching, SmallTransformerConfig.Id);
             StringUtils.AddBuildingStrings(SmallTransformerConfig.Id, SmallTransformerConfig.DisplayName,

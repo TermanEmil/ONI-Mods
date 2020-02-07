@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
     <folder id="0">
-        <file id="0" name="transformer_base_0.png" width="200" height="100" pivot_x="0.25" pivot_y="0.5"/>
+        <file id="0" name="transformer_base_0.png" width="200" height="100" pivot_x="0.5" pivot_y="0"/>
         <file id="1" name="electric_bolt_e_bloom_0.png" width="112" height="48" pivot_x="0.5" pivot_y="0.5"/>
         <file id="2" name="electric_bolt_e_bloom_3.png" width="152" height="56" pivot_x="0.5" pivot_y="0.5"/>
         <file id="3" name="electric_bolt_e_bloom_4.png" width="164" height="60" pivot_x="0.5" pivot_y="0.5"/>
         <file id="4" name="electric_bolt_e_bloom_6.png" width="162" height="56" pivot_x="0.5" pivot_y="0.5"/>
         <file id="5" name="electric_bolt_e_bloom_8.png" width="162" height="56" pivot_x="0.5" pivot_y="0.5"/>
         <file id="6" name="electric_bolt_e_bloom_10.png" width="144" height="44" pivot_x="0.5" pivot_y="0.5"/>
-        <file id="7" name="transformer_place_0.png" width="200" height="100" pivot_x="0.25" pivot_y="0.5"/>
+        <file id="7" name="transformer_place_0.png" width="200" height="100" pivot_x="0.5" pivot_y="0"/>
         <file id="8" name="ui_0.png" width="150" height="120" pivot_x="0.5" pivot_y="0"/>
     </folder>
     <entity id="0" name="micro_transformer">
@@ -44,7 +44,7 @@
                     <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="1" time="693" spin="0">
-                    <object folder="0" file="0" angle="0" scale_x="1.05" scale_y="1.05"/>
+                    <object folder="0" file="0" angle="0" scale_x="1.05"/>
                 </key>
             </timeline>
         </animation>
@@ -68,19 +68,19 @@
             </mainline>
             <timeline id="0" name="transformer_base_0_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="1" time="33" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="2" time="66" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="3" time="99" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="4" time="132" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
             </timeline>
         </animation>
@@ -104,19 +104,19 @@
             </mainline>
             <timeline id="0" name="transformer_base_0_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="1" time="33" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="2" time="66" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="3" time="99" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="4" time="132" spin="0">
-                    <object folder="0" file="0"/>
+                    <object folder="0" file="0" angle="0"/>
                 </key>
             </timeline>
         </animation>
@@ -140,19 +140,19 @@
             </mainline>
             <timeline id="0" name="transformer_place_0">
                 <key id="0" spin="0">
-                    <object folder="0" file="7"/>
+                    <object folder="0" file="7" angle="0"/>
                 </key>
                 <key id="1" time="33" spin="0">
-                    <object folder="0" file="7"/>
+                    <object folder="0" file="7" angle="0"/>
                 </key>
                 <key id="2" time="66" spin="0">
-                    <object folder="0" file="7"/>
+                    <object folder="0" file="7" angle="0"/>
                 </key>
                 <key id="3" time="99" spin="0">
-                    <object folder="0" file="7"/>
+                    <object folder="0" file="7" angle="0"/>
                 </key>
                 <key id="4" time="132" spin="0">
-                    <object folder="0" file="7"/>
+                    <object folder="0" file="7" angle="0"/>
                 </key>
             </timeline>
         </animation>
@@ -176,19 +176,19 @@
             </mainline>
             <timeline id="0" name="ui_0">
                 <key id="0" spin="0">
-                    <object folder="0" file="8" x="-1.724138" y="-24.519787"/>
+                    <object folder="0" file="8" x="-1.724138" y="-24.519787" angle="0"/>
                 </key>
                 <key id="1" time="33" spin="0">
-                    <object folder="0" file="8" x="-1.724138" y="-24.519787"/>
+                    <object folder="0" file="8" x="-1.724138" y="-24.519787" angle="0"/>
                 </key>
                 <key id="2" time="66" spin="0">
-                    <object folder="0" file="8" x="-1.724138" y="-24.519787"/>
+                    <object folder="0" file="8" x="-1.724138" y="-24.519787" angle="0"/>
                 </key>
                 <key id="3" time="99" spin="0">
-                    <object folder="0" file="8" x="-1.724138" y="-24.519787"/>
+                    <object folder="0" file="8" x="-1.724138" y="-24.519787" angle="0"/>
                 </key>
                 <key id="4" time="132" spin="0">
-                    <object folder="0" file="8" x="-1.724138" y="-24.519787"/>
+                    <object folder="0" file="8" x="-1.724138" y="-24.519787" angle="0"/>
                 </key>
             </timeline>
         </animation>
@@ -247,22 +247,22 @@
             </timeline>
             <timeline id="1" name="electric_bolt_e_bloom_0">
                 <key id="0" spin="0">
-                    <object folder="0" file="1" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="1" x="10" y="25" angle="0"/>
                 </key>
                 <key id="1" time="33" spin="0">
-                    <object folder="0" file="2" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="2" x="10" y="25" angle="0"/>
                 </key>
                 <key id="2" time="66" spin="0">
-                    <object folder="0" file="3" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="3" x="10" y="25" angle="0"/>
                 </key>
                 <key id="3" time="99" spin="0">
-                    <object folder="0" file="3" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="3" x="10" y="25" angle="0"/>
                 </key>
                 <key id="4" time="132" spin="0">
-                    <object folder="0" file="5" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="5" x="10" y="25" angle="0"/>
                 </key>
                 <key id="5" time="165" spin="0">
-                    <object folder="0" file="6" x="60" y="-19" angle="0"/>
+                    <object folder="0" file="6" x="10" y="25" angle="0"/>
                 </key>
             </timeline>
         </animation>
