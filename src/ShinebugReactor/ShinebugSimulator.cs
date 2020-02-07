@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ShinebugReactor
 {
@@ -8,6 +9,10 @@ namespace ShinebugReactor
         public float Lux;
         public float MaxAge;
         public string Name;
+
+        // We need these for some DUMB reason
+        [NonSerialized] public ShinebugEggSimulator Egg;
+        [NonSerialized] public GameObject Item;
 
         public ShinebugSimulator(string name = "", float age = 0, float maxAge = 0, float lux = 0)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ShinebugReactor
 {
@@ -9,9 +10,15 @@ namespace ShinebugReactor
         public float LuxToGive;
         public float TimeToHatch;
         public string Name;
+
+        [FormerlySerializedAs("Item")]
         public GameObject EggItem;
 
-        public ShinebugEggSimulator(string name = "", float timeToHatch = 0, float grownLifeTime = 0, float lux = 0, GameObject egg = null)
+        [NonSerialized] public ShinebugSimulator Shinebug;
+        //[NonSerialized] public GameObject Item;
+
+        public ShinebugEggSimulator(string name = "", float timeToHatch = 0, float grownLifeTime = 0, float lux = 0,
+            GameObject egg = null)
         {
             if (grownLifeTime <= 0)
                 Debug.LogWarning(
