@@ -3,7 +3,6 @@
     <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{482042F6-DB70-4921-BAF7-1077B6B5C12E}</ProjectGuid>
@@ -18,8 +17,6 @@
         </NuGetPackageImportStamp>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))" />
-  </Target>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>false</DebugSymbols>
         <DebugType>none</DebugType>
