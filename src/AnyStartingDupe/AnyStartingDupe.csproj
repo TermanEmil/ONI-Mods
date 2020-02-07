@@ -52,13 +52,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnyStartingDupe.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AssemblyInfo.tt" />
+    <Compile Include="AnyStartingDupe.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <TransformOnBuild>true</TransformOnBuild>
+    <TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" />
   <PropertyGroup>
     <PostBuildEvent>
             tasklist /FI "IMAGENAME eq OxygenNotIncluded.exe" 2&gt;NUL | find /I /N "OxygenNotIncluded.exe"&gt;NUL

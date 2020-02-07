@@ -10,4 +10,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("EdibleDuplicants")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
 
-[assembly: AssemblyVersion("2020.2.5.376")]
+[assembly: AssemblyVersion("2020.2.7.37892")]

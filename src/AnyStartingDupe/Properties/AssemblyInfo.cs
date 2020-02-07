@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("EdibleDuplicants")]
+[assembly: AssemblyTitle("AnyStartingDupe")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("EdibleDuplicants")]
+[assembly: AssemblyProduct("AnyStartingDupe")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
 
-[assembly: AssemblyVersion("2020.2.5.376")]
+[assembly: AssemblyVersion("2020.2.7.37892")]
