@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,15 @@ using UnityEngine;
 
 namespace PriorityZero
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[PriorityZero] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     public static class Util
     {
         public const string ZeroTool = "zeroTool.png";

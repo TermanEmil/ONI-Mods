@@ -15,8 +15,7 @@ namespace ShinebugReactor
 
         public static void OnLoad()
         {
-            Debug.Log(
-                $"[ShinebugReactor] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+            CaiLib.Logger.Logger.LogInit();
 
             var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
             var confFile = Path.Combine(assemblyPath, "Config.json");

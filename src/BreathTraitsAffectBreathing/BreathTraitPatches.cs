@@ -1,9 +1,20 @@
-﻿using Harmony;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Harmony;
 using Klei.AI;
 using STRINGS;
 
 namespace BreathTraitsAffectBreathing
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[BreathTraitsAffectBreathing] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     [HarmonyPatch(typeof(SuffocationMonitor.Instance), MethodType.Constructor, typeof(OxygenBreather))]
     internal class BreathTraitPatches
     {

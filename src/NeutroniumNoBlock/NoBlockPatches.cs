@@ -1,7 +1,18 @@
-﻿using Harmony;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Harmony;
 
 namespace UnblockableRockets
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[UnblockableRockets] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     [HarmonyPatch(typeof(ConditionFlightPathIsClear), "CanReachSpace")]
     public class NoBlockPatches
     {

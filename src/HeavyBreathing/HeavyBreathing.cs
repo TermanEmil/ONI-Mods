@@ -1,12 +1,21 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using Harmony;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace HeavyBreathing
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[HeavyBreathing] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     internal class HeavyBreathing
     {
         [HarmonyPatch(typeof(SplashMessageScreen), "OnPrefabInit")]

@@ -1,9 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using Harmony;
 using UnityEngine;
 
 namespace AssignableShowers
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[AssignableShowers] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     internal class AssignableShowersPatches
     {
         public static AssignableSlot ShowerOwnable = new OwnableSlot("Shower", "Shower");

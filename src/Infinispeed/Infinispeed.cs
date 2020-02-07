@@ -1,7 +1,18 @@
-﻿using Harmony;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Harmony;
 
 namespace Infinispeed
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[Infinispeed] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     [HarmonyPatch(typeof(Workable), nameof(Workable.GetEfficiencyMultiplier))]
     internal class Infinispeed
     {

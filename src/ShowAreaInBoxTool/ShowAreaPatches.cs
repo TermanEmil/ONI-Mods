@@ -1,9 +1,20 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using Harmony;
 using UnityEngine;
 
 namespace ShowAreaInBoxTool
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[ShowAreaInBoxTool] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     [HarmonyPatch(typeof(DragTool), nameof(DragTool.OnMouseMove))]
     public class ShowAreaPatches
     {

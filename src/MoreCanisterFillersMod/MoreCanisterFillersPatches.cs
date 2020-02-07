@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MoreCanisterFillersMod
 {
-    public class MoreCanisterFillers
+    public class MoreCanisterFillersPatches
     {
         public static void OnLoad()
         {

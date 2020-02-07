@@ -7,6 +7,8 @@ namespace OldCritterWrangler
     {
         public static void OnLoad()
         {
+            CaiLib.Logger.Logger.LogInit();
+            
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Food, OldCritterWranglerConfig.Id);
             BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Food.Ranching, OldCritterWranglerConfig.Id);
 

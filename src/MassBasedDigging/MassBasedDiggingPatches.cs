@@ -1,8 +1,19 @@
-﻿using Harmony;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Harmony;
 using UnityEngine;
 
 namespace MassBasedDigging
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log(
+                $"[MassBasedDigging] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+    
     [HarmonyPatch(typeof(Workable), nameof(Workable.GetEfficiencyMultiplier))]
     internal class MassBasedDiggingPatches
     {

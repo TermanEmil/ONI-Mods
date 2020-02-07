@@ -45,8 +45,7 @@ namespace EdibleDuplicants
 
         public static void OnLoad()
         {
-            Debug.Log(
-                $"[EdibleDuplicants] Loading Edible Duplicants mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+            CaiLib.Logger.Logger.LogInit();
 
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Food, ButcherTableConfig.Id);
             Strings.Add("STRINGS.BUILDINGS.PREFABS.BUTCHERTABLE.NAME", ButcherTableConfig.DisplayName);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,10 +9,17 @@ using System.Text;
 using Harmony;
 using Newtonsoft.Json;
 using TUNING;
-using UnityEngine;
 
 namespace FartFrequently
 {
+    public class ModOnLoad
+    {
+        public static void OnLoad()
+        {
+            Debug.Log($"[FartFrequently] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+        }
+    }
+
     internal class FartFrequently
     {
         public static bool TryParse<TEnum>(string value, out TEnum result)
