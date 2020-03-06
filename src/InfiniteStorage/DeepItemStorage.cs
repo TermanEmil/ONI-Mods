@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace InfiniteStorage
 {
-    public class DeepStorageConfig : IBuildingConfig
+    public class DeepItemStorage : IBuildingConfig
     {
         public const string Id = "asquared31415_InfiniteItemStorage";
 

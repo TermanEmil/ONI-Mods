@@ -68,7 +68,7 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="DeepStorageConfig.cs" />
+        <Compile Include="DeepItemStorage.cs" />
         <Compile Include="InfiniteStoragePatches.cs" />
         <Compile Include="InfiniteStorage.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
