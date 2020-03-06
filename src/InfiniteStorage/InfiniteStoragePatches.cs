@@ -14,6 +14,8 @@ namespace InfiniteStorage
             CaiLib.Logger.Logger.LogInit();
 
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Base, DeepItemStorage.Id);
+            BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Base, DeepLiquidStorage.Id);
+            BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Base, DeepGasStorage.Id);
 
             // This registers the locstrings
             // No need to STRINGS.Add or use a custom building strings anything 
