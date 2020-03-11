@@ -16,7 +16,8 @@
                         "And once again, they discovered that these \"laws\" of physics can really be thought of as mere suggestions.";
 
                     // This one goes on the top
-                    public static LocString EFFECT = "Stores an infinite amount of the solid resources of your choosing.";
+                    public static LocString EFFECT =
+                        "Stores an infinite amount of the solid resources of your choosing.";
                 }
 
                 public static class ASQUARED31415_INFINITELIQUIDSTORAGE
@@ -29,7 +30,8 @@
                         "And once again, they discovered that these \"laws\" of physics can really be thought of as mere suggestions.";
 
                     // This one goes on the top
-                    public static LocString EFFECT = "Stores an infinite amount of all liquid resources.";
+                    public static LocString EFFECT =
+                        "Stores an infinite amount of the liquid resources of your choosing.";
                 }
 
                 public static class ASQUARED31415_INFINITEGASSTORAGE
@@ -42,7 +44,7 @@
                         "And once again, they discovered that these \"laws\" of physics can really be thought of as mere suggestions.";
 
                     // This one goes on the top
-                    public static LocString EFFECT = "Stores an infinite amount of all gaseous resources.";
+                    public static LocString EFFECT = "Stores an infinite amount of the gaseous resources of your choosing.";
                 }
             }
         }
@@ -55,7 +57,7 @@
                 public static LocString HIDE = "Hide Contents";
 
                 public static LocString SHOW_TOOLTIP =
-                    $"Show the contents of the {BUILDINGS.PREFABS.ASQUARED31415_INFINITEITEMSTORAGE.NAME}. Warning! MAY LAG!";
+                    $"Show the contents of the {BUILDINGS.PREFABS.ASQUARED31415_INFINITEITEMSTORAGE.NAME}.\n<b><color=#FF0000>Warning! MAY LAG!</color></b>";
 
                 public static LocString HIDE_TOOLTIP =
                     $"Hide the contents of the {BUILDINGS.PREFABS.ASQUARED31415_INFINITEITEMSTORAGE.NAME}.";

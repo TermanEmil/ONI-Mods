@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using TUNING;
 using UnityEngine;
 
@@ -12,37 +12,54 @@ namespace InfiniteStorage
 
         public override BuildingDef CreateBuildingDef()
         {
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 4, 3, Anim, 3, 60f,
-                BUILDINGS.CONSTRUCTION_MASS_KG.TIER5, MATERIALS.REFINED_METALS, 1_600f, BuildLocationRule.OnFloor,
-                BUILDINGS.DECOR.PENALTY.TIER1, NOISE_POLLUTION.NONE);
+            var buildingDef = BuildingTemplates.CreateBuildingDef(
+                DeepGasStorage.Id,
+                4,
+                3,
+                DeepGasStorage.Anim,
+                3,
+                60f,
+                BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
+                MATERIALS.REFINED_METALS,
+                1_600f,
+                BuildLocationRule.OnFloor,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                NOISE_POLLUTION.NONE
+            );
+
             buildingDef.Floodable = false;
             buildingDef.InputConduitType = ConduitType.Gas;
             buildingDef.OutputConduitType = ConduitType.Gas;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.Overheatable = false;
 
-            GeneratedBuildings.RegisterWithOverlay(OverlayScreen.GasVentIDs, Id);
+            GeneratedBuildings.RegisterWithOverlay( OverlayScreen.GasVentIDs, DeepGasStorage.Id );
 
             return buildingDef;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
+        public override void ConfigureBuildingTemplate( GameObject go, Tag prefab_tag )
         {
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
+            go.GetComponent<KPrefabID>().AddTag( RoomConstraints.ConstraintTags.IndustrialMachinery );
             var storage = go.AddOrGet<Storage>();
             storage.capacityKg = float.PositiveInfinity;
             storage.showDescriptor = true;
             storage.allowItemRemoval = false;
             storage.allowSublimation = false;
             storage.storageFilters = STORAGEFILTERS.GASES;
-            storage.showInUI = true;
-            storage.SetDefaultStoredItemModifiers(GasReservoirConfig.ReservoirStoredItemModifiers);
+            storage.showInUI = false;
+            storage.SetDefaultStoredItemModifiers( GasReservoirConfig.ReservoirStoredItemModifiers );
+
+            // This adds the filtered storage without the additional restrictions
+            // Additionally, set it to be a gas storage, which fixes the FilteredStorage display issues
+            go.AddOrGet<InfiniteStorage>().IsGasStorage = true;
+
             go.AddOrGet<UserNameable>();
+            go.AddOrGet<ShowHideContentsButton>();
 
             var conduitConsumer = go.AddOrGet<ConduitConsumer>();
             conduitConsumer.conduitType = ConduitType.Gas;
             conduitConsumer.ignoreMinMassCheck = true;
-            conduitConsumer.forceAlwaysSatisfied = true;
             conduitConsumer.alwaysConsume = true;
             conduitConsumer.capacityKG = storage.capacityKg;
             var conduitDispenser = go.AddOrGet<ConduitDispenser>();
@@ -50,10 +67,10 @@ namespace InfiniteStorage
             conduitDispenser.elementFilter = null;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
             go.AddOrGetDef<StorageController.Def>();
-            go.GetComponent<KPrefabID>().AddTag(GameTags.OverlayBehindConduits);
+            go.GetComponent<KPrefabID>().AddTag( GameTags.OverlayBehindConduits );
         }
     }
 }

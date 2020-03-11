@@ -1,5 +1,4 @@
-﻿using System;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace InfiniteStorage
@@ -12,19 +11,31 @@ namespace InfiniteStorage
 
         public override BuildingDef CreateBuildingDef()
         {
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 4, 3, Anim, 3, 60f,
-                BUILDINGS.CONSTRUCTION_MASS_KG.TIER5, MATERIALS.REFINED_METALS, 1_600f, BuildLocationRule.OnFloor,
-                BUILDINGS.DECOR.PENALTY.TIER1, NOISE_POLLUTION.NONE);
+            var buildingDef = BuildingTemplates.CreateBuildingDef(
+                DeepItemStorage.Id,
+                4,
+                3,
+                DeepItemStorage.Anim,
+                3,
+                60f,
+                BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
+                MATERIALS.REFINED_METALS,
+                1_600f,
+                BuildLocationRule.OnFloor,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                NOISE_POLLUTION.NONE
+            );
+
             buildingDef.Floodable = false;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.Overheatable = false;
             return buildingDef;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
+        public override void ConfigureBuildingTemplate( GameObject go, Tag prefab_tag )
         {
-            Prioritizable.AddRef(go);
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
+            Prioritizable.AddRef( go );
+            go.GetComponent<KPrefabID>().AddTag( RoomConstraints.ConstraintTags.IndustrialMachinery );
             var storage = go.AddOrGet<Storage>();
             storage.capacityKg = float.PositiveInfinity;
             storage.allowItemRemoval = true;
@@ -34,12 +45,10 @@ namespace InfiniteStorage
             storage.showInUI = false;
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.StorageLocker;
             go.AddOrGet<InfiniteStorage>();
+            go.AddOrGet<ShowHideContentsButton>();
             go.AddOrGet<UserNameable>();
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
-        {
-            go.AddOrGetDef<StorageController.Def>();
-        }
+        public override void DoPostConfigureComplete( GameObject go ) { go.AddOrGetDef<StorageController.Def>(); }
     }
 }
