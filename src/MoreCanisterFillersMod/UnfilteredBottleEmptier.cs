@@ -109,7 +109,7 @@ namespace MoreCanisterFillersMod
                     },
                     resolveTooltipCallback = (str, data) =>
                     {
-                        var bottleEmptier = (BottleEmptier) data;
+                        var bottleEmptier = (UnfilteredBottleEmptier) data;
                         if (bottleEmptier == null)
                             return str;
                         return (string) BUILDING.STATUSITEMS.BOTTLE_EMPTIER.DENIED.TOOLTIP;
