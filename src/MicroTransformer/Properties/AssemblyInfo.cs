@@ -10,4 +10,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("MicroTransformer")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
 
-[assembly: AssemblyVersion("2020.2.7.37891")]
+[assembly: AssemblyVersion("2020.3.18.24992")]
