@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using CaiLib.Utils;
 using Harmony;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Timer = System.Timers.Timer;
 
 // ReSharper disable UnusedType.Global
 
@@ -70,10 +72,9 @@ namespace InfiniteStorage
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldfld, target ) );
                         var getInfStorage = AccessTools.Method(
                             typeof( GameObject ),
-                            "GetComponent",
-                            null,
-                            new[] {typeof( InfiniteStorage )}
+                            "GetComponent"
                         );
+                        getInfStorage = getInfStorage.MakeGenericMethod(typeof(InfiniteStorage));
 
                         Debug.Log( getInfStorage );
 
@@ -88,10 +89,14 @@ namespace InfiniteStorage
                         Debug.Log( goInequality );
 
                         codes.Insert( i++, new CodeInstruction( OpCodes.Call, goInequality ) );
-                        codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, (byte) 0x02 ) );
+                        var branchLabel = new Label();
+                        codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, branchLabel ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldc_I4_1 ) );
-                        codes.Insert( i, new CodeInstruction( OpCodes.Stloc_0 ) );
-
+                        codes.Insert( i++, new CodeInstruction( OpCodes.Stloc_0 ) );
+                        
+                        // i is at the existing stloc.0 we piggyback off of
+                        // We want the label on the next instruction
+                        codes[i].labels = new List<Label> {branchLabel};
                         break;
                     }
                 }
@@ -106,6 +111,43 @@ namespace InfiniteStorage
             }
         }
 
+        [HarmonyPatch(typeof(TreeFilterableSideScreen), "AddRow")]
+        public class TreeFilterableSideScreen_AddRow_Patches
+        {
+            public static void Postfix(TreeFilterableSideScreen __instance, TreeFilterableSideScreenRow __result, Tag rowTag)
+            {
+                var sw = new Stopwatch();
+                sw.Start();
+                var instance = Traverse.Create(__instance);
+                var target = (GameObject) instance.Field("target").GetValue();
+                if (target.GetComponent<InfiniteStorage>() != null)
+                {
+                    TreeFilterable targetFilterable = (TreeFilterable) instance.Field("targetFilterable").GetValue();
+                    Debug.Log(rowTag);
+                    var map = new Dictionary<Tag, bool>();
+                    foreach (var element in ElementLoader.elements)
+                    {
+                        // We also need to match storage filter
+                        if (element.HasTag(rowTag) && target.GetComponent<TreeFilterable>().AcceptedTags.Contains(element.tag))
+                        {
+                            Debug.Log(element.name);
+                            map.Add(element.tag, targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                        }
+                    }
+                    
+                    // Does state matter???  It looks unused
+                    // Klei why
+                    __result.SetElement(rowTag, targetFilterable.ContainsTag(rowTag), map);
+                }
+                sw.Stop();
+                TimeSpan ts = sw.Elapsed;
+                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours, ts.Minutes, ts.Seconds,
+                    ts.Milliseconds / 10);
+                Debug.Log($"Method took {elapsedTime}");
+            }
+        }
+
         [HarmonyPatch( typeof( ConduitConsumer ), "Consume" )]
         public class ConduitConsumer_Consume_Patches
         {
@@ -116,33 +158,18 @@ namespace InfiniteStorage
                     return true;
 
                 var contents = conduit_mgr.GetContents( ___utilityCell );
-                //              if ( contents.mass <= 0.0f )
-                //                return true;
 
                 var storage = __instance.gameObject.GetComponent<Storage>();
                 if ( storage == null )
                     return true;
 
                 var filterable = __instance.gameObject.GetComponent<TreeFilterable>();
-                if ( filterable == null )
+                if (filterable == null)
                     return true;
-
-            #if DEBUG
-                Debug.Log( "We have component and storage and filterable" );
-                foreach ( var t in filterable.AcceptedTags )
-                    Debug.Log( $"Accepted tag: {t}" );
-            #endif
 
                 // If it doesn't contain the tag, return false, don't consume
                 var tag = ElementLoader.FindElementByHash( contents.element ).tag;
-            #if DEBUG
-                Debug.Log( $"Element tag: {tag}" );
-            #endif
-
                 var ret = filterable.AcceptedTags.Contains( tag );
-            #if DEBUG
-                Debug.Log( $"Returning {ret}" );
-            #endif
                 return ret;
             }
         }
