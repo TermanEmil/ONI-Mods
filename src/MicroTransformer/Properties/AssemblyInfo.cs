@@ -8,6 +8,6 @@ using System.Reflection;
 [assembly: AssemblyTitle( "MicroTransformer" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyProduct( "MicroTransformer" )]
-[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
+[assembly: AssemblyCopyright( "Copyright ï¿½ asquared31415 2020" )]
 
 [assembly: AssemblyVersion( "2020.3.18.24992" )]
