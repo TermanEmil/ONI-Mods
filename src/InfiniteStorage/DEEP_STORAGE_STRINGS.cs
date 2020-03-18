@@ -44,7 +44,8 @@
                         "And once again, they discovered that these \"laws\" of physics can really be thought of as mere suggestions.";
 
                     // This one goes on the top
-                    public static LocString EFFECT = "Stores an infinite amount of the gaseous resources of your choosing.";
+                    public static LocString EFFECT =
+                        "Stores an infinite amount of the gaseous resources of your choosing.";
                 }
             }
         }

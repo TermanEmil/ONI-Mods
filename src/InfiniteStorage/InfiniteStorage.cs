@@ -3,7 +3,6 @@
     public class InfiniteStorage : KMonoBehaviour
     {
         public FilteredStorage _filteredStorage;
-        public bool IsGasStorage;
 
         protected override void OnPrefabInit()
         {

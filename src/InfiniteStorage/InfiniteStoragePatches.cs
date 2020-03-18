@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,7 +7,6 @@ using CaiLib.Utils;
 using Harmony;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Timer = System.Timers.Timer;
 
 // ReSharper disable UnusedType.Global
 
@@ -70,11 +68,8 @@ namespace InfiniteStorage
                         Debug.Log( target );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldarg_0 ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldfld, target ) );
-                        var getInfStorage = AccessTools.Method(
-                            typeof( GameObject ),
-                            "GetComponent"
-                        );
-                        getInfStorage = getInfStorage.MakeGenericMethod(typeof(InfiniteStorage));
+                        var getInfStorage = AccessTools.Method( typeof( GameObject ), "GetComponent" );
+                        getInfStorage = getInfStorage.MakeGenericMethod( typeof( InfiniteStorage ) );
 
                         Debug.Log( getInfStorage );
 
@@ -93,7 +88,7 @@ namespace InfiniteStorage
                         codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, branchLabel ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldc_I4_1 ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Stloc_0 ) );
-                        
+
                         // i is at the existing stloc.0 we piggyback off of
                         // We want the label on the next instruction
                         codes[i].labels = new List<Label> {branchLabel};
@@ -111,40 +106,54 @@ namespace InfiniteStorage
             }
         }
 
-        [HarmonyPatch(typeof(TreeFilterableSideScreen), "AddRow")]
+        [HarmonyPatch( typeof( TreeFilterableSideScreen ), "AddRow" )]
         public class TreeFilterableSideScreen_AddRow_Patches
         {
-            public static void Postfix(TreeFilterableSideScreen __instance, TreeFilterableSideScreenRow __result, Tag rowTag)
+            public static void Postfix(
+                TreeFilterableSideScreen __instance,
+                TreeFilterableSideScreenRow __result,
+                Tag rowTag
+            )
             {
                 var sw = new Stopwatch();
                 sw.Start();
-                var instance = Traverse.Create(__instance);
-                var target = (GameObject) instance.Field("target").GetValue();
-                if (target.GetComponent<InfiniteStorage>() != null)
+                var instance = Traverse.Create( __instance );
+                var target = (GameObject) instance.Field( "target" ).GetValue();
+                if ( target.GetComponent<InfiniteStorage>() != null )
                 {
-                    TreeFilterable targetFilterable = (TreeFilterable) instance.Field("targetFilterable").GetValue();
-                    Debug.Log(rowTag);
+                    var targetFilterable = (TreeFilterable) instance.Field( "targetFilterable" ).GetValue();
+                    Debug.Log( rowTag );
                     var map = new Dictionary<Tag, bool>();
-                    foreach (var element in ElementLoader.elements)
+                    foreach ( var element in ElementLoader.elements )
                     {
                         // We also need to match storage filter
-                        if (element.HasTag(rowTag) && target.GetComponent<TreeFilterable>().AcceptedTags.Contains(element.tag))
+                        if ( element.HasTag( rowTag ) &&
+                             target.GetComponent<TreeFilterable>().AcceptedTags.Contains( element.tag ) )
                         {
-                            Debug.Log(element.name);
-                            map.Add(element.tag, targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                            Debug.Log( element.name );
+                            map.Add(
+                                element.tag,
+                                targetFilterable.ContainsTag( element.tag ) || targetFilterable.ContainsTag( rowTag )
+                            );
                         }
                     }
-                    
+
                     // Does state matter???  It looks unused
                     // Klei why
-                    __result.SetElement(rowTag, targetFilterable.ContainsTag(rowTag), map);
+                    __result.SetElement( rowTag, targetFilterable.ContainsTag( rowTag ), map );
                 }
+
                 sw.Stop();
-                TimeSpan ts = sw.Elapsed;
-                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                    ts.Hours, ts.Minutes, ts.Seconds,
-                    ts.Milliseconds / 10);
-                Debug.Log($"Method took {elapsedTime}");
+                var ts = sw.Elapsed;
+                var elapsedTime = string.Format(
+                    "{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours,
+                    ts.Minutes,
+                    ts.Seconds,
+                    ts.Milliseconds / 10
+                );
+
+                Debug.Log( $"Method took {elapsedTime}" );
             }
         }
 
@@ -164,7 +173,7 @@ namespace InfiniteStorage
                     return true;
 
                 var filterable = __instance.gameObject.GetComponent<TreeFilterable>();
-                if (filterable == null)
+                if ( filterable == null )
                     return true;
 
                 // If it doesn't contain the tag, return false, don't consume
