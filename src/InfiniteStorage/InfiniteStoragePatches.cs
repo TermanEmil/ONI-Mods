@@ -93,7 +93,7 @@ namespace InfiniteStorage
                         codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, branchLabel ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldc_I4_1 ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Stloc_0 ) );
-                        
+
                         // i is at the existing stloc.0 we piggyback off of
                         // We want the label on the next instruction
                         codes[i].labels = new List<Label> {branchLabel};
@@ -106,7 +106,7 @@ namespace InfiniteStorage
             }
         }
 
-        [HarmonyPatch(typeof(TreeFilterableSideScreen), "AddRow")]
+        [HarmonyPatch( typeof( TreeFilterableSideScreen ), "AddRow" )]
         public class TreeFilterableSideScreen_AddRow_Patches
         {
             // Add every prefab for the filters
@@ -166,7 +166,7 @@ namespace InfiniteStorage
                     return true;
 
                 var filterable = __instance.gameObject.GetComponent<TreeFilterable>();
-                if (filterable == null)
+                if ( filterable == null )
                     return true;
 
                 // If it doesn't contain the tag, return false, don't consume
