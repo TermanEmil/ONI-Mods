@@ -7,22 +7,16 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Harmony;
-using KMod;
 using Newtonsoft.Json;
 using Label = System.Reflection.Emit.Label;
 
 namespace ConfigurablePrintingPod
 {
-    public class ConfigurablePrintingPod
+    public static class ConfigurablePrintingPod
     {
         public static PodConfig Config;
 
-        private static readonly FileSystemWatcher Watcher = new FileSystemWatcher()
-        {
-            Path = ConfigHelper.ConfigDir,
-            Filter = "config.json",
-            NotifyFilter = NotifyFilters.LastWrite
-        };
+        private static readonly FileSystemWatcher Watcher = new FileSystemWatcher();
 
         public static void OnLoad()
         {
@@ -31,6 +25,9 @@ namespace ConfigurablePrintingPod
                 $"{FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
             );
             Config = ConfigHelper.ReadConfig();
+            Watcher.Path = ConfigHelper.ConfigDir;
+            Watcher.Filter = "config.json";
+            Watcher.NotifyFilter = NotifyFilters.LastWrite;
             Watcher.Changed += OnConfigChanged;
             Watcher.EnableRaisingEvents = true;
         }
@@ -147,24 +144,91 @@ namespace ConfigurablePrintingPod
     
     public static class ConfigHelper
     {
-        public static readonly string ConfigDir =
-            Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
-
-        private static readonly string ConfigLocation = Path.Combine(ConfigDir, "config.json");
-        
-        public static PodConfig ReadConfig()
+        private static string _configDir;
+        public static string ConfigDir
         {
-            if (!File.Exists(ConfigLocation))
+            get
             {
-                var conf = new PodConfig();
-                WriteConfig(conf);
-                return conf;
-            }
+                try
+                {
+                    _configDir = Directory.GetParent(typeof(ConfigHelper).Assembly.Location).FullName;
+                    return _configDir;
+                }
+                catch (IOException e)
+                {
+                    Debug.LogError($"[ConfigurablePrintingPod] An IOException occurred");
+                    Debug.LogException(e);
+                }
+                catch (SystemException e)
+                {
+                    Debug.LogError("[ConfigurablePrintingPod] A SystemException occurred");
+                    Debug.LogException(e);
+                }
 
-            return JsonConvert.DeserializeObject<PodConfig>(File.ReadAllText(ConfigLocation));
+                return null;
+            }
         }
 
-        private static void WriteConfig(PodConfig conf) =>
-            File.WriteAllText(ConfigLocation, JsonConvert.SerializeObject(conf));
+        private static string ConfigLocation
+        {
+            get
+            {
+                try
+                {
+                    return Path.Combine(ConfigDir, "config.json");
+                }
+                catch (ArgumentNullException)
+                {
+                    Debug.LogError("[ConfigurablePrintingPod] ConfigDir null!");
+                }
+
+                return null;
+            }
+        }
+
+        public static PodConfig ReadConfig()
+        {
+            try
+            {
+                if (!File.Exists(ConfigLocation))
+                {
+                    var conf = new PodConfig();
+                    WriteConfig(conf);
+                    return conf;
+                }
+
+                return JsonConvert.DeserializeObject<PodConfig>(File.ReadAllText(ConfigLocation));
+            }
+            catch (JsonException e)
+            {
+                Debug.LogError("[ConfigurablePrintingPod] A JsonException occurred");
+                Debug.LogException(e);
+            }
+            
+            return new PodConfig();
+        }
+
+        private static void WriteConfig(PodConfig conf)
+        {
+            try
+            {
+                File.WriteAllText(ConfigLocation, JsonConvert.SerializeObject(conf));
+            }
+            catch (JsonException e)
+            {
+                Debug.LogError("[ConfigurablePrintingPod] A JsonException occurred");
+                Debug.LogException(e);
+            }
+            catch (IOException e)
+            {
+                Debug.LogError($"[ConfigurablePrintingPod] An IOException occurred");
+                Debug.LogException(e);
+            }
+            catch (SystemException e)
+            {
+                Debug.LogError("[ConfigurablePrintingPod] A SystemException occurred");
+                Debug.LogException(e);
+            }
+        }
     }
 }
