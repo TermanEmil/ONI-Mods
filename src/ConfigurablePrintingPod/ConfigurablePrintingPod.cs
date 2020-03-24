@@ -33,11 +33,6 @@ namespace ConfigurablePrintingPod
             Config = ConfigHelper.ReadConfig();
             Watcher.Changed += OnConfigChanged;
             Watcher.EnableRaisingEvents = true;
-
-            foreach (var mod in Global.Instance.modManager.mods)
-            {
-                Debug.Log(mod.label.id);
-            }
         }
 
         private static void OnConfigChanged(object o, FileSystemEventArgs e)
@@ -46,18 +41,6 @@ namespace ConfigurablePrintingPod
             Config = ConfigHelper.ReadConfig();
         }
     }
-    
-    /*public class UiStuff
-    {
-        [HarmonyPatch(typeof(Mod), "Load")]
-        public class Mod_Load_Patches
-        {
-            public static void Postfix(Mod __instance)
-            {
-                Debug.Log(__instance.label);m
-            }
-        }
-    }*/
 
     [HarmonyPatch(typeof(CharacterSelectionController), "InitializeContainers")]
     public class CharacterSelectionControler_InitializeContainers_Patches
