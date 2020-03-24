@@ -114,37 +114,44 @@ namespace InfiniteStorage
         [HarmonyPatch(typeof(TreeFilterableSideScreen), "AddRow")]
         public class TreeFilterableSideScreen_AddRow_Patches
         {
-            public static void Postfix(TreeFilterableSideScreen __instance, TreeFilterableSideScreenRow __result, Tag rowTag)
+            // Add every prefab for the filters
+            // There's some duplication that is very D:
+            public static void Postfix(TreeFilterableSideScreen __instance, TreeFilterableSideScreenRow __result, UIPool<TreeFilterableSideScreenRow> ___rowPool, Tag rowTag)
             {
-                var sw = new Stopwatch();
-                sw.Start();
                 var instance = Traverse.Create(__instance);
                 var target = (GameObject) instance.Field("target").GetValue();
-                if (target.GetComponent<InfiniteStorage>() != null)
+                if (target == null || target.GetComponent<InfiniteStorage>() == null) return;
+
+                var targetFilterable = (TreeFilterable) instance.Field("targetFilterable").GetValue();
+                var map = new Dictionary<Tag, bool>();
+                foreach (var go in Assets.GetPrefabsWithTag(rowTag))
                 {
-                    TreeFilterable targetFilterable = (TreeFilterable) instance.Field("targetFilterable").GetValue();
-                    Debug.Log(rowTag);
-                    var map = new Dictionary<Tag, bool>();
-                    foreach (var element in ElementLoader.elements)
+                    var prefab = go.GetComponent<KPrefabID>();
+                    if (prefab.GetComponent<Pickupable>() != null)
                     {
-                        // We also need to match storage filter
-                        if (element.HasTag(rowTag) && target.GetComponent<TreeFilterable>().AcceptedTags.Contains(element.tag))
+                        var element = ElementLoader.GetElement(prefab.PrefabTag);
+                        if (element != null)
                         {
-                            Debug.Log(element.name);
-                            map.Add(element.tag, targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                            if(!element.disabled && element.materialCategory == rowTag)
+                                map.Add(element.tag, targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                        }
+                        else
+                        {
+                            map.Add(prefab.PrefabTag, targetFilterable.ContainsTag(prefab.PrefabTag) || targetFilterable.ContainsTag(rowTag));
                         }
                     }
+                }
                     
-                    // Does state matter???  It looks unused
-                    // Klei why
+                // Does state matter???  It looks unused
+                // Klei why
+                if (map.Count > 0)
+                {
                     __result.SetElement(rowTag, targetFilterable.ContainsTag(rowTag), map);
                 }
-                sw.Stop();
-                TimeSpan ts = sw.Elapsed;
-                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                    ts.Hours, ts.Minutes, ts.Seconds,
-                    ts.Milliseconds / 10);
-                Debug.Log($"Method took {elapsedTime}");
+                else
+                {
+                    ___rowPool.ClearElement(__result);
+                }
             }
         }
 
