@@ -1,4 +1,5 @@
-﻿using TUNING;
+﻿using System.Collections.Generic;
+using TUNING;
 using UnityEngine;
 
 namespace InfiniteStorage
@@ -6,16 +7,15 @@ namespace InfiniteStorage
     public class DeepLiquidStorage : IBuildingConfig
     {
         public const string Id = "asquared31415_InfiniteLiquidStorage";
-
         private const string Anim = "liquidreservoir_kanim";
 
         public override BuildingDef CreateBuildingDef()
         {
             var buildingDef = BuildingTemplates.CreateBuildingDef(
-                DeepLiquidStorage.Id,
-                4,
+                Id,
+                2,
                 3,
-                DeepLiquidStorage.Anim,
+                Anim,
                 3,
                 60f,
                 BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
@@ -32,7 +32,7 @@ namespace InfiniteStorage
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.Overheatable = false;
 
-            GeneratedBuildings.RegisterWithOverlay( OverlayScreen.LiquidVentIDs, DeepLiquidStorage.Id );
+            GeneratedBuildings.RegisterWithOverlay( OverlayScreen.LiquidVentIDs, Id );
 
             return buildingDef;
         }
@@ -47,7 +47,12 @@ namespace InfiniteStorage
             storage.allowSublimation = false;
             storage.storageFilters = STORAGEFILTERS.LIQUIDS;
             storage.showInUI = false;
-            storage.SetDefaultStoredItemModifiers( GasReservoirConfig.ReservoirStoredItemModifiers );
+            storage.SetDefaultStoredItemModifiers(new List<Storage.StoredItemModifier>()
+            {
+                Storage.StoredItemModifier.Insulate,
+                Storage.StoredItemModifier.Hide,
+                Storage.StoredItemModifier.Seal
+            });
             go.AddOrGet<InfiniteStorage>();
             go.AddOrGet<UserNameable>();
             go.AddOrGet<ShowHideContentsButton>();

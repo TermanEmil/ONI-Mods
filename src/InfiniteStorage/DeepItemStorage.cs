@@ -1,4 +1,5 @@
-﻿using TUNING;
+﻿using System.Collections.Generic;
+using TUNING;
 using UnityEngine;
 
 namespace InfiniteStorage
@@ -6,16 +7,15 @@ namespace InfiniteStorage
     public class DeepItemStorage : IBuildingConfig
     {
         public const string Id = "asquared31415_InfiniteItemStorage";
-
         private const string Anim = "liquidreservoir_kanim";
 
         public override BuildingDef CreateBuildingDef()
         {
             var buildingDef = BuildingTemplates.CreateBuildingDef(
-                DeepItemStorage.Id,
-                4,
+                Id,
+                2,
                 3,
-                DeepItemStorage.Anim,
+                Anim,
                 3,
                 60f,
                 BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
@@ -40,6 +40,12 @@ namespace InfiniteStorage
             storage.capacityKg = float.PositiveInfinity;
             storage.allowItemRemoval = true;
             storage.allowSublimation = false;
+            storage.SetDefaultStoredItemModifiers(new List<Storage.StoredItemModifier>()
+            {
+                Storage.StoredItemModifier.Insulate,
+                Storage.StoredItemModifier.Hide,
+                Storage.StoredItemModifier.Seal
+            });
             storage.storageFilters = STORAGEFILTERS.NOT_EDIBLE_SOLIDS;
             storage.fetchCategory = Storage.FetchCategory.GeneralStorage;
             storage.showInUI = false;

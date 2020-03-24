@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using CaiLib.Utils;
 using Harmony;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Timer = System.Timers.Timer;
 
 // ReSharper disable UnusedType.Global
 
@@ -30,6 +27,8 @@ namespace InfiniteStorage
             LocString.CreateLocStringKeys( typeof( DEEP_STORAGE_STRINGS.UI ) );
         }
 
+        // If there is a button to specifically show/hide the contents of the container
+        // Enable the UI to show the side screen, then reset it to the state of the button
         [HarmonyPatch( typeof( TreeFilterableSideScreen ), nameof( TreeFilterableSideScreen.SetTarget ) )]
         public class TreeFilterableSideScreen_SetTarget_Patches
         {
@@ -53,10 +52,11 @@ namespace InfiniteStorage
                 }
             }
         }
-
+        
         [HarmonyPatch( typeof( TreeFilterableSideScreen ), "CreateCategories" )]
         public class TreeFilterableSideScreen_CreateCategories_Patches
         {
+            // Insert an infinite storage check that sets a flag if true
             public static IEnumerable<CodeInstruction> Transpiler( IEnumerable<CodeInstruction> orig )
             {
                 List<CodeInstruction> codes = orig.ToList();
@@ -66,29 +66,29 @@ namespace InfiniteStorage
                     var code = codes[i];
                     if ( code.opcode == OpCodes.Ldloc_0 )
                     {
+                        // Load this.target
                         var target = AccessTools.Field( typeof( TreeFilterableSideScreen ), "target" );
-                        Debug.Log( target );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldarg_0 ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldfld, target ) );
+                        
+                        // this.target.GetComponent<InfiniteStorage>();
                         var getInfStorage = AccessTools.Method(
                             typeof( GameObject ),
                             "GetComponent"
                         );
                         getInfStorage = getInfStorage.MakeGenericMethod(typeof(InfiniteStorage));
-
-                        Debug.Log( getInfStorage );
-
                         codes.Insert( i++, new CodeInstruction( OpCodes.Callvirt, getInfStorage ) );
+                        
+                        // != null
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldnull ) );
                         var goInequality = AccessTools.Method(
                             typeof( Object ),
                             "op_Inequality",
                             new[] {typeof( Object ), typeof( Object )}
                         );
-
-                        Debug.Log( goInequality );
-
                         codes.Insert( i++, new CodeInstruction( OpCodes.Call, goInequality ) );
+                        
+                        // If not null, set flag true.  Otherwise, skip.
                         var branchLabel = new Label();
                         codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, branchLabel ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldc_I4_1 ) );
@@ -97,16 +97,11 @@ namespace InfiniteStorage
                         // i is at the existing stloc.0 we piggyback off of
                         // We want the label on the next instruction
                         codes[i].labels = new List<Label> {branchLabel};
-                        break;
+                        return codes;
                     }
                 }
 
-            #if DEBUG
-                Debug.Log( "CreateCategories IL" );
-                foreach ( var instruction in codes )
-                    Console.WriteLine( instruction );
-            #endif
-
+                Debug.LogWarning("[InfiniteStorage] Unable to patch TreeFilterableSideScreen.CreateCategories");
                 return codes;
             }
         }
@@ -132,18 +127,18 @@ namespace InfiniteStorage
                         var element = ElementLoader.GetElement(prefab.PrefabTag);
                         if (element != null)
                         {
-                            if(!element.disabled && element.materialCategory == rowTag)
-                                map.Add(element.tag, targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                            if (!element.disabled && element.materialCategory == rowTag)
+                                map.Add(element.tag,
+                                    targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
                         }
                         else
                         {
-                            map.Add(prefab.PrefabTag, targetFilterable.ContainsTag(prefab.PrefabTag) || targetFilterable.ContainsTag(rowTag));
+                            map.Add(prefab.PrefabTag,
+                                targetFilterable.ContainsTag(prefab.PrefabTag) || targetFilterable.ContainsTag(rowTag));
                         }
                     }
                 }
-                    
-                // Does state matter???  It looks unused
-                // Klei why
+                
                 if (map.Count > 0)
                 {
                     __result.SetElement(rowTag, targetFilterable.ContainsTag(rowTag), map);
@@ -269,7 +264,6 @@ namespace InfiniteStorage
             public static IEnumerable<CodeInstruction> Transpiler( IEnumerable<CodeInstruction> codeInstructions )
             {
                 List<CodeInstruction> codes = codeInstructions.ToList();
-                var patched = false;
 
                 for ( var i = 0; i < codes.Count; ++i )
                 {
@@ -290,22 +284,12 @@ namespace InfiniteStorage
                         codes[i + 3] = new CodeInstruction( OpCodes.Ret );
 
                         codes.RemoveRange( i + 4, codes.Count - (i + 4) );
-                        patched = true;
-                        break;
+                        return codes;
                     }
                 }
 
-                if ( !patched )
-                    Debug.LogWarning( "[InfiniteStorage] Unable to patch storage display mass" );
-                else
-                    Debug.Log( "[InfiniteStorage] Patched storage display mass." );
-
-            #if DEBUG
-                foreach ( var ci in codes )
-                    Console.WriteLine( $"{ci.opcode} {ci.operand}" );
-            #endif
-
-                return codes.AsEnumerable();
+                Debug.LogWarning( "[InfiniteStorage] Unable to patch storage display mass" );
+                return codes;
             }
         }
     }
