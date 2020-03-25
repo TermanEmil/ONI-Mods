@@ -4,14 +4,13 @@
 // 
 
 using System.Reflection;
+[assembly: AssemblyTitle("InfiniteStorage")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("InfiniteStorage")]
+[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-[assembly: AssemblyTitle( "InfiniteStorage" )]
-[assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "InfiniteStorage" )]
-[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
-
-[assembly: AssemblyVersion( "2020.3.9.30432" )]
+[assembly: AssemblyVersion("2020.3.25.36066")]
