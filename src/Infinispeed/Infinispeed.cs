@@ -9,16 +9,19 @@ namespace Infinispeed
         public static void OnLoad()
         {
             Debug.Log(
-                $"[Infinispeed] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+                $"[Infinispeed] Loading mod version {FileVersionInfo.GetVersionInfo( Assembly.GetExecutingAssembly().Location ).FileVersion}"
+            );
         }
     }
 
-    [HarmonyPatch(typeof(Workable), nameof(Workable.GetEfficiencyMultiplier))]
+    [HarmonyPatch( typeof( Workable ), nameof( Workable.GetEfficiencyMultiplier ) )]
     internal class Infinispeed
     {
-        public static void Postfix(ref Workable __instance, ref float __result)
+        public static void Postfix( ref Workable __instance, ref float __result )
         {
-            if (__instance is Edible) return;
+            if ( __instance is Edible )
+                return;
+
             __result = float.PositiveInfinity;
         }
     }

@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("MoreCanisterFillers")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("MoreCanisterFillers")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "MoreCanisterFillers" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "MoreCanisterFillers" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.3.5.40163")]
+[assembly: AssemblyVersion( "2020.3.5.40163" )]

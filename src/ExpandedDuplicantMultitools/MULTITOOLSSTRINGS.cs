@@ -10,19 +10,21 @@ namespace ExpandedDuplicantMultitools
             {
                 public static class ASQUARED31415_DUPLICANTMULTITOOLATTACHMENTCONFIG
                 {
-                    public static readonly LocString NAME = "Multitool Attachment";
+                    public static readonly LocString NAME        = "Multitool Attachment";
                     public static readonly LocString GENERICNAME = "Multitool Attachment";
                 }
             }
         }
-        
+
         public static class SKILLS
         {
             public static class NEUTRONIUM_DIGGING
             {
                 // TODO: FormatAsLink?
                 public static readonly LocString NAME = "Neutronium Digging";
-                public static readonly LocString DESCRIPTION = "Allows excavation of " + ELEMENTS.UNOBTANIUM.NAME + " (except at the bottom of the map)";
+
+                public static readonly LocString DESCRIPTION =
+                    "Allows excavation of " + ELEMENTS.UNOBTANIUM.NAME + " (except at the bottom of the map)";
             }
         }
 

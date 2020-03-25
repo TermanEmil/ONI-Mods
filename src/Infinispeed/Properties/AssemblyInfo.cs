@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("Infinispeed")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("Infinispeed")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "Infinispeed" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "Infinispeed" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.2.7.37895")]
+[assembly: AssemblyVersion( "2020.2.7.37895" )]

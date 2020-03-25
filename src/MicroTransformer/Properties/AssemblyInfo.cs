@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("MicroTransformer")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("MicroTransformer")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "MicroTransformer" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "MicroTransformer" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.3.18.24992")]
+[assembly: AssemblyVersion( "2020.3.18.24992" )]

@@ -7,14 +7,14 @@ namespace MicroTransformer
 {
     public class SmallTransformerConfig : IBuildingConfig
     {
-        public static string Id = "asquared31415.MicroTransformer";
+        public static string Id          = "asquared31415.MicroTransformer";
         public static string DisplayName = "Micro Transformer";
 
         public static readonly string Description =
-            $"Connect {UI.FormatAsLink("Batteries", "BATTERY")} on the large side to act as a valve and prevent {UI.FormatAsLink("Wires", "WIRE")} from drawing more than 750 W and suffering overload damage.";
+            $"Connect {UI.FormatAsLink( "Batteries", "BATTERY" )} on the large side to act as a valve and prevent {UI.FormatAsLink( "Wires", "WIRE" )} from drawing more than 750 W and suffering overload damage.";
 
         public static readonly string Effect =
-            $"Limits {UI.FormatAsLink("Power", "POWER")} flowing through the Transformer to 750 W.";
+            $"Limits {UI.FormatAsLink( "Power", "POWER" )} flowing through the Transformer to 750 W.";
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -35,9 +35,9 @@ namespace MicroTransformer
 
             buildingDef.RequiresPowerInput = true;
             buildingDef.UseWhitePowerOutputConnectorColour = true;
-            buildingDef.PowerInputOffset = new CellOffset(0, 0);
-            buildingDef.PowerOutputOffset = new CellOffset(1, 0);
-            buildingDef.ElectricalArrowOffset = new CellOffset(1, 0);
+            buildingDef.PowerInputOffset = new CellOffset( 0, 0 );
+            buildingDef.PowerOutputOffset = new CellOffset( 1, 0 );
+            buildingDef.ElectricalArrowOffset = new CellOffset( 1, 0 );
             buildingDef.ExhaustKilowattsWhenActive = 0.0f;
             buildingDef.SelfHeatKilowattsWhenActive = 0.75f;
             buildingDef.ViewMode = OverlayModes.Power.ID;
@@ -49,9 +49,9 @@ namespace MicroTransformer
             return buildingDef;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
+        public override void ConfigureBuildingTemplate( GameObject go, Tag prefab_tag )
         {
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery, false);
+            go.GetComponent<KPrefabID>().AddTag( RoomConstraints.ConstraintTags.IndustrialMachinery, false );
             go.AddComponent<RequireInputs>();
             var def = go.GetComponent<Building>().Def;
             var battery = go.AddOrGet<Battery>();
@@ -61,9 +61,9 @@ namespace MicroTransformer
             go.AddComponent<PowerTransformer>().powerDistributionOrder = 9;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
-            Object.DestroyImmediate(go.GetComponent<EnergyConsumer>());
+            Object.DestroyImmediate( go.GetComponent<EnergyConsumer>() );
             go.AddOrGetDef<PoweredActiveController.Def>();
         }
     }

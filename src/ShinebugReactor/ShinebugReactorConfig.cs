@@ -8,7 +8,7 @@ namespace ShinebugReactor
 {
     internal class ShinebugReactorConfig : IBuildingConfig
     {
-        public const string Id = "ShinebugReactor";
+        public const string Id          = "ShinebugReactor";
         public const string DisplayName = "Shinebug Reactor";
 
         public const string Description =
@@ -17,7 +17,6 @@ namespace ShinebugReactor
 
         public static readonly string Effect =
             $"Receives {CREATURES.FAMILY_PLURAL.LIGHTBUGSPECIES} from a conveyor and generates {UI.PRE_KEYWORD} Power + {UI.PST_KEYWORD} passively using their light";
-
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -33,20 +32,21 @@ namespace ShinebugReactor
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                 BuildLocationRule.OnFloor,
                 BUILDINGS.DECOR.PENALTY.TIER1,
-                NOISE_POLLUTION.NOISY.TIER0);
+                NOISE_POLLUTION.NOISY.TIER0
+            );
 
             buildingDef.AudioCategory = "Metal";
             buildingDef.PowerOutputOffset = CellOffset.none;
             buildingDef.ViewMode = OverlayModes.Power.ID;
             buildingDef.GeneratorWattageRating = 1250f;
             buildingDef.GeneratorBaseCapacity = buildingDef.GeneratorWattageRating;
-            buildingDef.UtilityInputOffset = new CellOffset(-4, 1);
+            buildingDef.UtilityInputOffset = new CellOffset( -4, 1 );
             buildingDef.InputConduitType = ConduitType.Solid;
 
             return buildingDef;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
             go.AddOrGet<Storage>();
             go.AddOrGet<SolidConduitConsumer>();

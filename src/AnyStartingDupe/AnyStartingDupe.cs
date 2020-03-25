@@ -8,16 +8,15 @@ namespace AnyStartingDupe
     {
         public static void OnLoad()
         {
-            Debug.Log($"[AnyStartingDupe] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+            Debug.Log(
+                $"[AnyStartingDupe] Loading mod version {FileVersionInfo.GetVersionInfo( Assembly.GetExecutingAssembly().Location ).FileVersion}"
+            );
         }
     }
 
-    [HarmonyPatch(typeof(MinionStartingStats), MethodType.Constructor, typeof(bool), typeof(string))]
+    [HarmonyPatch( typeof( MinionStartingStats ), MethodType.Constructor, typeof( bool ), typeof( string ) )]
     public class AnyStartingDupe
     {
-        public static void Prefix(ref bool is_starter_minion)
-        {
-            is_starter_minion = false;
-        }
+        public static void Prefix( ref bool is_starter_minion ) { is_starter_minion = false; }
     }
 }

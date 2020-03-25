@@ -6,7 +6,7 @@ namespace InfiniteStorage
 {
     public class DeepLiquidStorage : IBuildingConfig
     {
-        public const string Id = "asquared31415_InfiniteLiquidStorage";
+        public const  string Id   = "asquared31415_InfiniteLiquidStorage";
         private const string Anim = "liquidreservoir_kanim";
 
         public override BuildingDef CreateBuildingDef()
@@ -47,12 +47,15 @@ namespace InfiniteStorage
             storage.allowSublimation = false;
             storage.storageFilters = STORAGEFILTERS.LIQUIDS;
             storage.showInUI = false;
-            storage.SetDefaultStoredItemModifiers(new List<Storage.StoredItemModifier>()
-            {
-                Storage.StoredItemModifier.Insulate,
-                Storage.StoredItemModifier.Hide,
-                Storage.StoredItemModifier.Seal
-            });
+            storage.SetDefaultStoredItemModifiers(
+                new List<Storage.StoredItemModifier>()
+                {
+                    Storage.StoredItemModifier.Insulate,
+                    Storage.StoredItemModifier.Hide,
+                    Storage.StoredItemModifier.Seal
+                }
+            );
+
             go.AddOrGet<InfiniteStorage>();
             go.AddOrGet<UserNameable>();
             go.AddOrGet<ShowHideContentsButton>();

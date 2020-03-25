@@ -17,9 +17,9 @@ namespace MoreCanisterFillersMod
             return def;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
-            base.DoPostConfigureComplete(go);
+            base.DoPostConfigureComplete( go );
             var def = go.GetComponent<Building>().Def;
             def.PrefabID = ConveyorLoadedCanisterEmptierConfig.Id;
         }
@@ -27,14 +27,15 @@ namespace MoreCanisterFillersMod
 
     public class ConveyorLoadedCanisterEmptierConfig : IBuildingConfig
     {
-        public const string Id = "asquared31415.ConveyorBottleEmptier";
+        public const string Id          = "asquared31415.ConveyorBottleEmptier";
         public const string DisplayName = "Conveyor Loaded Canister Emptier";
         public const string Description = "";
 
         private const ConduitType EmptierConduitType = ConduitType.Solid;
 
         public static readonly string Effect = "Unloads bottles from a " +
-                                               UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") + " into the world.";
+                                               UI.FormatAsLink( "Conveyor Rail", "SOLIDCONDUIT" ) +
+                                               " into the world.";
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -46,26 +47,38 @@ namespace MoreCanisterFillersMod
             const float meltingPoint = 1600f;
             const BuildLocationRule buildLocationRule = BuildLocationRule.OnFloor;
             var none = NOISE_POLLUTION.NONE;
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 1, 3, anim, hitpoints,
-                constructionTime, constTier4, rawMinerals, meltingPoint, buildLocationRule,
-                BUILDINGS.DECOR.PENALTY.TIER1, none);
+            var buildingDef = BuildingTemplates.CreateBuildingDef(
+                Id,
+                1,
+                3,
+                anim,
+                hitpoints,
+                constructionTime,
+                constTier4,
+                rawMinerals,
+                meltingPoint,
+                buildLocationRule,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                none
+            );
+
             buildingDef.Floodable = false;
             buildingDef.AudioCategory = "Metal";
             buildingDef.Overheatable = true;
             buildingDef.PermittedRotations = PermittedRotations.FlipH;
             buildingDef.ViewMode = OverlayModes.SolidConveyor.ID;
             buildingDef.InputConduitType = EmptierConduitType;
-            buildingDef.UtilityInputOffset = new CellOffset(0, 0);
+            buildingDef.UtilityInputOffset = new CellOffset( 0, 0 );
             return buildingDef;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag prefabTag)
+        public override void ConfigureBuildingTemplate( GameObject go, Tag prefabTag )
         {
-            Prioritizable.AddRef(go);
+            Prioritizable.AddRef( go );
             var storage = go.AddOrGet<Storage>();
             var tagList = new List<Tag>();
-            tagList.AddRange(STORAGEFILTERS.GASES);
-            tagList.AddRange(STORAGEFILTERS.LIQUIDS);
+            tagList.AddRange( STORAGEFILTERS.GASES );
+            tagList.AddRange( STORAGEFILTERS.LIQUIDS );
             storage.storageFilters = tagList;
             storage.showDescriptor = true;
             storage.capacityKg = 200f;
@@ -81,8 +94,6 @@ namespace MoreCanisterFillersMod
             go.AddOrGet<UnfilteredBottleEmptier>().EmptyRate = 0.4f;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
-        {
-        }
+        public override void DoPostConfigureComplete( GameObject go ) { }
     }
 }

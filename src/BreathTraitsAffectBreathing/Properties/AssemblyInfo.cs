@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("BreathTraitsAffectBreathing")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("BreathTraitsAffectBreathing")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "BreathTraitsAffectBreathing" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "BreathTraitsAffectBreathing" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.2.7.37889")]
+[assembly: AssemblyVersion( "2020.2.7.37889" )]

@@ -17,9 +17,9 @@ namespace MoreCanisterFillersMod
             return def;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
-            base.DoPostConfigureComplete(go);
+            base.DoPostConfigureComplete( go );
             var def = go.GetComponent<Building>().Def;
             def.PrefabID = ConveyorCanisterLoaderConfig.Id;
         }
@@ -27,14 +27,14 @@ namespace MoreCanisterFillersMod
 
     public class ConveyorCanisterLoaderConfig : IBuildingConfig
     {
-        public const string Id = "asquared31415.ConveyorBottleLoader";
+        public const string Id          = "asquared31415.ConveyorBottleLoader";
         public const string DisplayName = "Conveyor Canister Loader";
         public const string Description = "";
 
         private const ConduitType LoaderConduitType = ConduitType.Solid;
 
         public static readonly string Effect = "Loads bottles onto " +
-                                               UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") +
+                                               UI.FormatAsLink( "Conveyor Rail", "SOLIDCONDUIT" ) +
                                                " for transport.\n\nOnly loads the resources of your choosing.";
 
         public override BuildingDef CreateBuildingDef()
@@ -47,8 +47,21 @@ namespace MoreCanisterFillersMod
             const float meltingPoint = 1600f;
             const BuildLocationRule buildLocationRule = BuildLocationRule.Anywhere;
             var none = NOISE_POLLUTION.NONE;
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 1, 2, anim, hitpoints, constructionTime,
-                constructionMass, allMetals, meltingPoint, buildLocationRule, BUILDINGS.DECOR.PENALTY.TIER1, none);
+            var buildingDef = BuildingTemplates.CreateBuildingDef(
+                Id,
+                1,
+                2,
+                anim,
+                hitpoints,
+                constructionTime,
+                constructionMass,
+                allMetals,
+                meltingPoint,
+                buildLocationRule,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                none
+            );
+
             buildingDef.RequiresPowerInput = true;
             buildingDef.EnergyConsumptionWhenActive = 120f;
             buildingDef.SelfHeatKilowattsWhenActive = 2f;
@@ -56,29 +69,29 @@ namespace MoreCanisterFillersMod
             buildingDef.ViewMode = OverlayModes.SolidConveyor.ID;
             buildingDef.AudioCategory = "Metal";
             buildingDef.OutputConduitType = LoaderConduitType;
-            buildingDef.PowerInputOffset = new CellOffset(0, 1);
+            buildingDef.PowerInputOffset = new CellOffset( 0, 1 );
             buildingDef.UtilityOutputOffset = CellOffset.none;
             buildingDef.PermittedRotations = PermittedRotations.R360;
-            buildingDef.LogicInputPorts = LogicOperationalController.CreateSingleInputPortList(CellOffset.none);
-            GeneratedBuildings.RegisterWithOverlay(OverlayScreen.SolidConveyorIDs, Id);
+            buildingDef.LogicInputPorts = LogicOperationalController.CreateSingleInputPortList( CellOffset.none );
+            GeneratedBuildings.RegisterWithOverlay( OverlayScreen.SolidConveyorIDs, Id );
             return buildingDef;
         }
 
-        public override void DoPostConfigureUnderConstruction(GameObject go)
+        public override void DoPostConfigureUnderConstruction( GameObject go )
         {
             go.GetComponent<Constructable>().requiredSkillPerk = Db.Get().SkillPerks.ConveyorBuild.Id;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete( GameObject go )
         {
             go.AddOrGet<LogicOperationalController>();
-            Prioritizable.AddRef(go);
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
+            Prioritizable.AddRef( go );
+            go.GetComponent<KPrefabID>().AddTag( RoomConstraints.ConstraintTags.IndustrialMachinery );
             go.AddOrGet<EnergyConsumer>();
             go.AddOrGet<Automatable>();
             var tagList = new List<Tag>();
-            tagList.AddRange(STORAGEFILTERS.GASES);
-            tagList.AddRange(STORAGEFILTERS.LIQUIDS);
+            tagList.AddRange( STORAGEFILTERS.GASES );
+            tagList.AddRange( STORAGEFILTERS.LIQUIDS );
             var storage = go.AddOrGet<Storage>();
             storage.capacityKg = 1000f;
             storage.showInUI = true;
