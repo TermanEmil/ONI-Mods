@@ -10,4 +10,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("ShowAreaInBoxTool")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
 
-[assembly: AssemblyVersion("2020.3.24.33479")]
+[assembly: AssemblyVersion("2020.3.25.26335")]
