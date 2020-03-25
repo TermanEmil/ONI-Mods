@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using Harmony;
 using UnityEngine;
 
 namespace ShowAreaInBoxTool
 {
-    public class ModOnLoad
+    public class ShowAreaPatches
     {
         public static void OnLoad()
         {
@@ -17,46 +19,70 @@ namespace ShowAreaInBoxTool
 
         public static void PostPatch(HarmonyInstance harmonyInstance)
         {
-            var postfix = typeof(ModOnLoad).GetMethod("DrawerPostfix");
+            var transpiler = typeof(ShowAreaPatches).GetMethod("DrawerTranspiler");
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
                 .Where(type => type.IsSubclassOf(typeof(HoverTextConfiguration)));
             foreach (var hoverType in types)
             {
                 var methodInfo = AccessTools.Method(hoverType, "UpdateHoverElements");
-                harmonyInstance.Patch(methodInfo, null, new HarmonyMethod(postfix));
+                harmonyInstance.Patch(methodInfo, null, null, new HarmonyMethod(transpiler));
             }
         }
 
-        public static void DrawerPostfix(HoverTextConfiguration __instance)
+        public static IEnumerable<CodeInstruction> DrawerTranspiler(IEnumerable<CodeInstruction> orig)
         {
-            var tool = ToolMenu.Instance.activeTool;
-            var roundedSizeVector = Vector2I.zero;
+            var codes = orig.ToList();
+            var endDrawing = AccessTools.Method(typeof(HoverTextDrawer), nameof(HoverTextDrawer.EndShadowBar));
+
+            for (var i = 0; i < codes.Count; ++i)
+            {
+                var ci = codes[i];
+                if (ci.opcode == OpCodes.Callvirt && (MethodInfo) ci.operand == endDrawing)
+                {
+                    var drawPanel = AccessTools.Method(typeof(ShowAreaPatches), "DrawPanel");
+                    codes.Insert(i++, new CodeInstruction(OpCodes.Ldarg_0));
+                    codes.Insert(i, new CodeInstruction(OpCodes.Call, drawPanel));
+
+                    return codes;
+                }
+            }
+
+            Debug.LogError("[DragToolArea] Patching info cards failed!");
+            return codes;
+        }
+
+        public static void DrawPanel(HoverTextConfiguration instance)
+        {
+            var toolInst = ToolMenu.Instance;
+            if (toolInst == null) return;
+            var tool = toolInst.activeTool;
             if (tool != null && tool.GetType().IsSubclassOf(typeof(DragTool)))
             {
                 if ((DragTool.Mode) Traverse.Create(tool).Method("GetMode").GetValue() == DragTool.Mode.Box)
                 {
+                    var roundedSizeVector = Vector2I.zero;
+
                     if (((DragTool) tool).Dragging)
                     {
                         var sizeVector = ((SpriteRenderer) AccessTools
                             .Field(typeof(DragTool), "areaVisualizerSpriteRenderer")
                             .GetValue(tool)).size;
-                        roundedSizeVector = new Vector2I(Mathf.RoundToInt(sizeVector.x), Mathf.RoundToInt(sizeVector.y));
+                        roundedSizeVector =
+                            new Vector2I(Mathf.RoundToInt(sizeVector.x), Mathf.RoundToInt(sizeVector.y));
                     }
+
+                    const string areaFormat = "Selection Size: {0} x {1} : {2} cells";
+                    var text = string.Format(areaFormat, roundedSizeVector.x, roundedSizeVector.y,
+                        roundedSizeVector.x * roundedSizeVector.y);
+                    var drawer = HoverTextScreen.Instance.drawer;
+                    drawer.NewLine();
+                    drawer.DrawText(text, instance.Styles_Title.Standard);
                 }
             }
-            
-            const string areaFormat = "Selection Size: {0} x {1} : {2} cells";
-            var text = string.Format(areaFormat, roundedSizeVector.x, roundedSizeVector.y,
-                roundedSizeVector.x * roundedSizeVector.y);
-            var drawer = HoverTextScreen.Instance.drawer;
-            drawer.BeginShadowBar();
-            drawer.DrawText(text, __instance.Styles_Title.Standard);
-            drawer.EndShadowBar();
-            drawer.EndDrawing();
         }
 
         [HarmonyPatch(typeof(DragTool), "OnMouseMove")]
-        public class ShowAreaPatches
+        public class DragTool_OnMouseMove_Patches
         {
             private const string AreaFormat = "{0} x {1} : {2}";
 
