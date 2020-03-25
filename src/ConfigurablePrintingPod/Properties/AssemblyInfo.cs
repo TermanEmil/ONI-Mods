@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("ConfigurablePrintingPod")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("ConfigurablePrintingPod")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "ConfigurablePrintingPod" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "ConfigurablePrintingPod" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.3.19.4893")]
+[assembly: AssemblyVersion( "2020.3.19.4893" )]

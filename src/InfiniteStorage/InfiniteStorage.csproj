@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props"
+            Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -47,14 +50,14 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="CaiLib">
-          <HintPath>..\..\lib\CaiLib.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\lib\CaiLib.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\lib\Unity.TextMeshPro.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\lib\Unity.TextMeshPro.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine">
             <HintPath>..\..\lib\UnityEngine.dll</HintPath>
@@ -69,12 +72,12 @@
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
-          <Private>False</Private>
+            <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+            <Private>False</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-      <None Include="packages.config" />
+        <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="DeepGasStorage.cs" />
@@ -83,18 +86,18 @@
         <Compile Include="InfiniteStoragePatches.cs" />
         <Compile Include="InfiniteStorage.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
-          <AutoGen>True</AutoGen>
-          <DesignTime>True</DesignTime>
-          <DependentUpon>AssemblyInfo.tt</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>AssemblyInfo.tt</DependentUpon>
         </Compile>
         <Compile Include="DEEP_STORAGE_STRINGS.cs" />
         <Compile Include="ShowHideContentsButton.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Properties\AssemblyInfo.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
-      </Content>
+        <Content Include="Properties\AssemblyInfo.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+        </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <PropertyGroup>
@@ -110,9 +113,10 @@
         </PostBuildEvent>
     </PropertyGroup>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-      <PropertyGroup>
-        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-      </PropertyGroup>
-      <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))" />
+        <PropertyGroup>
+            <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+        </PropertyGroup>
+        <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')"
+               Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))" />
     </Target>
 </Project>

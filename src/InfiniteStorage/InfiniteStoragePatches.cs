@@ -52,7 +52,7 @@ namespace InfiniteStorage
                 }
             }
         }
-        
+
         [HarmonyPatch( typeof( TreeFilterableSideScreen ), "CreateCategories" )]
         public class TreeFilterableSideScreen_CreateCategories_Patches
         {
@@ -70,15 +70,12 @@ namespace InfiniteStorage
                         var target = AccessTools.Field( typeof( TreeFilterableSideScreen ), "target" );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldarg_0 ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldfld, target ) );
-                        
+
                         // this.target.GetComponent<InfiniteStorage>();
-                        var getInfStorage = AccessTools.Method(
-                            typeof( GameObject ),
-                            "GetComponent"
-                        );
-                        getInfStorage = getInfStorage.MakeGenericMethod(typeof(InfiniteStorage));
+                        var getInfStorage = AccessTools.Method( typeof( GameObject ), "GetComponent" );
+                        getInfStorage = getInfStorage.MakeGenericMethod( typeof( InfiniteStorage ) );
                         codes.Insert( i++, new CodeInstruction( OpCodes.Callvirt, getInfStorage ) );
-                        
+
                         // != null
                         codes.Insert( i++, new CodeInstruction( OpCodes.Ldnull ) );
                         var goInequality = AccessTools.Method(
@@ -86,8 +83,9 @@ namespace InfiniteStorage
                             "op_Inequality",
                             new[] {typeof( Object ), typeof( Object )}
                         );
+
                         codes.Insert( i++, new CodeInstruction( OpCodes.Call, goInequality ) );
-                        
+
                         // If not null, set flag true.  Otherwise, skip.
                         var branchLabel = new Label();
                         codes.Insert( i++, new CodeInstruction( OpCodes.Brfalse_S, branchLabel ) );
@@ -101,7 +99,7 @@ namespace InfiniteStorage
                     }
                 }
 
-                Debug.LogWarning("[InfiniteStorage] Unable to patch TreeFilterableSideScreen.CreateCategories");
+                Debug.LogWarning( "[InfiniteStorage] Unable to patch TreeFilterableSideScreen.CreateCategories" );
                 return codes;
             }
         }
@@ -111,41 +109,53 @@ namespace InfiniteStorage
         {
             // Add every prefab for the filters
             // There's some duplication that is very D:
-            public static void Postfix(TreeFilterableSideScreen __instance, TreeFilterableSideScreenRow __result, UIPool<TreeFilterableSideScreenRow> ___rowPool, Tag rowTag)
+            public static void Postfix(
+                TreeFilterableSideScreen __instance,
+                TreeFilterableSideScreenRow __result,
+                UIPool<TreeFilterableSideScreenRow> ___rowPool,
+                Tag rowTag
+            )
             {
-                var instance = Traverse.Create(__instance);
-                var target = (GameObject) instance.Field("target").GetValue();
-                if (target == null || target.GetComponent<InfiniteStorage>() == null) return;
+                var instance = Traverse.Create( __instance );
+                var target = (GameObject) instance.Field( "target" ).GetValue();
+                if ( target == null || target.GetComponent<InfiniteStorage>() == null )
+                    return;
 
-                var targetFilterable = (TreeFilterable) instance.Field("targetFilterable").GetValue();
+                var targetFilterable = (TreeFilterable) instance.Field( "targetFilterable" ).GetValue();
                 var map = new Dictionary<Tag, bool>();
-                foreach (var go in Assets.GetPrefabsWithTag(rowTag))
+                foreach ( var go in Assets.GetPrefabsWithTag( rowTag ) )
                 {
                     var prefab = go.GetComponent<KPrefabID>();
-                    if (prefab.GetComponent<Pickupable>() != null)
+                    if ( prefab.GetComponent<Pickupable>() != null )
                     {
-                        var element = ElementLoader.GetElement(prefab.PrefabTag);
-                        if (element != null)
+                        var element = ElementLoader.GetElement( prefab.PrefabTag );
+                        if ( element != null )
                         {
-                            if (!element.disabled && element.materialCategory == rowTag)
-                                map.Add(element.tag,
-                                    targetFilterable.ContainsTag(element.tag) || targetFilterable.ContainsTag(rowTag));
+                            if ( !element.disabled && element.materialCategory == rowTag )
+                                map.Add(
+                                    element.tag,
+                                    targetFilterable.ContainsTag( element.tag ) ||
+                                    targetFilterable.ContainsTag( rowTag )
+                                );
                         }
                         else
                         {
-                            map.Add(prefab.PrefabTag,
-                                targetFilterable.ContainsTag(prefab.PrefabTag) || targetFilterable.ContainsTag(rowTag));
+                            map.Add(
+                                prefab.PrefabTag,
+                                targetFilterable.ContainsTag( prefab.PrefabTag ) ||
+                                targetFilterable.ContainsTag( rowTag )
+                            );
                         }
                     }
                 }
-                
-                if (map.Count > 0)
+
+                if ( map.Count > 0 )
                 {
-                    __result.SetElement(rowTag, targetFilterable.ContainsTag(rowTag), map);
+                    __result.SetElement( rowTag, targetFilterable.ContainsTag( rowTag ), map );
                 }
                 else
                 {
-                    ___rowPool.ClearElement(__result);
+                    ___rowPool.ClearElement( __result );
                 }
             }
         }

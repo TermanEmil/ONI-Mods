@@ -5,19 +5,19 @@ namespace ShinebugReactor
 {
     public class ShinebugSimulator
     {
-        public float Age;
-        public float Lux;
-        public float MaxAge;
+        public float  Age;
+        public float  Lux;
+        public float  MaxAge;
         public string Name;
 
         // We need these for some DUMB reason
         [NonSerialized] public ShinebugEggSimulator Egg;
-        [NonSerialized] public GameObject Item;
+        [NonSerialized] public GameObject           Item;
 
-        public ShinebugSimulator(string name = "", float age = 0, float maxAge = 0, float lux = 0)
+        public ShinebugSimulator( string name = "", float age = 0, float maxAge = 0, float lux = 0 )
         {
-            if (maxAge <= 0)
-                Debug.LogWarning("[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age.");
+            if ( maxAge <= 0 )
+                Debug.LogWarning( "[Shinebug Reactor] Shinebug simulator was provided a zero or negative max age." );
 
             Name = name;
             Age = age;
@@ -30,18 +30,16 @@ namespace ShinebugReactor
         /// </summary>
         /// <param name="dt">The amount of time that has passed, in seconds.</param>
         /// <returns>Whether this shinebug should die and produce an egg.</returns>
-        public bool Simulate(float dt)
+        public bool Simulate( float dt )
         {
             Age += dt;
-            if (Age <= MaxAge) return false;
+            if ( Age <= MaxAge )
+                return false;
 
             Lux = 0;
             return true;
         }
 
-        public override string ToString()
-        {
-            return $"(FakeShinebug) {Name}: {Age}s/{MaxAge}s {Lux} Lux";
-        }
+        public override string ToString() { return $"(FakeShinebug) {Name}: {Age}s/{MaxAge}s {Lux} Lux"; }
     }
 }

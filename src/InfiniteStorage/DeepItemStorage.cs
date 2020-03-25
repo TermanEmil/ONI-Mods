@@ -6,7 +6,7 @@ namespace InfiniteStorage
 {
     public class DeepItemStorage : IBuildingConfig
     {
-        public const string Id = "asquared31415_InfiniteItemStorage";
+        public const  string Id   = "asquared31415_InfiniteItemStorage";
         private const string Anim = "liquidreservoir_kanim";
 
         public override BuildingDef CreateBuildingDef()
@@ -40,12 +40,15 @@ namespace InfiniteStorage
             storage.capacityKg = float.PositiveInfinity;
             storage.allowItemRemoval = true;
             storage.allowSublimation = false;
-            storage.SetDefaultStoredItemModifiers(new List<Storage.StoredItemModifier>()
-            {
-                Storage.StoredItemModifier.Insulate,
-                Storage.StoredItemModifier.Hide,
-                Storage.StoredItemModifier.Seal
-            });
+            storage.SetDefaultStoredItemModifiers(
+                new List<Storage.StoredItemModifier>()
+                {
+                    Storage.StoredItemModifier.Insulate,
+                    Storage.StoredItemModifier.Hide,
+                    Storage.StoredItemModifier.Seal
+                }
+            );
+
             storage.storageFilters = STORAGEFILTERS.NOT_EDIBLE_SOLIDS;
             storage.fetchCategory = Storage.FetchCategory.GeneralStorage;
             storage.showInUI = false;

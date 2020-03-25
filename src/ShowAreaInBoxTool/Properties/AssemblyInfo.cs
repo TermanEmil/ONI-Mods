@@ -5,9 +5,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("ShowAreaInBoxTool")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("ShowAreaInBoxTool")]
-[assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
+[assembly: AssemblyTitle( "ShowAreaInBoxTool" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyProduct( "ShowAreaInBoxTool" )]
+[assembly: AssemblyCopyright( "Copyright © asquared31415 2020" )]
 
-[assembly: AssemblyVersion("2020.3.25.26335")]
+[assembly: AssemblyVersion( "2020.3.25.26335" )]
