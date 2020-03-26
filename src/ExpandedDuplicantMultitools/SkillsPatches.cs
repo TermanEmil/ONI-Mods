@@ -15,9 +15,9 @@ namespace ExpandedDuplicantMultitools
 
         public class ResourceSet_Skill_Get_Patches
         {
-            public static Dictionary<string, bool> HasShownWarning = new Dictionary<string, bool>();
+            private static readonly Dictionary<string, bool> HasShownWarning = new Dictionary<string, bool>();
 
-            public static Skill MakeEmptySkill( string oldId )
+            private static Skill MakeEmptySkill( string oldId )
             {
                 return new Skill(
                     "EmptySkill",
@@ -35,21 +35,21 @@ namespace ExpandedDuplicantMultitools
             {
                 public static bool Prefix( ResourceSet<Skill> __instance, ref Skill __result, string id )
                 {
-                    foreach ( var skill in __instance.resources )
+                    // If the skill exists, return it and exit
+                    foreach (var skill in __instance.resources.Where(skill => skill.Id == id))
                     {
-                        if ( skill.Id == id )
-                        {
-                            __result = skill;
-                            return false;
-                        }
+                        __result = skill;
+                        return false;
                     }
 
+                    // Otherwise, show the warning the first time
                     if ( !HasShownWarning.ContainsKey( id ) )
                     {
                         Debug.LogWarning( $"Unable to find skill {id}, returning Empty skill!" );
                         HasShownWarning[id] = true;
                     }
 
+                    // Make the empty skill and leave
                     __result = MakeEmptySkill( id );
                     return false;
                 }
@@ -60,21 +60,21 @@ namespace ExpandedDuplicantMultitools
             {
                 public static bool Prefix( ResourceSet<Skill> __instance, ref Skill __result, HashedString id )
                 {
-                    foreach ( var skill in __instance.resources )
+                    // If the skill exists, return it and exit
+                    foreach (var skill in __instance.resources.Where(skill => new HashedString( skill.Id ) == id))
                     {
-                        if ( new HashedString( skill.Id ) == id )
-                        {
-                            __result = skill;
-                            return false;
-                        }
+                        __result = skill;
+                        return false;
                     }
 
+                    // Otherwise, show the warning the first time
                     if ( !HasShownWarning.ContainsKey( id.ToString() ) )
                     {
                         Debug.LogWarning( $"Unable to find skill {id}, returning Empty skill!" );
                         HasShownWarning[id.ToString()] = true;
                     }
 
+                    // Make the empty skill and leave
                     __result = MakeEmptySkill( id.ToString() );
                     return false;
                 }
@@ -88,10 +88,8 @@ namespace ExpandedDuplicantMultitools
             {
                 public static void Postfix( Skill __instance, ref bool __result )
                 {
-                    if ( __instance is ConditionalSkill )
-                    {
-                        __result = false;
-                    }
+                    // Return false for all ConditionalSkills
+                    if ( __instance is ConditionalSkill ) __result = false;
                 }
             }
 
@@ -100,10 +98,8 @@ namespace ExpandedDuplicantMultitools
             {
                 public static void Postfix( Skill __instance, ref bool __result )
                 {
-                    if ( __instance is ConditionalSkill )
-                    {
-                        __result = false;
-                    }
+                    // Return false for all ConditionalSkills
+                    if ( __instance is ConditionalSkill ) __result = false;
                 }
             }
         }
@@ -115,19 +111,23 @@ namespace ExpandedDuplicantMultitools
             {
                 public static void Postfix( MinionResume __instance, ref bool __result, SkillPerk perk )
                 {
-                    if ( __result == false )
+                    // If it already gives the perk, don't do anything
+                    if (__result) return;
+                    
+                    // Otherwise, check every ConditionalSkill to see if it does give the perk
+                    // Check every mastered skill
+                    foreach ( var skillPair in __instance.MasteryBySkillID.Where( s => s.Value ) )
                     {
-                        var flag = false;
-                        foreach ( var skillPair in __instance.MasteryBySkillID.Where( s => s.Value ) )
+                        if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
                         {
-                            if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
+                            // If we find a ConditionalSkill, check it using the method
+                            Debug.Log( skill );
+                            if (skill.GivesPerk( __instance, perk ))
                             {
-                                Debug.Log( skill );
-                                flag |= skill.GivesPerk( __instance, perk );
+                                __result = true;
+                                return;
                             }
                         }
-
-                        __result = flag;
                     }
                 }
             }
@@ -137,18 +137,23 @@ namespace ExpandedDuplicantMultitools
             {
                 public static void Postfix( MinionResume __instance, ref bool __result, HashedString perkId )
                 {
-                    if ( __result == false )
+                    // If it already gives the perk, don't do anything
+                    if (__result) return;
+                    
+                    // Otherwise, check every ConditionalSkill to see if it does give the perk
+                    // Check every mastered skill
+                    foreach ( var skillPair in __instance.MasteryBySkillID.Where( s => s.Value ) )
                     {
-                        var flag = false;
-                        foreach ( var skillPair in __instance.MasteryBySkillID.Where( s => s.Value ) )
+                        if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
                         {
-                            if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
+                            // If we find a ConditionalSkill, check it using the method
+                            Debug.Log( skill );
+                            if (skill.GivesPerk( __instance, perkId ))
                             {
-                                flag |= skill.GivesPerk( __instance, perkId );
+                                __result = true;
+                                return;
                             }
                         }
-
-                        __result = flag;
                     }
                 }
             }

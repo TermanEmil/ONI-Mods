@@ -6,11 +6,19 @@ namespace ExpandedDuplicantMultitools
     {
         public static class EQUIPMENT
         {
+            public static class SLOTS
+            {
+                public static class TOOLATTACHMENT
+                {
+                    public static readonly LocString NAME = "Multitool Attachment";
+                }
+            }
+            
             public static class PREFABS
             {
-                public static class ASQUARED31415_DUPLICANTMULTITOOLATTACHMENTCONFIG
+                public static class ASQUARED31415_NEUTRONIUMMINERATTACHMENTCONFIG
                 {
-                    public static readonly LocString NAME        = "Multitool Attachment";
+                    public static readonly LocString NAME        = "Neutronium Miner Attachment";
                     public static readonly LocString GENERICNAME = "Multitool Attachment";
                 }
             }

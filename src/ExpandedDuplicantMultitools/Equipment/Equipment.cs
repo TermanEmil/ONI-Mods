@@ -10,15 +10,14 @@
             ToolAttachment = Db.Get().AssignableSlots.Add(
                 new EquipmentSlot(
                     ToolAttachmentId,
-                    MULTITOOLSSTRINGS
-                        .EQUIPMENT.PREFABS.ASQUARED31415_DUPLICANTMULTITOOLATTACHMENTCONFIG.NAME
+                    MULTITOOLSSTRINGS.EQUIPMENT.SLOTS.TOOLATTACHMENT.NAME
                 )
             );
         }
 
         public static void LoadAllEquipment()
         {
-            EquipmentConfigManager.Instance.RegisterEquipment( new DuplicantMultitoolAttachmentConfig() );
+            EquipmentConfigManager.Instance.RegisterEquipment( new NeutroniumMinerAttachmentConfig() );
         }
     }
 }

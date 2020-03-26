@@ -1,4 +1,5 @@
 ﻿using System;
+using ExpandedDuplicantMultitools.Skills;
 using Harmony;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ namespace ExpandedDuplicantMultitools
         {
             public static void Postfix( int cell, ref float __result )
             {
+                // Reimplement the method if it would return MaxValue or +Inf
+                // This means it was a neutronium tile
+                // TODO: Possibly increase the time multiplier?
                 if ( __result >= float.MaxValue )
                 {
                     var thisHardness = (float) Grid.Element[cell].hardness;
@@ -30,25 +34,28 @@ namespace ExpandedDuplicantMultitools
                     return;
 
                 var cell = Grid.PosToCell( __instance );
-                if ( Grid.Element[cell].hardness == byte.MaxValue )
+                // Only Neutronium (or other unminable tiles?) have a hardness of 255
+                if (Grid.Element[cell].hardness != byte.MaxValue) return;
+                
+                // Get the existing preconditions and find one that checks for a skill perk
+                var preconditions = __instance.chore.GetPreconditions();
+                var existingSkill = preconditions.Find( p => p.id == ChorePreconditions.instance.HasSkillPerk.id );
+                
+                // If the skill perk is checking for super hard digging (hardness >= 200)
+                if ( existingSkill.data == Db.Get().SkillPerks.CanDigSupersuperhard )
                 {
-                    var preconditions = __instance.chore.GetPreconditions();
-
-                    var existingSkill = preconditions.Find( p => p.id == ChorePreconditions.instance.HasSkillPerk.id );
-                    if ( existingSkill.id != default( Chore.PreconditionInstance ).id )
-                    {
-                        preconditions.Remove( existingSkill );
-                        __instance.chore.AddPrecondition(
-                            ChorePreconditions.instance.HasSkillPerk,
-                            ExtraSkills.NeutroniumDiggingPerk
-                        );
-                    }
-
-                    Console.WriteLine();
-                    __instance.requiredSkillPerk = ExtraSkills.NeutroniumDiggingPerk.Id;
-                    Traverse.Create( __instance ).Method( "UpdateStatusItem", new[] {typeof( object )} )
-                            .GetValue( (object) null );
+                    // Remove it and add our digging
+                    preconditions.Remove( existingSkill );
+                    __instance.chore.AddPrecondition(
+                        ChorePreconditions.instance.HasSkillPerk,
+                        ExtraSkills.NeutroniumDiggingPerk
+                    );
                 }
+                
+                // Update the status item with the new required skill
+                __instance.requiredSkillPerk = ExtraSkills.NeutroniumDiggingPerk.Id;
+                Traverse.Create( __instance ).Method( "UpdateStatusItem", new[] {typeof( object )} )
+                    .GetValue( (object) null );
             }
         }
     }
