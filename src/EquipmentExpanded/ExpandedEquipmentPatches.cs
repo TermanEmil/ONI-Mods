@@ -1,17 +1,17 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using ExpandedEquipment.Equipment;
-using ExpandedEquipment.Skills;
+using EquipmentExpanded.Equipment;
+using EquipmentExpanded.Skills;
 using Harmony;
 
-namespace ExpandedEquipment
+namespace EquipmentExpanded
 {
     public class ModOnLoad
     {
         public static void OnLoad()
         {
             Debug.Log(
-                $"[ExpandedEquipment] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
+                $"[EquipmentExpanded] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
             );
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));

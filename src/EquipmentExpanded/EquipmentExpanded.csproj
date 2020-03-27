@@ -8,8 +8,8 @@
         <ProjectGuid>{BE8BA009-8C91-47F5-8ADC-6D8AEFF47E33}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ExpandedEquipment</RootNamespace>
-        <AssemblyName>ExpandedEquipment</AssemblyName>
+        <RootNamespace>EquipmentExpanded</RootNamespace>
+        <AssemblyName>EquipmentExpanded</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>

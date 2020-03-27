@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using ExpandedEquipment.Skills;
+using EquipmentExpanded.Skills;
 using Harmony;
 using UnityEngine;
 
-namespace ExpandedEquipment
+namespace EquipmentExpanded
 {
     public class NeutroniumPatches
     {

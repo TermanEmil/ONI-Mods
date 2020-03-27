@@ -1,4 +1,4 @@
-﻿namespace ExpandedEquipment.Equipment
+﻿namespace EquipmentExpanded.Equipment
 {
     public class ExpandedAssignableSlots
     {

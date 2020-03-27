@@ -1,6 +1,6 @@
-﻿using static ExpandedEquipment.MULTITOOLSSTRINGS.BUILDING.STATUSITEMS.ASQUARED31415_COLONYLACKSNEUTRONIUMMINER;
+﻿using static EquipmentExpanded.MULTITOOLSSTRINGS.BUILDING.STATUSITEMS.ASQUARED31415_COLONYLACKSNEUTRONIUMMINER;
 
-namespace ExpandedEquipment.Skills
+namespace EquipmentExpanded.Skills
 {
     public class ExtraStatusItems
     {

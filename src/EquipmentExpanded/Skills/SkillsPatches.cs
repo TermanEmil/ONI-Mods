@@ -4,7 +4,7 @@ using System.Linq;
 using Database;
 using Harmony;
 
-namespace ExpandedEquipment.Skills
+namespace EquipmentExpanded.Skills
 {
     public class SkillsPatches
     {

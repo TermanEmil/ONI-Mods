@@ -1,6 +1,6 @@
 ﻿using STRINGS;
 
-namespace ExpandedEquipment
+namespace EquipmentExpanded
 {
     public static class MULTITOOLSSTRINGS
     {

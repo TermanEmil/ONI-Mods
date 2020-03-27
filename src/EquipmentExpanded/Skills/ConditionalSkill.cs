@@ -1,7 +1,7 @@
 ﻿using System;
 using Database;
 
-namespace ExpandedEquipment
+namespace EquipmentExpanded.Skills
 {
     public class ConditionalSkill : Skill
     {
