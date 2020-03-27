@@ -1,4 +1,8 @@
-﻿using ExpandedDuplicantMultitools.Skills;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using ExpandedDuplicantMultitools.Skills;
 using Harmony;
 using UnityEngine;
 
@@ -21,6 +25,31 @@ namespace ExpandedDuplicantMultitools
                     var num2 = 4f * (Mathf.Min( Grid.Mass[cell], 400f ) / 400f);
                     __result = num2 + hardnessMultiplier * num2;
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(Diggable), "UpdateColor")]
+        public class Diggable_UpdateColor_Patches
+        {
+            private static MethodInfo _requiresTool = AccessTools.Method(typeof(Diggable), "RequiresTool"); 
+            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
+            {
+                var codes = orig.ToList();
+                for (var i = 0; i < codes.Count; ++i)
+                {
+                    if (codes[i].operand as MethodInfo == _requiresTool)
+                    {
+                        // Create new label and put it on the instruction after next ret
+                        var label = new Label();
+                        codes[codes.FindIndex(i, ci => ci.opcode == OpCodes.Ret) + 1].labels.Add(label);
+                        // Go 5 instructions back, and branch to that label
+                        codes.Insert(i - 5, new CodeInstruction(OpCodes.Br, label));
+                        return codes;
+                    }
+                }
+                
+                Debug.LogWarning("[Equipment Expanded] Unable to patch Diggable.UpdateColor to ignore neutronium checks");
+                return codes;
             }
         }
 
