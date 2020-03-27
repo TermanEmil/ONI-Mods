@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Database;
 using Harmony;
@@ -154,6 +155,44 @@ namespace ExpandedEquipment.Skills
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    public class StatusItemPatches
+    {
+        [HarmonyPatch(typeof(Workable), "UpdateStatusItem")]
+        public class Workable_UpdateStatusItem_Patches
+        {
+            public static bool Prefix(Workable __instance, ref Guid ___workStatusItemHandle)
+            {
+                // If it's not a Diggable or it is not Neutronium, don't do anything special 
+                if (__instance is Diggable diggable && diggable.GetTargetElement() == ElementLoader.FindElementByHash(SimHashes.Unobtanium))
+                {
+                    var kSelectable = diggable.GetComponent<KSelectable>();
+                    if (kSelectable == null)
+                        return true;
+                    kSelectable.RemoveStatusItem(___workStatusItemHandle, true);
+                    
+                    if (diggable.worker == null)
+                    {
+                        if (string.IsNullOrEmpty(diggable.requiredSkillPerk))
+                            return true;
+                        if (!NeutroniumPerk.AnyMinionHasPerk())
+                        {
+                            // Add status item if nobody has perk
+                            ___workStatusItemHandle = kSelectable.AddStatusItem(ExtraStatusItems.ColonyLacksNeutroniumMiner, diggable.requiredSkillPerk);
+                            return false;
+                        }
+
+                        // Cancel the "Skill required dig" when there is no worker
+                        return false;
+                    }
+
+                    // Cancel the "Skill required dig" when there is a worker
+                    return false;
+                }
+                return true;
             }
         }
     }

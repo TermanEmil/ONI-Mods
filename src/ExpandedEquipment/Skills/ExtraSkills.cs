@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Database;
 using ExpandedEquipment.Equipment;
 
@@ -55,6 +56,16 @@ namespace ExpandedEquipment.Skills
 
     public static class NeutroniumPerk
     {
+        public static bool AnyMinionHasPerk()
+        {
+            return Components.MinionResumes.Items.Any(GivesPerkBase);
+        }
+
+        public static bool AnyMinionHasSkill()
+        {
+            return Components.MinionResumes.Items.Any(r => r.HasMasteredSkill(ExtraSkills.NeutroniumDiggingSkillId));
+        }
+        
         private static bool GivesPerkBase(MinionResume resume)
         {
             if (!(resume.GetComponent<MinionIdentity>().GetEquipment()

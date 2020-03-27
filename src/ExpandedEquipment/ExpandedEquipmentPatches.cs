@@ -15,15 +15,7 @@ namespace ExpandedEquipment
             );
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
-        }
-    }
-
-    [HarmonyPatch(typeof(KSelectable), "AddStatusItem")]
-    public class test
-    {
-        public static void Prefix(object data)
-        {
-            Debug.Log(data);
+            LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.BUILDING));
         }
     }
 
@@ -34,6 +26,7 @@ namespace ExpandedEquipment
         {
             ExtraSkills.InitializeSkillsAndPerks();
             ExpandedAssignableSlots.InitializeSlots();
+            ExtraStatusItems.InitializeStatusItems();
         }
     }
 

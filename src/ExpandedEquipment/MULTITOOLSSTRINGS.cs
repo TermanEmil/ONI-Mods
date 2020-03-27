@@ -3,17 +3,26 @@
 namespace ExpandedEquipment
 {
     public static class MULTITOOLSSTRINGS
-    {/*
-        public static class BUILDINGS
+    {
+        public static class BUILDING
         {
             public static class STATUSITEMS
             {
                 public static class ASQUARED31415_COLONYLACKSNEUTRONIUMMINER
                 {
+                    public static LocString NAME = "Colony Lacks " + SKILLS.NEUTRONIUM_DIGGING.NAME + " Skill";
+                    public static LocString TOOLTIP = "{Skill}\n{Equipment}";
                     
+                    public static LocString NEEDSSKILL =
+                        "Open the " + UI.FormatAsManagementMenu("Skills Panel", "[L]") +
+                        " and teach a Duplicant the " + SKILLS.NEUTRONIUM_DIGGING.NAME + " Skill to use this.";
+                    public static LocString NEEDSEQUIPMENT = "A Duplicant will need to have a " + 
+                                                             EQUIPMENT.PREFABS.ASQUARED31415_NEUTRONIUMMINERATTACHMENTCONFIG.NAME +
+                                                             " equipped.";
                 }
             }
-        }*/
+        }
+        
         public static class EQUIPMENT
         {
             public static class SLOTS
