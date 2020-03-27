@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Database;
 using ExpandedDuplicantMultitools.Equipment;
-using LibNoiseDotNet.Graphics.Tools.Noise.Combiner;
 
 namespace ExpandedDuplicantMultitools.Skills
 {

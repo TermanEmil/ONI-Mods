@@ -121,7 +121,6 @@ namespace ExpandedDuplicantMultitools
                         if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
                         {
                             // If we find a ConditionalSkill, check it using the method
-                            Debug.Log( skill );
                             if (skill.GivesPerk( __instance, perk ))
                             {
                                 __result = true;
@@ -147,7 +146,6 @@ namespace ExpandedDuplicantMultitools
                         if ( Db.Get().Skills.Get( skillPair.Key ) is ConditionalSkill skill )
                         {
                             // If we find a ConditionalSkill, check it using the method
-                            Debug.Log( skill );
                             if (skill.GivesPerk( __instance, perkId ))
                             {
                                 __result = true;

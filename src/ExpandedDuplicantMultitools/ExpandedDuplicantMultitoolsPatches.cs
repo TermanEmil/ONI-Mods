@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
-using Database;
 using ExpandedDuplicantMultitools.Equipment;
 using ExpandedDuplicantMultitools.Skills;
 using Harmony;
@@ -17,19 +15,6 @@ namespace ExpandedDuplicantMultitools
             );
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
-            Debug.Log("After create keys");
-        }
-    }
-
-    //[HarmonyPatch(typeof(Strings), "Add")]
-    public class tests
-    {
-        public static void Postfix(params string[] value)
-        {
-            foreach (var s in value)
-            {
-                Debug.Log(s);
-            }
         }
     }
 

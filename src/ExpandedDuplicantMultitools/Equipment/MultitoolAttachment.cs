@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using Klei.AI;
-using UnityEngine;
-using UnityEngine.Serialization;
-
-namespace ExpandedDuplicantMultitools.Equipment
+﻿namespace ExpandedDuplicantMultitools.Equipment
 {
     public class MultitoolAttachment : KMonoBehaviour
     { 
