@@ -1,7 +1,7 @@
 ﻿using System;
 using Database;
 
-namespace ExpandedDuplicantMultitools
+namespace ExpandedEquipment
 {
     public class ConditionalSkill : Skill
     {

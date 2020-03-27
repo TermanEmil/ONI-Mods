@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowStorageCapacity", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurablePrintingPod", "src\ConfigurablePrintingPod\ConfigurablePrintingPod.csproj", "{D57A460D-4DA4-41AF-8EC6-D8809D04683E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpandedDuplicantMultitools", "src\ExpandedDuplicantMultitools\ExpandedDuplicantMultitools.csproj", "{BE8BA009-8C91-47F5-8ADC-6D8AEFF47E33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpandedEquipment", "src\ExpandedEquipment\ExpandedEquipment.csproj", "{BE8BA009-8C91-47F5-8ADC-6D8AEFF47E33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,8 +8,8 @@
         <ProjectGuid>{BE8BA009-8C91-47F5-8ADC-6D8AEFF47E33}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ExpandedDuplicantMultitools</RootNamespace>
-        <AssemblyName>ExpandedDuplicantMultitools</AssemblyName>
+        <RootNamespace>ExpandedEquipment</RootNamespace>
+        <AssemblyName>ExpandedEquipment</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -18,7 +18,7 @@
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
-        <OutputPath>../../Mods/ExpandedDuplicantMultitols</OutputPath>
+        <OutputPath>../../Mods/ExpandedEquipment</OutputPath>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
-        <OutputPath>../../Mods/ExpandedDuplicantMultitols</OutputPath>
+        <OutputPath>../../Mods/ExpandedEquipment</OutputPath>
         <DefineConstants>TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
@@ -59,13 +59,16 @@
         <Compile Include="Equipment\Equipment.cs" />
         <Compile Include="Equipment\MultitoolAttachmentConfig.cs" />
         <Compile Include="Equipment\NeutroniumMinerAttachmentConfig.cs" />
-        <Compile Include="ExpandedDuplicantMultitoolsPatches.cs" />
+        <Compile Include="ExpandedEquipmentPatches.cs" />
         <Compile Include="MULTITOOLSSTRINGS.cs" />
         <Compile Include="NeutroniumPatches.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="ConditionalSkill.cs" />
-        <Compile Include="SkillsPatches.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs">
+          <DependentUpon>AssemblyInfo.tt</DependentUpon>
+        </Compile>
+        <Compile Include="Skills\ConditionalSkill.cs" />
         <Compile Include="Skills\ExtraSkills.cs" />
+        <Compile Include="Skills\SkillsPatches.cs" />
+        <Compile Include="Skills\ExtraStatusItems.cs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Properties\AssemblyInfo.tt">

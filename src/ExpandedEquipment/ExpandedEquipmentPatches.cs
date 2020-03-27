@@ -1,20 +1,29 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using ExpandedDuplicantMultitools.Equipment;
-using ExpandedDuplicantMultitools.Skills;
+using ExpandedEquipment.Equipment;
+using ExpandedEquipment.Skills;
 using Harmony;
 
-namespace ExpandedDuplicantMultitools
+namespace ExpandedEquipment
 {
     public class ModOnLoad
     {
         public static void OnLoad()
         {
             Debug.Log(
-                $"[ExpandedMultitools] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
+                $"[ExpandedEquipment] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
             );
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
+        }
+    }
+
+    [HarmonyPatch(typeof(KSelectable), "AddStatusItem")]
+    public class test
+    {
+        public static void Prefix(object data)
+        {
+            Debug.Log(data);
         }
     }
 

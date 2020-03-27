@@ -6,9 +6,9 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("ExpandedMultitools")]
+[assembly: AssemblyTitle("ExpandedEquipment")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("ExpandedMultitools")]
+[assembly: AssemblyProduct("ExpandedEquipment")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 <#= Year #>")]
 
 [assembly: AssemblyVersion("<#= Year #>.<#= Month #>.<#= Day #>.<#= Build #>")]

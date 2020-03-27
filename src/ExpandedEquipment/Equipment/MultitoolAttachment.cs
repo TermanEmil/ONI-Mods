@@ -1,4 +1,4 @@
-﻿namespace ExpandedDuplicantMultitools.Equipment
+﻿namespace ExpandedEquipment.Equipment
 {
     public class MultitoolAttachment : KMonoBehaviour
     { 

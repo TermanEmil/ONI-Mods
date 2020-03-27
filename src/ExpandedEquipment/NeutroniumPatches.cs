@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using ExpandedDuplicantMultitools.Skills;
+using ExpandedEquipment.Skills;
 using Harmony;
 using UnityEngine;
 
-namespace ExpandedDuplicantMultitools
+namespace ExpandedEquipment
 {
     public class NeutroniumPatches
     {
@@ -31,13 +31,13 @@ namespace ExpandedDuplicantMultitools
         [HarmonyPatch(typeof(Diggable), "UpdateColor")]
         public class Diggable_UpdateColor_Patches
         {
-            private static MethodInfo _requiresTool = AccessTools.Method(typeof(Diggable), "RequiresTool"); 
+            private static readonly MethodInfo RequiresTool = AccessTools.Method(typeof(Diggable), "RequiresTool"); 
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
                 for (var i = 0; i < codes.Count; ++i)
                 {
-                    if (codes[i].operand as MethodInfo == _requiresTool)
+                    if (codes[i].operand as MethodInfo == RequiresTool)
                     {
                         // Create new label and put it on the instruction after next ret
                         var label = new Label();
@@ -60,9 +60,17 @@ namespace ExpandedDuplicantMultitools
             {
                 if ( __instance == null || __instance.gameObject == null )
                     return;
-
-                var cell = Grid.PosToCell( __instance );
-                // Only Neutronium (or other unminable tiles?) have a hardness of 255
+                
+                // Check if cell is at bottom of map
+                var cell = Grid.PosToCell(__instance);
+                var travInstance = Traverse.Create(__instance);
+                if (cell < Grid.WidthInCells)
+                {
+                    // We are within the bottom row, cancel this
+                    travInstance.Method("OnCancel").GetValue();
+                }
+                
+                // Only Neutronium (or other unminable tiles if implemented?) have a hardness of 255
                 if (Grid.Element[cell].hardness != byte.MaxValue) return;
                 
                 // Get the existing preconditions and find one that checks for a skill perk
@@ -82,7 +90,7 @@ namespace ExpandedDuplicantMultitools
                 
                 // Update the status item with the new required skill
                 __instance.requiredSkillPerk = ExtraSkills.NeutroniumDiggingPerk.Id;
-                Traverse.Create( __instance ).Method( "UpdateStatusItem", new[] {typeof( object )} )
+                travInstance.Method( "UpdateStatusItem", new[] {typeof( object )} )
                     .GetValue( (object) null );
             }
         }

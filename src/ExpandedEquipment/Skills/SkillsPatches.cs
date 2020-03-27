@@ -3,7 +3,7 @@ using System.Linq;
 using Database;
 using Harmony;
 
-namespace ExpandedDuplicantMultitools
+namespace ExpandedEquipment.Skills
 {
     public class SkillsPatches
     {

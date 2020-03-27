@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Database;
-using ExpandedDuplicantMultitools.Equipment;
+using ExpandedEquipment.Equipment;
 
-namespace ExpandedDuplicantMultitools.Skills
+namespace ExpandedEquipment.Skills
 {
     public static class ExtraSkills
     {
-        private static Skill NeutroniumDigging;
+        public static Skill NeutroniumDigging;
         public static SkillPerk NeutroniumDiggingPerk;
 
         public const string NeutroniumDiggingSkillId = "asquared31415_" + nameof(NeutroniumDigging);

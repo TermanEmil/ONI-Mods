@@ -1,9 +1,19 @@
 ﻿using STRINGS;
 
-namespace ExpandedDuplicantMultitools
+namespace ExpandedEquipment
 {
     public static class MULTITOOLSSTRINGS
-    {
+    {/*
+        public static class BUILDINGS
+        {
+            public static class STATUSITEMS
+            {
+                public static class ASQUARED31415_COLONYLACKSNEUTRONIUMMINER
+                {
+                    
+                }
+            }
+        }*/
         public static class EQUIPMENT
         {
             public static class SLOTS

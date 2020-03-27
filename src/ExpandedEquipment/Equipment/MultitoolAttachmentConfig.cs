@@ -2,7 +2,7 @@
 using Klei.AI;
 using UnityEngine;
 
-namespace ExpandedDuplicantMultitools.Equipment
+namespace ExpandedEquipment.Equipment
 {
     public abstract class MultitoolAttachmentConfig : IEquipmentConfig
     {
