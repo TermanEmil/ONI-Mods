@@ -44,6 +44,11 @@ namespace EquipmentExpanded
                 {
                     public static readonly LocString NAME = "Multitool Attachment";
                 }
+
+                public static class HEADATTCHMENT
+                {
+                    public static readonly LocString NAME = "Head Equipment";
+                }
             }
             
             public static class PREFABS

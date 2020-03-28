@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')"/>
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -50,32 +50,38 @@
             <HintPath>..\..\lib\CaiLib.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Xml"/>
+        <Reference Include="ILoveSlicksters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\lib\ILoveSlicksters.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Buildings\MultitoolAttachmentFabricatorConfig.cs"/>
-        <Compile Include="Equipment\MultitoolAttachment.cs"/>
-        <Compile Include="Equipment\Equipment.cs"/>
-        <Compile Include="Equipment\MultitoolAttachmentConfig.cs"/>
-        <Compile Include="Equipment\NeutroniumMinerAttachmentConfig.cs"/>
-        <Compile Include="Equipment\SuperSpeedMinerAttachmentConfig.cs"/>
-        <Compile Include="ExpandedEquipmentPatches.cs"/>
-        <Compile Include="MULTITOOLSSTRINGS.cs"/>
-        <Compile Include="NeutroniumPatches.cs"/>
+        <Compile Include="Buildings\MultitoolAttachmentFabricatorConfig.cs" />
+        <Compile Include="Equipment\Equipment.cs" />
+        <Compile Include="Equipment\HeadEquipment\HeadEquipmentConfig.cs" />
+        <Compile Include="Equipment\HeadEquipment\OxygenRebreatherConfig.cs" />
+        <Compile Include="Equipment\MultitoolAttachment\MultitoolAttachment.cs" />
+        <Compile Include="Equipment\MultitoolAttachment\MultitoolAttachmentConfig.cs" />
+        <Compile Include="Equipment\MultitoolAttachment\NeutroniumMinerAttachmentConfig.cs" />
+        <Compile Include="Equipment\MultitoolAttachment\SuperSpeedMinerAttachmentConfig.cs" />
+        <Compile Include="ExpandedEquipmentPatches.cs" />
+        <Compile Include="MULTITOOLSSTRINGS.cs" />
+        <Compile Include="NeutroniumPatches.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <DependentUpon>AssemblyInfo.tt</DependentUpon>
         </Compile>
-        <Compile Include="Skills\ConditionalSkill.cs"/>
-        <Compile Include="Skills\ExtraSkills.cs"/>
-        <Compile Include="Skills\SkillsPatches.cs"/>
-        <Compile Include="Skills\ExtraStatusItems.cs"/>
+        <Compile Include="Skills\ConditionalSkill.cs" />
+        <Compile Include="Skills\ExtraSkills.cs" />
+        <Compile Include="Skills\SkillsPatches.cs" />
+        <Compile Include="Skills\ExtraStatusItems.cs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Properties\AssemblyInfo.tt">
@@ -84,9 +90,9 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <None Include="packages.config"/>
+        <None Include="packages.config" />
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <PropertyGroup>
         <PostBuildEvent>
             $(ILMergeConsolePath) /lib:$(SolutionDir)lib /out:$(TargetName)-merged.dll $(TargetName).dll CaiLib.dll /targetplatform:v2,C:\Windows\Microsoft.NET\Framework64\v4.0.30319
@@ -104,6 +110,6 @@
         <PropertyGroup>
             <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
         </PropertyGroup>
-        <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))"/>
+        <Error Condition="!Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ILMerge.3.0.29\build\ILMerge.props'))" />
     </Target>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace EquipmentExpanded.Equipment
+namespace EquipmentExpanded.Equipment.MultitoolAttachment
 {
     public class NeutroniumMinerAttachmentConfig : MultitoolAttachmentConfig
     {

@@ -2,6 +2,7 @@
 using System.Linq;
 using Database;
 using EquipmentExpanded.Equipment;
+using EquipmentExpanded.Equipment.MultitoolAttachment;
 
 namespace EquipmentExpanded.Skills
 {

@@ -3,7 +3,7 @@ using Klei.AI;
 using UnityEngine;
 using static EquipmentExpanded.MULTITOOLSSTRINGS.EQUIPMENT.PREFABS.ASQUARED31415_SUPERSPEEDMINERATTACHMENTCONFIG;
 
-namespace EquipmentExpanded.Equipment
+namespace EquipmentExpanded.Equipment.MultitoolAttachment
 {
     public class SuperSpeedMinerAttachmentConfig : MultitoolAttachmentConfig
     {

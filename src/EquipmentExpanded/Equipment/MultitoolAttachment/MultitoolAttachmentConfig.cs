@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Klei.AI;
 using UnityEngine;
 
-namespace EquipmentExpanded.Equipment
+namespace EquipmentExpanded.Equipment.MultitoolAttachment
 {
     public abstract class MultitoolAttachmentConfig : IEquipmentConfig
     {

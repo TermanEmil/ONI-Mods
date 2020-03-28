@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EquipmentExpanded.Equipment;
+using EquipmentExpanded.Equipment.MultitoolAttachment;
 using TUNING;
 using UnityEngine;
 using static TUNING.BUILDINGS;
