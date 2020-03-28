@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using CaiLib.Utils;
+using EquipmentExpanded.Buildings;
 using EquipmentExpanded.Equipment;
 using EquipmentExpanded.Skills;
 using Harmony;
@@ -11,12 +11,13 @@ namespace EquipmentExpanded
     {
         public static void OnLoad()
         {
-            Debug.Log(
-                $"[EquipmentExpanded] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
-            );
+            CaiLib.Logger.Logger.LogInit();
+            
+            BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Stations, MultitoolAttachmentFabricatorConfig.Id);
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.BUILDING));
+            LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.BUILDINGS));
 
             STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Add(GameTags.Special);
             GameTags.IgnoredMaterialCategories = new TagSet();

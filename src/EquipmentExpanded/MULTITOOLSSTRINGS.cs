@@ -22,7 +22,20 @@ namespace EquipmentExpanded
                 }
             }
         }
-        
+
+        public static class BUILDINGS
+        {
+            public static class PREFABS
+            {
+                public static class ASQUARED31415_MULTITOOLATTACHMENTFABRICATORCONFIG
+                {
+                    public static readonly LocString NAME = "Multitool Attachment Fabricator";
+                    public static readonly LocString EFFECT = "TODO: Effect";
+                    public static readonly LocString DESC = "TODO: Desc";
+                }
+            }
+        }
+
         public static class EQUIPMENT
         {
             public static class SLOTS
@@ -38,14 +51,19 @@ namespace EquipmentExpanded
                 public static class ASQUARED31415_NEUTRONIUMMINERATTACHMENTCONFIG
                 {
                     public static readonly LocString NAME        = "Neutronium Miner Attachment";
+                    public static readonly LocString DESC = "TODO: DESCRIPTION";
+                    public static readonly LocString EFFECT = "TODO: EFFECT";
+                    public static readonly LocString RECIPE_DESC = "Allows Duplicants to mine Neutronium.";
                     public static readonly LocString GENERICNAME = "Multitool Attachment";
                 }
 
                 public static class ASQUARED31415_SUPERSPEEDMINERATTACHMENTCONFIG
                 {
                     public static readonly LocString NAME = "Speedy Miner Attachment";
+                    public static readonly LocString DESC = "Speed Attachment";
+                    public static readonly LocString EFFECT = "TODO: EFFECT";
+                    public static readonly LocString RECIPE_DESC = "Boosts Duplicant mining speeds.";
                     public static readonly LocString GENERICNAME = "Multitool Attachment";
-                    public static readonly LocString DESCRIPTION = "Speed Attachment";
                 }
             }
         }

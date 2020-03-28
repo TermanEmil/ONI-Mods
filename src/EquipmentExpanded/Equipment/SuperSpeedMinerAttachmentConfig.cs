@@ -7,14 +7,15 @@ namespace EquipmentExpanded.Equipment
 {
     public class SuperSpeedMinerAttachmentConfig : MultitoolAttachmentConfig
     {
+        public const string Id = "asquared31415_" + nameof(SuperSpeedMinerAttachmentConfig);
         public const string IconAnim = "shirt_hot01_kanim";
         public const string EquippedAnim = "body_shirt_hot01_kanim";
         
         public override EquipmentDef CreateEquipmentDef()
         {
-            return CreateAttachmentDef("asquared31415_" + nameof(SuperSpeedMinerAttachmentConfig), IconAnim, EquippedAnim, new List<AttributeModifier>
+            return CreateAttachmentDef(Id, IconAnim, EquippedAnim, new List<AttributeModifier>
             {
-                new AttributeModifier("Digging", 10.0f, DESCRIPTION)
+                new AttributeModifier("Digging", 10.0f, DESC)
             });
         }
 
