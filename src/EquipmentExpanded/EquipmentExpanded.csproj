@@ -59,6 +59,7 @@
         <Compile Include="Equipment\Equipment.cs" />
         <Compile Include="Equipment\MultitoolAttachmentConfig.cs" />
         <Compile Include="Equipment\NeutroniumMinerAttachmentConfig.cs" />
+        <Compile Include="Equipment\SuperSpeedMinerAttachmentConfig.cs" />
         <Compile Include="ExpandedEquipmentPatches.cs" />
         <Compile Include="MULTITOOLSSTRINGS.cs" />
         <Compile Include="NeutroniumPatches.cs" />

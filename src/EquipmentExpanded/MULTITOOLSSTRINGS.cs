@@ -40,6 +40,13 @@ namespace EquipmentExpanded
                     public static readonly LocString NAME        = "Neutronium Miner Attachment";
                     public static readonly LocString GENERICNAME = "Multitool Attachment";
                 }
+
+                public static class ASQUARED31415_SUPERSPEEDMINERATTACHMENTCONFIG
+                {
+                    public static readonly LocString NAME = "Speedy Miner Attachment";
+                    public static readonly LocString GENERICNAME = "Multitool Attachment";
+                    public static readonly LocString DESCRIPTION = "Speed Attachment";
+                }
             }
         }
 

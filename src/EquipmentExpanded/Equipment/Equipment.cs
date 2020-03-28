@@ -18,6 +18,7 @@
         public static void LoadAllEquipment()
         {
             EquipmentConfigManager.Instance.RegisterEquipment( new NeutroniumMinerAttachmentConfig() );
+            EquipmentConfigManager.Instance.RegisterEquipment( new SuperSpeedMinerAttachmentConfig() );
         }
     }
 }
