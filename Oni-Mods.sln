@@ -61,10 +61,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7163CBA4-822F-40B1-BFD0-FD913D12E08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{440207F5-3CC0-4BAD-B7BC-05B15E98D192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{440207F5-3CC0-4BAD-B7BC-05B15E98D192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{440207F5-3CC0-4BAD-B7BC-05B15E98D192}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -138,7 +138,6 @@ Global
 		{A89E67C5-4E0D-4B8B-A434-0DD6D0784372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A89E67C5-4E0D-4B8B-A434-0DD6D0784372}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECE0255B-0E01-4F73-82A9-5342B4E3F7B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B66D2E00-0798-4780-8492-C5E27A09363E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B66D2E00-0798-4780-8492-C5E27A09363E}.Debug|Any CPU.Build.0 = Debug|Any CPU
