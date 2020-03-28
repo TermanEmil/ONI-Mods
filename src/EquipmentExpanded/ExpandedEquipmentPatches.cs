@@ -3,6 +3,7 @@ using System.Reflection;
 using EquipmentExpanded.Equipment;
 using EquipmentExpanded.Skills;
 using Harmony;
+using TUNING;
 
 namespace EquipmentExpanded
 {
@@ -16,6 +17,9 @@ namespace EquipmentExpanded
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.BUILDING));
+
+            STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Add(GameTags.Special);
+            GameTags.IgnoredMaterialCategories = new TagSet();
         }
     }
 
