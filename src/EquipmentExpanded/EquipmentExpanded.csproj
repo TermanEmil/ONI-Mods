@@ -64,10 +64,14 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Buildings\CustomSuitFabricatorConfig.cs" />
         <Compile Include="Buildings\MultitoolAttachmentFabricatorConfig.cs" />
+        <Compile Include="CrossModCompatibility.cs" />
         <Compile Include="Equipment\Equipment.cs" />
         <Compile Include="Equipment\HeadEquipment\HeadEquipmentConfig.cs" />
         <Compile Include="Equipment\HeadEquipment\OxygenRebreatherConfig.cs" />
+        <Compile Include="Equipment\ModIntegrations\CustomSuitAttachment.cs" />
+        <Compile Include="Equipment\ModIntegrations\OwOSlicksterSuit.cs" />
         <Compile Include="Equipment\MultitoolAttachment\MultitoolAttachment.cs" />
         <Compile Include="Equipment\MultitoolAttachment\MultitoolAttachmentConfig.cs" />
         <Compile Include="Equipment\MultitoolAttachment\NeutroniumMinerAttachmentConfig.cs" />

@@ -49,6 +49,11 @@ namespace EquipmentExpanded
                 {
                     public static readonly LocString NAME = "Head Equipment";
                 }
+
+                public static class CUSTOMSUIT
+                {
+                    public static readonly LocString NAME = "Custom Suit";
+                }
             }
             
             public static class PREFABS

@@ -14,6 +14,7 @@ namespace EquipmentExpanded
             CaiLib.Logger.Logger.LogInit();
             
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Stations, MultitoolAttachmentFabricatorConfig.Id);
+            BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Stations, CustomSuitFabricatorConfig.Id);
 
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.EQUIPMENT));
             LocString.CreateLocStringKeys(typeof(MULTITOOLSSTRINGS.BUILDING));
@@ -32,6 +33,8 @@ namespace EquipmentExpanded
             ExtraSkills.InitializeSkillsAndPerks();
             ExpandedAssignableSlots.InitializeSlots();
             ExtraStatusItems.InitializeStatusItems();
+            
+            CrossModCompatibility.CheckAndRunAll();
         }
     }
 

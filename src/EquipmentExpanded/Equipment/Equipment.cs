@@ -11,6 +11,9 @@ namespace EquipmentExpanded.Equipment
         public static AssignableSlot HeadAttachment;
         public const string HeadAttachmentId = "asquared31415_" + nameof(HeadAttachment);
 
+        public static AssignableSlot CustomSuit;
+        public const string CustomSuitId = "asquared31415_" + nameof(CustomSuit);
+
         public static void InitializeSlots()
         {
             var assignableSlots = Db.Get().AssignableSlots;
@@ -27,6 +30,13 @@ namespace EquipmentExpanded.Equipment
                     SLOTS.HEADATTCHMENT.NAME
                 )
             );
+
+            CustomSuit = assignableSlots.Add(
+                new EquipmentSlot(
+                    CustomSuitId,
+                    SLOTS.CUSTOMSUIT.NAME
+                    )
+                );
         }
 
         public static void LoadAllEquipment()
