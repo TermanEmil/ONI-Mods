@@ -8,6 +8,58 @@ using UnityEngine;
 
 namespace EquipmentExpanded
 {
+    
+    [HarmonyPatch(typeof(MinionConfig), "SetupLaserEffects")]
+    public class MinionConfig_SetupLaserEffects
+    {
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
+        {
+            var codes = orig.ToList();
+            var idx = codes.Count - 1;
+            codes.Insert(idx++, new CodeInstruction(OpCodes.Ldloc_2));
+            codes.Insert(idx++, new CodeInstruction(OpCodes.Ldloc_0));
+            codes.Insert(idx++, new CodeInstruction(OpCodes.Ldloc_1));
+            var addAnim = typeof(MinionConfig_SetupLaserEffects).GetMethod("AddAnim");
+            codes.Insert(idx, new CodeInstruction(OpCodes.Call, addAnim));
+
+            return codes;
+        }
+        
+        public static void AddAnim(KBatchedAnimController animController,
+            GameObject gameObject,
+            KBatchedAnimEventToggler toggler)
+        {
+            var laserEffect = new MinionConfig.LaserEffect
+            {
+                id = "NeutroniumDigEffect",
+                animFile = "neutronium_miner_beam_fx_kanim",
+                anim = "idle",
+                context = (HashedString) "neutroniumdig"
+            };
+
+            var go = new GameObject(laserEffect.id);
+            go.transform.parent = gameObject.transform;
+            go.AddOrGet<KPrefabID>().PrefabTag = new Tag(laserEffect.id);
+            var animTracker = go.AddOrGet<KBatchedAnimTracker>();
+            animTracker.controller = animController;
+            animTracker.symbol = new HashedString("snapTo_rgtHand");
+            animTracker.offset = new Vector3(195f, -35f, 0.0f);
+            animTracker.useTargetPoint = true;
+            var kbatchedAnimController = go.AddOrGet<KBatchedAnimController>();
+            kbatchedAnimController.AnimFiles = new[]
+            {
+                Assets.GetAnim(laserEffect.animFile)
+            };
+            var entry = new KBatchedAnimEventToggler.Entry
+            {
+                anim = laserEffect.anim,
+                context = laserEffect.context,
+                controller = kbatchedAnimController
+            };
+            toggler.entries.Add(entry);
+            go.AddOrGet<LoopingSounds>();
+        }
+    }
     public class NeutroniumPatches
     {
         [HarmonyPatch( typeof( Diggable ), "GetApproximateDigTime" )]
@@ -31,7 +83,8 @@ namespace EquipmentExpanded
         [HarmonyPatch(typeof(Diggable), "UpdateColor")]
         public class Diggable_UpdateColor_Patches
         {
-            private static readonly MethodInfo RequiresTool = AccessTools.Method(typeof(Diggable), "RequiresTool"); 
+            private static readonly MethodInfo RequiresTool = AccessTools.Method(typeof(Diggable), "RequiresTool");
+            
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
@@ -50,6 +103,19 @@ namespace EquipmentExpanded
                 
                 Debug.LogWarning("[Equipment Expanded] Unable to patch Diggable.UpdateColor to ignore neutronium checks");
                 return codes;
+            }
+
+            public static void Postfix(Diggable __instance)
+            {
+                if (Grid.Element[Grid.PosToCell(__instance.gameObject)].hardness == byte.MaxValue)
+                {
+                    var inst = Traverse.Create(__instance);
+                    var childRenderer = (MeshRenderer) inst.Field("childRenderer").GetValue();
+                    if (childRenderer == null) return;
+                    childRenderer.material.color = Game.Instance.uiColours.Dig.validLocation;
+                    inst.Field("multitoolContext").SetValue((HashedString) "neutroniumdig");
+                    inst.Field("multitoolHitEffectTag").SetValue((Tag) "fx_dig_splash");
+                }
             }
         }
 
