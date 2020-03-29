@@ -22,6 +22,7 @@ namespace EquipmentExpanded
 
             STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Add(GameTags.Special);
             GameTags.IgnoredMaterialCategories = new TagSet();
+            GameTags.MaterialCategories.Add(GameTags.Special);
         }
     }
 
