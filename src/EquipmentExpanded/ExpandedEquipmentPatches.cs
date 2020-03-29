@@ -1,13 +1,14 @@
 ﻿using CaiLib.Utils;
 using EquipmentExpanded.Buildings;
 using EquipmentExpanded.Equipment;
+using EquipmentExpanded.Items;
 using EquipmentExpanded.Skills;
 using Harmony;
 using TUNING;
 
 namespace EquipmentExpanded
 {
-    public class ModOnLoad
+    public class ModStuff
     {
         public static void OnLoad()
         {
@@ -25,6 +26,7 @@ namespace EquipmentExpanded
             GameTags.MaterialCategories.Add(GameTags.Special);
         }
     }
+
 
     [HarmonyPatch(typeof(Db), "Initialize")]
     public class Db_Initialize_Patches

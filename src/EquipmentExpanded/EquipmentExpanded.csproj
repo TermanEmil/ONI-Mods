@@ -77,6 +77,7 @@
         <Compile Include="Equipment\MultitoolAttachment\NeutroniumMinerAttachmentConfig.cs" />
         <Compile Include="Equipment\MultitoolAttachment\SuperSpeedMinerAttachmentConfig.cs" />
         <Compile Include="ExpandedEquipmentPatches.cs" />
+        <Compile Include="Items\PrintingPodUpgradeConfig.cs" />
         <Compile Include="MULTITOOLSSTRINGS.cs" />
         <Compile Include="NeutroniumPatches.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
