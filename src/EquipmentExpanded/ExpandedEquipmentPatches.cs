@@ -35,7 +35,7 @@ namespace EquipmentExpanded
             ExpandedAssignableSlots.InitializeSlots();
             ExtraStatusItems.InitializeStatusItems();
             
-            CrossModCompatibility.CheckAndRunAll();
+            CrossModCompatibility.CheckAndLoadAll();
         }
     }
 
