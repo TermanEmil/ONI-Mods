@@ -1,7 +1,6 @@
 ﻿using CaiLib.Utils;
 using EquipmentExpanded.Buildings;
 using EquipmentExpanded.Equipment;
-using EquipmentExpanded.Items;
 using EquipmentExpanded.Skills;
 using Harmony;
 using TUNING;

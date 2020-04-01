@@ -34,23 +34,23 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="0Harmony">
             <HintPath>..\..\lib\0Harmony.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="Assembly-CSharp">
             <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="Assembly-CSharp-firstpass">
             <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="CaiLib, Version=2020.1.19.31, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\..\lib\CaiLib.dll</HintPath>
-            <Private>False</Private>
+        <Reference Include="CaiLib">
+          <HintPath>..\..\lib\CaiLib.dll</HintPath>
+          <Private>False</Private>
         </Reference>
-        <Reference Include="ILoveSlicksters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="ILoveSlicksters">
           <HintPath>..\..\lib\ILoveSlicksters.dll</HintPath>
           <Private>False</Private>
         </Reference>
@@ -58,7 +58,7 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
-        <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="UnityEngine.CoreModule">
             <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
