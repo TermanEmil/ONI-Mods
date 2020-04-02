@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowStorageCapacity", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurablePrintingPod", "src\ConfigurablePrintingPod\ConfigurablePrintingPod.csproj", "{D57A460D-4DA4-41AF-8EC6-D8809D04683E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothingLocker", "src\ClothingLocker\ClothingLocker.csproj", "{305D3958-F5C0-47CA-A27F-ABDAD65BA007}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{D57A460D-4DA4-41AF-8EC6-D8809D04683E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D57A460D-4DA4-41AF-8EC6-D8809D04683E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D57A460D-4DA4-41AF-8EC6-D8809D04683E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{305D3958-F5C0-47CA-A27F-ABDAD65BA007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{305D3958-F5C0-47CA-A27F-ABDAD65BA007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{305D3958-F5C0-47CA-A27F-ABDAD65BA007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{305D3958-F5C0-47CA-A27F-ABDAD65BA007}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
