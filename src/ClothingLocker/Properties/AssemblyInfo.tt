@@ -15,6 +15,7 @@ using System.Reflection;
 [assembly: AssemblyCulture("")]
 
 [assembly: AssemblyFileVersion("<#= Year #>.<#= Month #>.<#= Day #>.<#= Build #>")]
+[assembly: AssemblyVersion("<#= Year #>.<#= Month #>.<#= Day #>.<#= Build #>")]
 <#+
     private readonly int Year = DateTime.UtcNow.Year;
     private readonly int Month = DateTime.UtcNow.Month;
