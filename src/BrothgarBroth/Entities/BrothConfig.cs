@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrothgarBroth.Entities
 {
@@ -32,7 +33,11 @@ namespace BrothgarBroth.Entities
                 true
             );
 
-            var foodInfo = new EdiblesManager.FoodInfo( Id, Calories, 0, 255.15f, 277.15f, 2400f, true );
+            var foodInfo =
+                new EdiblesManager.FoodInfo( Id, Calories, 0, 255.15f, 277.15f, 2400f, true ).AddEffects(
+                    new List<string> {BrothEffects.StaminaEffectId, BrothEffects.SpeedEffectId}
+                );
+
             EntityTemplates.ExtendEntityToFood( entityConfig, foodInfo );
             return entityConfig;
         }
