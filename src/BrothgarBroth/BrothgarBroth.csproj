@@ -61,11 +61,9 @@
     <ItemGroup>
         <Compile Include="BrothgarBroth.cs" />
         <Compile Include="BrothgarBrothPatches.cs" />
+        <Compile Include="Buildings\BrothBrewerConfig.cs" />
         <Compile Include="Entities\BrothConfig.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Buildings" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

@@ -9,6 +9,7 @@ namespace BrothgarBroth.Entities
         public const  string Name = "Brothgar Broth";
         public const  string Desc = "An energy drink composed of questionable ingredients.";
         private const string Anim = "meallicegrain_kanim";
+        public static Tag Tag = (Tag) Id;
 
         // 50g phosphorus
         public const float PhosKg = 0.05f;

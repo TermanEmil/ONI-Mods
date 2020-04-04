@@ -1,4 +1,6 @@
-﻿using BrothgarBroth.Entities;
+﻿using BrothgarBroth.Buildings;
+using BrothgarBroth.Entities;
+using CaiLib.Utils;
 using Harmony;
 using Klei.AI;
 
@@ -8,7 +10,11 @@ namespace BrothgarBroth
     {
         public static class ModLoad
         {
-            public static void OnLoad() { CaiLib.Logger.Logger.LogInit(); }
+            public static void OnLoad()
+            {
+                CaiLib.Logger.Logger.LogInit();
+                BuildingUtils.AddBuildingToPlanScreen( GameStrings.PlanMenuCategory.Food, BrothBrewerConfig.Id );
+            }
         }
 
         [HarmonyPatch( typeof( Db ), "Initialize" )]
