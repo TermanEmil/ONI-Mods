@@ -8,7 +8,7 @@ namespace BrothgarBroth
         [HarmonyPatch( typeof( Edible ), "OnStopWork" )]
         public static class Edible_OnStopWork_Patches
         {
-            public static void Postfix( Edible __instance, Worker worker )
+            public static void Prefix( Edible __instance, Worker worker )
             {
                 if ( __instance.GetComponent<BrothgarBroth>() != null )
                 {
