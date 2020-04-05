@@ -7,16 +7,16 @@ namespace BrothgarBroth.Buildings
 {
     public class BrothBrewerConfig : IBuildingConfig
     {
-        public const  string Id   = "asquared31415_" + nameof( BrothBrewerConfig );
-        private const string Anim = "suit_maker_kanim";
+        public const  string Id   = "asquared31415_" + nameof(BrothBrewerConfig);
+        private const string Anim = "hottub_kanim";
         public static Tag    Tag  = (Tag) Id;
 
         public override BuildingDef CreateBuildingDef()
         {
             var buildingDef = BuildingTemplates.CreateBuildingDef(
                 Id,
-                4,
-                1,
+                5,
+                2,
                 Anim,
                 40,
                 30f,
@@ -31,9 +31,9 @@ namespace BrothgarBroth.Buildings
             return buildingDef;
         }
 
-        public override void ConfigureBuildingTemplate( GameObject go, Tag prefabTag )
+        public override void ConfigureBuildingTemplate(GameObject go, Tag prefabTag)
         {
-            go.GetComponent<KPrefabID>().AddTag( RoomConstraints.ConstraintTags.IndustrialMachinery );
+            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
             go.AddOrGet<DropAllWorkable>();
             go.AddOrGet<Prioritizable>();
             var fabricator = go.AddOrGet<ComplexFabricator>();
@@ -50,8 +50,8 @@ namespace BrothgarBroth.Buildings
                                                                          )
                                                                      };
 
-            Prioritizable.AddRef( go );
-            BuildingTemplates.CreateComplexFabricatorStorage( go, fabricator );
+            Prioritizable.AddRef(go);
+            BuildingTemplates.CreateComplexFabricatorStorage(go, fabricator);
             ConfigureRecipes();
         }
 
@@ -60,11 +60,11 @@ namespace BrothgarBroth.Buildings
             ComplexRecipe.RecipeElement[] brothIngredients =
             {
                 // 50g phosphorus
-                new ComplexRecipe.RecipeElement( SimHashes.Phosphorus.CreateTag(), 0.05f ),
-                new ComplexRecipe.RecipeElement( SimHashes.Copper.CreateTag(), 1f ),
+                new ComplexRecipe.RecipeElement(SimHashes.Phosphorus.CreateTag(), 0.05f),
+                new ComplexRecipe.RecipeElement(SimHashes.Copper.CreateTag(), 1f),
             };
 
-            ComplexRecipe.RecipeElement[] brothResult = {new ComplexRecipe.RecipeElement( BrothConfig.Tag, 1f )};
+            ComplexRecipe.RecipeElement[] brothResult = {new ComplexRecipe.RecipeElement(BrothConfig.Tag, 1f)};
 
             var recipe =
                 new ComplexRecipe(
@@ -80,7 +80,7 @@ namespace BrothgarBroth.Buildings
                 };
         }
 
-        public override void DoPostConfigureComplete( GameObject go )
+        public override void DoPostConfigureComplete(GameObject go)
         {
             go.GetComponent<KPrefabID>().prefabSpawnFn += (KPrefabID.PrefabFn) (game_object =>
             {
