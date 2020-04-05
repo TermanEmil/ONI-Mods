@@ -12,6 +12,7 @@
         <AssemblyName>BrothgarBroth</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,7 +46,7 @@
           <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
           <Private>False</Private>
         </Reference>
-        <Reference Include="CaiLib, Version=2020.1.19.31, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="CaiLib, Version=2020.1.24.31, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\lib\CaiLib.dll</HintPath>
           <Private>False</Private>
         </Reference>
@@ -59,8 +60,8 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="BrothgarBroth.cs" />
         <Compile Include="BrothgarBrothPatches.cs" />
+        <Compile Include="BROTHSTRINGS.cs" />
         <Compile Include="Buildings\BrothBrewerConfig.cs" />
         <Compile Include="Entities\BrothConfig.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

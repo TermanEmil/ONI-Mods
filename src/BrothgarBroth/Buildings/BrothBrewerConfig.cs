@@ -66,18 +66,17 @@ namespace BrothgarBroth.Buildings
 
             ComplexRecipe.RecipeElement[] brothResult = {new ComplexRecipe.RecipeElement(BrothConfig.Tag, 1f)};
 
-            var recipe =
-                new ComplexRecipe(
-                    ComplexRecipeManager.MakeRecipeID( Id, brothIngredients, brothResult ),
-                    brothIngredients,
-                    brothResult
-                )
-                {
-                    time = 30f,
-                    description = "BROTH RECIPE DESC",
-                    nameDisplay = ComplexRecipe.RecipeNameDisplay.Result,
-                    fabricators = new List<Tag> {Tag}
-                };
+            var _ = new ComplexRecipe(
+                        ComplexRecipeManager.MakeRecipeID(BrothBrewerConfig.Id, brothIngredients, brothResult),
+                        brothIngredients,
+                        brothResult
+                    )
+                    {
+                        time = 30f,
+                        description = BROTHSTRINGS.ITEMS.FOOD.ASQUARED31415_BROTHCONFIG.RECIPE_DESC,
+                        nameDisplay = ComplexRecipe.RecipeNameDisplay.Result,
+                        fabricators = new List<Tag> {BrothBrewerConfig.Tag}
+                    };
         }
 
         public override void DoPostConfigureComplete(GameObject go)
