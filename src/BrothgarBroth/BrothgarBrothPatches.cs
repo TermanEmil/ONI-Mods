@@ -54,6 +54,8 @@ namespace BrothgarBroth
         public const  string StaminaEffectId = "asquared31415_" + nameof(BrothStaminaEffect);
         public static Effect BrothSpeedEffect;
         public const  string SpeedEffectId = "asquared31415_" + nameof(BrothSpeedEffect);
+        public static Effect BrothCooldownEffect;
+        public const  string CooldownEffectId = "asquared31415_" + nameof(BrothEffects.BrothCooldownEffect);
 
         public static void InitializeEffects()
         {
@@ -64,7 +66,7 @@ namespace BrothgarBroth
                 StaminaEffectId,
                 ASQUARED31415_BROTHSTAMINAEFFECT.NAME,
                 ASQUARED31415_BROTHSTAMINAEFFECT.DESCRIPTION,
-                100f,
+                300f,
                 true,
                 true,
                 false
@@ -84,7 +86,7 @@ namespace BrothgarBroth
                 SpeedEffectId,
                 ASQUARED31415_BROTHSPEEDEFFECT.NAME,
                 ASQUARED31415_BROTHSPEEDEFFECT.DESCRIPTION,
-                100f,
+                300f,
                 true,
                 true,
                 false
@@ -95,6 +97,18 @@ namespace BrothgarBroth
             );
 
             effects.Add(BrothSpeedEffect);
+
+            BrothCooldownEffect = new Effect(
+                CooldownEffectId,
+                "Broth Cooldown",
+                "",
+                75f,
+                false,
+                false,
+                false
+            );
+
+            effects.Add(BrothCooldownEffect);
         }
     }
 }

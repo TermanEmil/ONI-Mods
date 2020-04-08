@@ -45,7 +45,6 @@ namespace BrothgarBroth.Buildings
             go.AddOrGet<ComplexFabricatorWorkable>().overrideAnims = new[]
                                                                      {
                                                                          Assets.GetAnim(
-                                                                             (HashedString)
                                                                              "anim_interacts_suit_fabricator_kanim"
                                                                          )
                                                                      };

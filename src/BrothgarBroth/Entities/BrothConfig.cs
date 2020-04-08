@@ -29,21 +29,26 @@ namespace BrothgarBroth.Entities
                 Grid.SceneLayer.Front,
                 EntityTemplates.CollisionShape.CIRCLE,
                 0.25f,
-                0.25f,
-                true
+                0.25f
             );
 
             var foodInfo = new EdiblesManager.FoodInfo(Id, Calories, 0, 255.15f, 277.15f, 2400f, true).AddEffects(
                 new List<string> {BrothEffects.StaminaEffectId, BrothEffects.SpeedEffectId}
             );
 
-            EntityTemplates.ExtendEntityToFood(entityConfig, foodInfo);
+            //EntityTemplates.ExtendEntityToFood(entityConfig, foodInfo);
             entityConfig.AddTag(Tag);
             return entityConfig;
         }
 
-        public void OnPrefabInit(GameObject inst) { }
+        public void OnPrefabInit(GameObject go)
+        {
+            go.AddOrGet<BrothWorkable>();
+        }
 
-        public void OnSpawn(GameObject inst) { }
+        public void OnSpawn(GameObject go)
+        {
+            
+        }
     }
 }
