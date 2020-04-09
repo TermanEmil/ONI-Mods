@@ -60,7 +60,9 @@ namespace BrothgarBroth.Buildings
             {
                 // 50g phosphorus
                 new ComplexRecipe.RecipeElement(SimHashes.Phosphorus.CreateTag(), 0.05f),
-                new ComplexRecipe.RecipeElement(SimHashes.Copper.CreateTag(), 1f),
+                new ComplexRecipe.RecipeElement(SimHashes.Algae.CreateTag(), 0.05f),
+                new ComplexRecipe.RecipeElement(SimHashes.Salt.CreateTag(), 0.05f),
+                new ComplexRecipe.RecipeElement(SimHashes.DirtyWater.CreateTag(), 0.85f)
             };
 
             ComplexRecipe.RecipeElement[] brothResult = {new ComplexRecipe.RecipeElement(BrothConfig.Tag, 1f)};
