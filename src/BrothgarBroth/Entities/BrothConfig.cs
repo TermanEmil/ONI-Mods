@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using static BrothgarBroth.BROTHSTRINGS.ITEMS.FOOD;
 
 namespace BrothgarBroth.Entities

@@ -68,7 +68,19 @@ namespace BrothgarBroth.Entities
             {
                 default_state = usable;
                 usable.ToggleChore(smi => smi.master.CreateWorkChore(), unusable);
-                unusable.Enter(smi => Util.KDestroyGameObject(smi.master.gameObject));
+                unusable.Enter(smi =>
+                {
+                    var element = ElementLoader.FindElementByHash(SimHashes.Phosphorus);
+                    element.substance.SpawnResource(
+                        Grid.CellToPosCCC(Grid.PosToCell(smi.master.gameObject.transform.position), Grid.SceneLayer.Ore),
+                        BrothConfig.PhosKg,
+                        smi.master.gameObject.GetComponent<PrimaryElement>().Temperature,
+                        byte.MaxValue,
+                        0
+                    );
+
+                    Util.KDestroyGameObject(smi.master.gameObject);
+                });
             }
 
             public new class Instance : GameInstance
