@@ -1,8 +1,10 @@
-﻿using BrothgarBroth.Buildings;
+﻿using System;
+using BrothgarBroth.Buildings;
 using BrothgarBroth.Entities;
 using CaiLib.Utils;
 using Harmony;
 using Klei.AI;
+using STRINGS;
 using static BrothgarBroth.BROTHSTRINGS.DUPLICANTS.MODIFIERS;
 
 namespace BrothgarBroth
@@ -46,6 +48,37 @@ namespace BrothgarBroth
                 }
             }
         }
+
+        [HarmonyPatch(typeof(ChorePreconditions), MethodType.Constructor, new Type[0])]
+        public static class ChorePreconditions_Ctor_Patches
+        {
+            public static void Postfix() { CustomPreconditions.InitializePreconditions(); }
+        }
+    }
+
+    public static class CustomPreconditions
+    {
+        public static Chore.Precondition CanDrinkBrothPrecondition;
+
+        public static void InitializePreconditions()
+        {
+            CanDrinkBrothPrecondition = new Chore.Precondition
+                                        {
+                                            id = "asquared31415_" +
+                                                 nameof(CustomPreconditions.CanDrinkBrothPrecondition),
+                                            description = DUPLICANTS.CHORES.PRECONDITIONS.CAN_DO_RECREATION,
+                                            fn = (ref Chore.Precondition.Context context, object data) =>
+                                            {
+                                                if(context.consumerState.consumer == null)
+                                                    return false;
+
+                                                if(!(data is IBrothWorkable workable))
+                                                    return false;
+
+                                                return workable.CanConsumeBroth(context.consumerState.worker);
+                                            }
+                                        };
+        }
     }
 
     public static class BrothEffects
@@ -66,7 +99,7 @@ namespace BrothgarBroth
                 StaminaEffectId,
                 ASQUARED31415_BROTHSTAMINAEFFECT.NAME,
                 ASQUARED31415_BROTHSTAMINAEFFECT.DESCRIPTION,
-                300f,
+                330f,
                 true,
                 true,
                 false
@@ -86,7 +119,7 @@ namespace BrothgarBroth
                 SpeedEffectId,
                 ASQUARED31415_BROTHSPEEDEFFECT.NAME,
                 ASQUARED31415_BROTHSPEEDEFFECT.DESCRIPTION,
-                300f,
+                330f,
                 true,
                 true,
                 false
@@ -98,16 +131,7 @@ namespace BrothgarBroth
 
             effects.Add(BrothSpeedEffect);
 
-            BrothCooldownEffect = new Effect(
-                CooldownEffectId,
-                "Broth Cooldown",
-                "",
-                75f,
-                false,
-                false,
-                false
-            );
-
+            BrothCooldownEffect = new Effect(CooldownEffectId, "Broth Cooldown", "", 300f, false, false, false);
             effects.Add(BrothCooldownEffect);
         }
     }

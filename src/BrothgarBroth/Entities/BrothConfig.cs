@@ -7,14 +7,11 @@ namespace BrothgarBroth.Entities
     public class BrothConfig : IEntityConfig
     {
         public const  string Id   = "asquared31415_" + nameof(BrothConfig);
-        private const string Anim = "meallicegrain_kanim";
+        private const string Anim = "brothgar_broth_kanim";
         public static Tag    Tag  = (Tag) Id;
 
         // 50g phosphorus
         public const float PhosKg = 0.05f;
-
-        // This is in cal, not kcal
-        private const float Calories = 100_000;
 
         public GameObject CreatePrefab()
         {

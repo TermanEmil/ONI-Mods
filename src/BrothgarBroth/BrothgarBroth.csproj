@@ -62,13 +62,22 @@
     <ItemGroup>
         <Compile Include="BrothgarBrothPatches.cs" />
         <Compile Include="BROTHSTRINGS.cs" />
-        <Compile Include="BrothgarBroth.cs" />
         <Compile Include="Buildings\BrothBrewerConfig.cs" />
         <Compile Include="Entities\BrothConfig.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Entities\BrothgarBroth.cs" />
+        <Compile Include="IBrothWorkable.cs" />
+        <Compile Update="Properties\AssemblyInfo.cs">
+          <DependentUpon>AssemblyInfo.tt</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Properties\AssemblyInfo.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+      </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <PropertyGroup>
