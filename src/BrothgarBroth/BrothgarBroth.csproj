@@ -62,7 +62,7 @@
     <ItemGroup>
         <Compile Include="BrothgarBrothPatches.cs" />
         <Compile Include="BROTHSTRINGS.cs" />
-        <Compile Include="BrothWorkable.cs" />
+        <Compile Include="BrothgarBroth.cs" />
         <Compile Include="Buildings\BrothBrewerConfig.cs" />
         <Compile Include="Entities\BrothConfig.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

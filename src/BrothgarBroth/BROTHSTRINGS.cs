@@ -46,7 +46,7 @@
                 {
                     public static LocString NAME        = "Brothgar Broth";
                     public static LocString DESC        = "An energy drink composed of questionable ingredients.";
-                    public static LocString RECIPE_DESC = "A high-energy, low calorie drink.";
+                    public static LocString RECIPE_DESC = "A high-energy drink.";
                 }
             }
         }
