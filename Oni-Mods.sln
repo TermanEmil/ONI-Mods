@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothingLocker", "src\Cloth
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrothgarBroth", "src\BrothgarBroth\BrothgarBroth.csproj", "{6B1FF003-7D9A-497C-B1D4-7B102562D4FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meep", "src\Meep\Meep.csproj", "{02A99E6C-56B3-4BDA-B002-4DEDE5A86115}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{6B1FF003-7D9A-497C-B1D4-7B102562D4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1FF003-7D9A-497C-B1D4-7B102562D4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1FF003-7D9A-497C-B1D4-7B102562D4FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02A99E6C-56B3-4BDA-B002-4DEDE5A86115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A99E6C-56B3-4BDA-B002-4DEDE5A86115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A99E6C-56B3-4BDA-B002-4DEDE5A86115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A99E6C-56B3-4BDA-B002-4DEDE5A86115}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
