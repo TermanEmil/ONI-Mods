@@ -46,7 +46,7 @@
           <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
           <Private>False</Private>
         </Reference>
-        <Reference Include="CaiLib, Version=2020.1.24.31, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="CaiLib">
           <HintPath>..\..\lib\CaiLib.dll</HintPath>
           <Private>False</Private>
         </Reference>
