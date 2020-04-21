@@ -1,61 +1,49 @@
 ﻿using System.Collections.Generic;
-using STRINGS;
 using TUNING;
 using UnityEngine;
-using BUILDINGS = TUNING.BUILDINGS;
 
-namespace MoreCanisterFillersMod
+namespace MoreCanisterFillersMod.Buildings
 {
-    public class OldConveyorCanisterLoaderConfig : ConveyorCanisterLoaderConfig
-    {
-        private const string Id = "ConveyorBottleLoader";
-
-        public override BuildingDef CreateBuildingDef()
-        {
-            var def = base.CreateBuildingDef();
-            def.PrefabID = Id;
-            return def;
-        }
-
-        public override void DoPostConfigureComplete(GameObject go)
-        {
-            base.DoPostConfigureComplete(go);
-            var def = go.GetComponent<Building>().Def;
-            def.PrefabID = ConveyorCanisterLoaderConfig.Id;
-        }
-    }
-
+    // DEPRECATED
+    // Added functionality to base game's loader
     public class ConveyorCanisterLoaderConfig : IBuildingConfig
     {
-        public const string Id = "asquared31415.ConveyorBottleLoader";
-        public const string DisplayName = "Conveyor Canister Loader";
-        public const string Description = "";
-
-        private const ConduitType LoaderConduitType = ConduitType.Solid;
-
-        public static readonly string Effect = "Loads bottles onto " +
-                                               UI.FormatAsLink("Conveyor Rail", "SOLIDCONDUIT") +
-                                               " for transport.\n\nOnly loads the resources of your choosing.";
+        private const string Id          = "asquared31415.ConveyorBottleLoader";
 
         public override BuildingDef CreateBuildingDef()
         {
             const string anim = "conveyorin_kanim";
             const int hitpoints = 100;
             const float constructionTime = 60f;
-            var constructionMass = BUILDINGS.CONSTRUCTION_MASS_KG.TIER3;
-            var allMetals = MATERIALS.REFINED_METALS;
+            float[] constructionMass = BUILDINGS.CONSTRUCTION_MASS_KG.TIER3;
+            string[] allMetals = MATERIALS.REFINED_METALS;
             const float meltingPoint = 1600f;
             const BuildLocationRule buildLocationRule = BuildLocationRule.Anywhere;
             var none = NOISE_POLLUTION.NONE;
-            var buildingDef = BuildingTemplates.CreateBuildingDef(Id, 1, 2, anim, hitpoints, constructionTime,
-                constructionMass, allMetals, meltingPoint, buildLocationRule, BUILDINGS.DECOR.PENALTY.TIER1, none);
+            var buildingDef = BuildingTemplates.CreateBuildingDef(
+                Id,
+                1,
+                2,
+                anim,
+                hitpoints,
+                constructionTime,
+                constructionMass,
+                allMetals,
+                meltingPoint,
+                buildLocationRule,
+                BUILDINGS.DECOR.PENALTY.TIER1,
+                none
+            );
+
+            buildingDef.Deprecated = true;
+
             buildingDef.RequiresPowerInput = true;
             buildingDef.EnergyConsumptionWhenActive = 120f;
             buildingDef.SelfHeatKilowattsWhenActive = 2f;
             buildingDef.Floodable = false;
             buildingDef.ViewMode = OverlayModes.SolidConveyor.ID;
             buildingDef.AudioCategory = "Metal";
-            buildingDef.OutputConduitType = LoaderConduitType;
+            buildingDef.OutputConduitType = ConduitType.Solid;
             buildingDef.PowerInputOffset = new CellOffset(0, 1);
             buildingDef.UtilityOutputOffset = CellOffset.none;
             buildingDef.PermittedRotations = PermittedRotations.R360;

@@ -62,15 +62,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoDropInv.cs" />
-    <Compile Include="ConveyorCanisterLoaderConfig.cs" />
-    <Compile Include="ConveyorLoadedCanisterEmptierConfig.cs" />
+    <Compile Include="Buildings\ConveyorGasLoaderConfig.cs" />
+    <Compile Include="Buildings\ConveyorGasPipeFillerConfig.cs" />
+    <Compile Include="Buildings\ConveyorLiquidLoaderConfig.cs" />
+    <Compile Include="Buildings\ConveyorLiquidPipeFillerConfig.cs" />
+    <Compile Include="Buildings\ConveyorCanisterLoaderConfig.cs" />
+    <Compile Include="Buildings\ConveyorLoadedCanisterEmptierConfig.cs" />
+    <Compile Include="Buildings\PipedLiquidBottlerConfig.cs" />
+    <Compile Include="Components\AutoDropInv.cs" />
+    <Compile Include="Components\PipedLiquidBottler.cs" />
     <Compile Include="MoreCanisterFillersPatches.cs" />
-    <Compile Include="PipedLiquidBottler.cs" />
-    <Compile Include="PipedLiquidBottlerConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
+    <Compile Include="STRINGS.cs" />
     <Compile Include="UnfilteredBottleEmptier.cs" />
   </ItemGroup>
   <ItemGroup>

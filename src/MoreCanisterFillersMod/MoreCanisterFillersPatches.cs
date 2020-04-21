@@ -1,85 +1,90 @@
 ﻿using System.Linq;
 using CaiLib.Utils;
 using Harmony;
-using STRINGS;
+using MoreCanisterFillersMod.Buildings;
+using MoreCanisterFillersMod.Components;
 using TUNING;
 using UnityEngine;
+using static CaiLib.Utils.GameStrings;
 
 namespace MoreCanisterFillersMod
 {
-    public class MoreCanisterFillersPatches
+    public static class Hooks
     {
         public static void OnLoad()
         {
             CaiLib.Logger.Logger.LogInit();
 
-            // Piped Liquid Bottler
-            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.NAME",
-                UI.FormatAsLink(PipedLiquidBottlerConfig.DisplayName, PipedLiquidBottlerConfig.Id));
-            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.DESC",
-                PipedLiquidBottlerConfig.Description);
-            Strings.Add($"STRINGS.BUILDINGS.PREFABS.{PipedLiquidBottlerConfig.Id.ToUpperInvariant()}.EFFECT",
-                PipedLiquidBottlerConfig.Effect);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Plumbing, PipedLiquidBottlerConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Shipping, ConveyorLoadedCanisterEmptierConfig.Id);
 
-            // Conveyor Loaded Canister Emptier
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.NAME",
-                UI.FormatAsLink(ConveyorLoadedCanisterEmptierConfig.DisplayName,
-                    ConveyorLoadedCanisterEmptierConfig.Id));
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.DESC",
-                ConveyorLoadedCanisterEmptierConfig.Description);
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorLoadedCanisterEmptierConfig.Id.ToUpperInvariant()}.EFFECT",
-                ConveyorLoadedCanisterEmptierConfig.Effect);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Shipping, ConveyorGasPipeFillerConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Shipping, ConveyorLiquidPipeFillerConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Shipping, ConveyorGasLoaderConfig.Id);
+            ModUtil.AddBuildingToPlanScreen(PlanMenuCategory.Shipping, ConveyorLiquidLoaderConfig.Id);
 
-            // Conveyor Loaded Canister Loader
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.NAME",
-                UI.FormatAsLink(ConveyorCanisterLoaderConfig.DisplayName,
-                    ConveyorCanisterLoaderConfig.Id));
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.DESC",
-                ConveyorCanisterLoaderConfig.Description);
-            Strings.Add(
-                $"STRINGS.BUILDINGS.PREFABS.{ConveyorCanisterLoaderConfig.Id.ToUpperInvariant()}.EFFECT",
-                ConveyorCanisterLoaderConfig.Effect);
+            BuildingUtils.AddBuildingToTechnology(Technology.Liquids.Plumbing, PipedLiquidBottlerConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(
+                Technology.SolidMaterial.SolidTransport,
+                ConveyorLoadedCanisterEmptierConfig.Id
+            );
 
-            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Plumbing, PipedLiquidBottlerConfig.Id);
-            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping,
-                ConveyorLoadedCanisterEmptierConfig.Id);
-            ModUtil.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Shipping, ConveyorCanisterLoaderConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(
+                Technology.SolidMaterial.SolidTransport,
+                ConveyorGasPipeFillerConfig.Id
+            );
 
-            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Liquids.Plumbing, PipedLiquidBottlerConfig.Id);
-            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport,
-                ConveyorCanisterLoaderConfig.Id);
-            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.SolidMaterial.SolidTransport,
-                ConveyorLoadedCanisterEmptierConfig.Id);
+            BuildingUtils.AddBuildingToTechnology(
+                Technology.SolidMaterial.SolidTransport,
+                ConveyorLiquidPipeFillerConfig.Id
+            );
+
+            BuildingUtils.AddBuildingToTechnology(Technology.SolidMaterial.SolidTransport, ConveyorGasLoaderConfig.Id);
+
+            BuildingUtils.AddBuildingToTechnology(
+                Technology.SolidMaterial.SolidTransport,
+                ConveyorLiquidLoaderConfig.Id
+            );
+
+            LocString.CreateLocStringKeys(typeof(STRINGS.BUILDINGS));
         }
+    }
 
+    public static class MoreCanisterFillersPatches
+    {
         [HarmonyPatch(typeof(GasBottlerConfig), nameof(GasBottlerConfig.ConfigureBuildingTemplate))]
         public class GasFillerPatches
         {
+            public static void Postfix(GameObject go) { go.AddOrGet<AutoDropInv>(); }
+        }
+
+        // Allows the conveyor loader to load canisters as well
+        [HarmonyPatch(typeof(SolidConduitInboxConfig), nameof(SolidConduitInboxConfig.DoPostConfigureComplete))]
+        public static class SolidConduitInboxConfig_DoPostConfigureComplete_Patches
+        {
             public static void Postfix(GameObject go)
             {
-                go.AddOrGet<AutoDropInv>();
+                var storage = go.AddOrGet<Storage>();
+                storage.storageFilters.AddRange(STORAGEFILTERS.LIQUIDS);
+                storage.storageFilters.AddRange(STORAGEFILTERS.GASES);
             }
         }
 
-
         // Allows the Transfer Arm to pick up liquids and gasses
         [HarmonyPatch(typeof(SolidTransferArm), "IsPickupableRelevantToMyInterests")]
-        public class TransferArmFix
+        public static class TransferArmFix
         {
             private static bool _hasPatched;
 
-            public static void Prefix(ref SolidTransferArm __instance)
+            public static void Prefix()
             {
-                if (!_hasPatched)
+                if(!_hasPatched)
                 {
                     _hasPatched = true;
-                    SolidTransferArm.tagBits = new TagBits(STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD)
-                        .Concat(STORAGEFILTERS.GASES).Concat(STORAGEFILTERS.LIQUIDS).ToArray());
+                    SolidTransferArm.tagBits = new TagBits(
+                        STORAGEFILTERS.NOT_EDIBLE_SOLIDS.Concat(STORAGEFILTERS.FOOD).Concat(STORAGEFILTERS.GASES)
+                                      .Concat(STORAGEFILTERS.LIQUIDS).ToArray()
+                    );
                 }
             }
         }

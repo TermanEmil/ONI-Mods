@@ -13,8 +13,8 @@ using System.Reflection;
 
 [assembly: AssemblyVersion("<#= Year #>.<#= Month #>.<#= Day #>.<#= Build #>")]
 <#+
-    int Year = DateTime.UtcNow.Year;
-    int Month = DateTime.UtcNow.Month;
-    int Day = DateTime.UtcNow.Day;
-    int Build = (int) DateTime.UtcNow.TimeOfDay.TotalSeconds / 2;
+    private readonly int Year = DateTime.UtcNow.Year;
+    private readonly int Month = DateTime.UtcNow.Month;
+    private readonly int Day = DateTime.UtcNow.Day;
+    private readonly int Build = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds / 2;
 #>
