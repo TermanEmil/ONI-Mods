@@ -65,6 +65,7 @@
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
     <Compile Include="RealisticValues.cs" />
+    <Compile Include="ElementConverterModifiers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Changes.MD" />

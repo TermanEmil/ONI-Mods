@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using CustomWireLib;
 using Harmony;
 using UnityEngine;
 
+// ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
-
 // ReSharper disable InconsistentNaming
 
 namespace RealisticValues
@@ -23,7 +24,7 @@ namespace RealisticValues
             };
             //var registered = CustomWireValues.RegisterBuildings();
         }
-
+/*
         public class CarbonSkimmerBalances
         {
             [HarmonyPatch(typeof(CO2ScrubberConfig), "CreateBuildingDef")]
@@ -47,7 +48,7 @@ namespace RealisticValues
                     };
                 }
             }
-        }
+        }*/
 
         public class OxygenGenBalances
         {
@@ -241,18 +242,21 @@ namespace RealisticValues
                 [HarmonyPatch(typeof(SolarPanel), nameof(SolarPanel.EnergySim200ms))]
                 public class SolarGenPowerPatches
                 {
-                    // Half light effeciency, 2kW max power
+                    // Half light efficiency, 2kW max power
                     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
                     {
                         var codes = new List<CodeInstruction>(instructions);
 
-                        for (int i = 0; i < codes.Count; ++i)
+                        for(var i = 0; i < codes.Count; ++i)
                         {
                             var c = codes[i];
-                            if (c.opcode.Equals(OpCodes.Ldc_R4) && (bool)c.operand?.Equals(0.00053f))
+                            if(c.opcode.Equals(OpCodes.Ldc_R4) && (float) c.operand == 0.00053f)
                             {
                                 c = new CodeInstruction(OpCodes.Ldc_R4, 0.00026f);
-                            } else if (c.opcode.Equals(OpCodes.Call) && (bool)c.operand?.Equals(typeof(Mathf).GetMethod("Clamp", new Type[]{typeof(float), typeof(float), typeof(float) })))
+                            }
+                            else if(c.opcode.Equals(OpCodes.Call) && (MethodInfo) c.operand ==
+                                typeof(Mathf).GetMethod("Clamp",
+                                    new[] {typeof(float), typeof(float), typeof(float)}))
                             {
                                 codes[i - 1].operand = 2000f;
                             }
@@ -485,7 +489,7 @@ namespace RealisticValues
 
         public class RefinementPatches
         {
-            [HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
+            /*[HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
             public class WaterPurifierHeatPatch
             {
                 public static void Postfix(ref BuildingDef __result)
@@ -508,7 +512,7 @@ namespace RealisticValues
                             0f, 0.5f, 0.75f)
                     };
                 }
-            }
+            }*/
 
             [HarmonyPatch(typeof(DesalinatorConfig), "CreateBuildingDef")]
             public class DesalinatorHeatPatch
@@ -567,7 +571,7 @@ namespace RealisticValues
             }
 
             [HarmonyPatch(typeof(RockCrusherConfig), "CreateBuildingDef")]
-            public class RockGranulatorEnergyPatch
+            public class RockCrusherEnergyPatch
             {
                 public static void Postfix(ref BuildingDef __result)
                 {
@@ -648,37 +652,30 @@ namespace RealisticValues
                 public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
                 {
                     var codes = new List<CodeInstruction>(instr);
-                    var outputElementFieldInfo = AccessTools.Field(typeof(HandSanitizer), "outputElement");
-                    var start = -1;
-                    for (var i = 0; i < codes.Count - 1; ++i)
+                    var tagInfo = AccessTools.Field(typeof(Element), "tag");
+                    for(var i = 0; i < codes.Count - 1; ++i)
                     {
-                        if (!(codes[i].opcode == OpCodes.Ldfld) ||
-                            codes[i].operand != outputElementFieldInfo ||
-                            !(codes[i + 1].opcode == OpCodes.Ldloc_S) ||
-                            (codes[i + 1].operand as LocalBuilder)?.LocalIndex != 5)
+                        if(codes[i].opcode == OpCodes.Ldfld && (FieldInfo) codes[i].operand == tagInfo)
                         {
-                            continue;
+                            var start = i + 1;
+
+                            // Load the type
+                            // If it's polluted water, consume 1.3 times as much
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldloc_0));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(HandSanitizer), "consumedElement")));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ceq));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Brfalse, 0x0D));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldloc_S, (byte) 4));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Mul));
+                            codes.Insert(start, new CodeInstruction(OpCodes.Br, 0x02));
+
+                            return codes;
                         }
-
-                        start = i + 1;
-                        break;
                     }
 
-                    if (start == -1)
-                    {
-                        Debug.LogError("An error occured while patching sink values, index could not be found.");
-                        return codes;
-                    }
-
-                    codes.Insert(start + 0, new CodeInstruction(OpCodes.Dup));
-                    codes.Insert(start + 1, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
-                    codes.Insert(start + 2, new CodeInstruction(OpCodes.Ceq));
-                    codes.Insert(start + 3, new CodeInstruction(OpCodes.Brfalse, 0x0D));
-                    codes.Insert(start + 4, new CodeInstruction(OpCodes.Ldloc_S, (byte) 5));
-                    codes.Insert(start + 5, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
-                    codes.Insert(start + 6, new CodeInstruction(OpCodes.Mul));
-                    codes.Insert(start + 7, new CodeInstruction(OpCodes.Br, 0x02));
-
+                    Debug.LogError("An error occured while patching sink values, index could not be found.");
                     return codes;
                 }
             }
