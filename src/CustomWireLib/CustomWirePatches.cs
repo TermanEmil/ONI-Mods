@@ -43,30 +43,17 @@ namespace CustomWireLib
         [HarmonyPatch(typeof(ElectricalUtilityNetwork), "UpdateOverloadTime")]
         public class WireOverloadFix
         {
-
-            public static int PatchNum = 1;
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
             {
-                System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
-                Debug.Log($"Stack:");
-                foreach (var stackFrame in t.GetFrames())
-                {
-                    Debug.Log($"\t{stackFrame}");
-                }
-                Debug.LogWarning($"Executing patch for {PatchNum} time");
-                ++PatchNum;
                 var field = typeof(CustomWireValues).GetField("_newWireCount",
                     BindingFlags.NonPublic | BindingFlags.Static);
                 var codes = new List<CodeInstruction>(instr);
                 for (var i = 0; i < codes.Count; ++i)
                 {
-                    Debug.Log($"[{i}]: {codes[i].opcode}");
                     if (!codes[i].opcode.Equals(OpCodes.Ldloc_3)) continue;
                     if (!codes[i + 1].opcode.Equals(OpCodes.Ldc_I4_5)) continue;
-                    Debug.Log($"Found at index {i+1}, opcode {codes[i+1].opcode}");
                     // Found index count at i + 1
                     codes[i + 1] = new CodeInstruction(OpCodes.Ldsfld, field);
-                    Debug.Log($"New opcode: {codes[i+1].opcode}");
                     return codes;
                 }
 
