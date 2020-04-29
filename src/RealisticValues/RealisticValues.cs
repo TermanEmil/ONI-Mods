@@ -12,18 +12,27 @@ using UnityEngine;
 
 namespace RealisticValues
 {
-    public class RealisticValues
+    public static class Hooks
     {
         public static void OnLoad()
         {
             // Custom 100 kW wire
             var w = CustomWireMaker.CreateWireWithRating(100000f);
-            w.Def.Mass = new[]
-            {
-                500f
-            };
+            w.Def.Mass = new[] {500f};
             //var registered = CustomWireValues.RegisterBuildings();
+
+            LocString.CreateLocStringKeys(typeof(STRINGS.DUPLICANTS));
         }
+
+        [HarmonyPatch(typeof(Db), nameof(Db.Initialize))]
+        public static class DbInit
+        {
+            public static void Postfix() { ExtraDuplicantStatusItems.SetupStatuses(); }
+        }
+    }
+
+    public class RealisticValues
+    {
 /*
         public class CarbonSkimmerBalances
         {
@@ -938,31 +947,6 @@ namespace RealisticValues
                 {
                     __result.ExhaustKilowattsWhenActive = 0.600f;
                     __result.SelfHeatKilowattsWhenActive = 0.600f;
-                }
-            }
-        }
-
-        public class DuplicantBalancePatches
-        {
-            [HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]
-            public class MinionBreathPatch
-            {
-                public static void Postfix(ref GameObject __result)
-                {
-                    __result.AddOrGet<OxygenBreather>().O2toCO2conversion = 0.25f;
-                    __result.AddOrGet<OxygenBreather>().minCO2ToEmit = 0.100f;
-                }
-            }
-
-            [HarmonyPatch(typeof(CO2Manager), "SpawnBreath")]
-            public class BreathModifier
-            {
-                public static void Postfix(Vector3 position, float mass, float temperature)
-                {
-                    var cell = Grid.CellAbove(Grid.PosToCell(position));
-                    SimMessages.AddRemoveSubstance(cell, SimHashes.Oxygen,
-                        CellEventLogger.Instance.OxygenModifierSimUpdate,
-                        mass, temperature + 0.911547f, byte.MaxValue, 0);
                 }
             }
         }
