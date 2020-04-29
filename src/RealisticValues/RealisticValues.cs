@@ -45,6 +45,7 @@ namespace RealisticValues
                 }
             }
 
+//DONE
             [HarmonyPatch(typeof(CO2ScrubberConfig), "ConfigureBuildingTemplate")]
             public class CarbonSkimmerValuePatch
             {
@@ -64,7 +65,6 @@ namespace RealisticValues
             // TODO: Algae Terrarium
             //[HarmonyPatch(typeof(AlgaeHabitatConfig), "ConfigureBuildingTemplate")]
 
-
             [HarmonyPatch(typeof(MineralDeoxidizerConfig), "CreateBuildingDef")]
             public class DeoxidizerHeatPatch
             {
@@ -74,7 +74,7 @@ namespace RealisticValues
                     __result.SelfHeatKilowattsWhenActive = 0.080f;
                 }
             }
-
+/*
             [HarmonyPatch(typeof(MineralDeoxidizerConfig), "ConfigureBuildingTemplate")]
             public class DeoxidizerOutputPatch
             {
@@ -90,8 +90,9 @@ namespace RealisticValues
                             1f, 0.09f)
                     };
                 }
-            }
+            }*/
 
+/*
             [HarmonyPatch(typeof(AirFilterConfig), "ConfigureBuildingTemplate")]
             public class DeodorizerElementPatch
             {
@@ -105,8 +106,8 @@ namespace RealisticValues
                         elementConverter.outputElements[1]
                     };
                 }
-            }
-
+            }*/
+/*
             [HarmonyPatch(typeof(ElectrolyzerConfig), "ConfigureBuildingTemplate")]
             public class ElectrolyzerOutputPatch
             {
@@ -121,7 +122,7 @@ namespace RealisticValues
                             false, 0f, 1f)
                     };
                 }
-            }
+            }*/
 
             [HarmonyPatch(typeof(ElectrolyzerConfig), "CreateBuildingDef")]
             public class ElectrolyzerTempPatch
@@ -141,10 +142,7 @@ namespace RealisticValues
                 [HarmonyPatch(typeof(GeneratorConfig), "CreateBuildingDef")]
                 public class GeneratorEnergyPatches
                 {
-                    public static void Postfix(ref BuildingDef __result)
-                    {
-                        __result.GeneratorWattageRating = 1000.0f;
-                    }
+                    public static void Postfix(ref BuildingDef __result) { __result.GeneratorWattageRating = 1000.0f; }
                 }
             }
 
@@ -168,8 +166,15 @@ namespace RealisticValues
                     public static void Postfix(GameObject go)
                     {
                         var energyGenerator = go.AddOrGet<EnergyGenerator>();
-                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(WoodLogConfig.TAG,
-                            0.1f, 2f, SimHashes.DirtyWater, 0.012f, false, CellOffset.none);
+                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(
+                            WoodLogConfig.TAG,
+                            0.1f,
+                            2f,
+                            SimHashes.DirtyWater,
+                            0.012f,
+                            false,
+                            CellOffset.none
+                        );
                     }
                 }
             }
@@ -194,8 +199,15 @@ namespace RealisticValues
                     public static void Postfix(GameObject go)
                     {
                         var energyGenerator = go.AddOrGet<EnergyGenerator>();
-                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(SimHashes.Hydrogen.CreateTag(),
-                            0.1f, 2f, SimHashes.DirtyWater, 0.01f, false, CellOffset.none);
+                        energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(
+                            SimHashes.Hydrogen.CreateTag(),
+                            0.1f,
+                            2f,
+                            SimHashes.DirtyWater,
+                            0.01f,
+                            false,
+                            CellOffset.none
+                        );
                     }
                 }
             }
@@ -242,10 +254,7 @@ namespace RealisticValues
                 [HarmonyPatch(typeof(SolarPanelConfig), nameof(SolarPanelConfig.CreateBuildingDef))]
                 public class SolarGenDefPatches
                 {
-                    public static void Postfix(ref BuildingDef __result)
-                    {
-                        __result.GeneratorWattageRating = 2000f;
-                    }
+                    public static void Postfix(ref BuildingDef __result) { __result.GeneratorWattageRating = 2000f; }
                 }
 
                 [HarmonyPatch(typeof(SolarPanel), nameof(SolarPanel.EnergySim200ms))]
@@ -259,13 +268,16 @@ namespace RealisticValues
                         for(var i = 0; i < codes.Count; ++i)
                         {
                             var c = codes[i];
-                            if(c.opcode.Equals(OpCodes.Ldc_R4) && (float) c.operand == 0.00053f)
+                            if(c.opcode.Equals(OpCodes.Ldc_R4) && (float)c.operand == 0.00053f)
                             {
                                 c = new CodeInstruction(OpCodes.Ldc_R4, 0.00026f);
                             }
-                            else if(c.opcode.Equals(OpCodes.Call) && (MethodInfo) c.operand ==
-                                typeof(Mathf).GetMethod("Clamp",
-                                    new[] {typeof(float), typeof(float), typeof(float)}))
+                            else if(c.opcode.Equals(OpCodes.Call) &&
+                                    (MethodInfo)c.operand ==
+                                    typeof(Mathf).GetMethod(
+                                        "Clamp",
+                                        new[] {typeof(float), typeof(float), typeof(float)}
+                                    ))
                             {
                                 codes[i - 1].operand = 2000f;
                             }
@@ -329,10 +341,7 @@ namespace RealisticValues
                 [HarmonyPatch(typeof(BatterySmartConfig), "CreateBuildingDef", new Type[] { })]
                 public class BatteryDefPatches
                 {
-                    public static void Postfix(ref BuildingDef __result)
-                    {
-                        __result.SelfHeatKilowattsWhenActive = 1f;
-                    }
+                    public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 1f; }
                 }
 
                 [HarmonyPatch(typeof(BatterySmartConfig), "DoPostConfigureComplete")]
@@ -369,7 +378,7 @@ namespace RealisticValues
                     __result.SelfHeatKilowattsWhenActive = 0.048f;
                 }
             }
-
+/*
             [HarmonyPatch(typeof(GourmetCookingStationConfig), "ConfigureBuildingTemplate")]
             public class GasRangeCo2Patch
             {
@@ -382,15 +391,12 @@ namespace RealisticValues
                             false, 0f, 3f)
                     };
                 }
-            }
+            }*/
 
             [HarmonyPatch(typeof(RefrigeratorConfig), "CreateBuildingDef")]
             public class RefrigeratorHeatPatches
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.ExhaustKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.ExhaustKilowattsWhenActive = 0.120f; }
             }
         }
 
@@ -405,7 +411,7 @@ namespace RealisticValues
                     flushToilet.massEmittedPerUse = 6.5f;
                 }
             }
-
+/*
             [HarmonyPatch(typeof(ShowerConfig), "ConfigureBuildingTemplate")]
             public class ShowerMassPatch
             {
@@ -417,43 +423,30 @@ namespace RealisticValues
                         new ElementConverter.OutputElement(1.3f, SimHashes.DirtyWater, 0f, false, true)
                     };
                 }
-            }
+            }*/
 
             [HarmonyPatch(typeof(LiquidPumpConfig), "CreateBuildingDef")]
             public class LiquidPumpHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.240f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.240f; }
             }
-
 
             [HarmonyPatch(typeof(LiquidFilterConfig), "CreateBuildingDef")]
             public class LiquidFilterHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
 
             [HarmonyPatch(typeof(LiquidMiniPumpConfig), "CreateBuildingDef")]
             public class LiquidMiniPumpHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.060f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.060f; }
             }
 
             [HarmonyPatch(typeof(LiquidLogicValveConfig), "CreateBuildingDef")]
             public class LiquidLogicValveHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.010f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.010f; }
             }
         }
 
@@ -462,51 +455,36 @@ namespace RealisticValues
             [HarmonyPatch(typeof(GasPumpConfig), "CreateBuildingDef")]
             public class GasPumpHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.240f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.240f; }
             }
 
             [HarmonyPatch(typeof(GasMiniPumpConfig), "CreateBuildingDef")]
             public class MiniGasPumpHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.060f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.060f; }
             }
 
             [HarmonyPatch(typeof(GasFilterConfig), "CreateBuildingDef")]
             public class GasFilterHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
 
             [HarmonyPatch(typeof(GasLogicValveConfig), "CreateBuildingDef")]
             public class GasShutoffHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.010f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.010f; }
             }
         }
 
         public class RefinementPatches
         {
-            /*[HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
+            [HarmonyPatch(typeof(WaterPurifierConfig), "CreateBuildingDef")]
             public class WaterPurifierHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
-
+/*
             [HarmonyPatch(typeof(WaterPurifierConfig), "ConfigureBuildingTemplate")]
             public class WaterPurifierDirtPatch
             {
@@ -526,10 +504,7 @@ namespace RealisticValues
             [HarmonyPatch(typeof(DesalinatorConfig), "CreateBuildingDef")]
             public class DesalinatorHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.480f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.480f; }
             }
 
             [HarmonyPatch(typeof(FertilizerMakerConfig), "CreateBuildingDef")]
@@ -551,7 +526,7 @@ namespace RealisticValues
                     __result.SelfHeatKilowattsWhenActive = 0.080f;
                 }
             }
-
+/*
             [HarmonyPatch(typeof(AlgaeDistilleryConfig), "ConfigureBuildingTemplate")]
             public class AlgaeDistilleryOutputPatch
             {
@@ -567,7 +542,7 @@ namespace RealisticValues
                             0f, 0f, 0.125f)
                     };
                 }
-            }
+            }*/
 
             [HarmonyPatch(typeof(EthanolDistilleryConfig), "CreateBuildingDef")]
             public class EthanolDistilleryHeatPatch
@@ -664,18 +639,25 @@ namespace RealisticValues
                     var tagInfo = AccessTools.Field(typeof(Element), "tag");
                     for(var i = 0; i < codes.Count - 1; ++i)
                     {
-                        if(codes[i].opcode == OpCodes.Ldfld && (FieldInfo) codes[i].operand == tagInfo)
+                        if(codes[i].opcode == OpCodes.Ldfld && (FieldInfo)codes[i].operand == tagInfo)
                         {
                             var start = i + 1;
 
                             // Load the type
                             // If it's polluted water, consume 1.3 times as much
                             codes.Insert(start++, new CodeInstruction(OpCodes.Ldloc_0));
-                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(HandSanitizer), "consumedElement")));
-                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldc_I4, (int) SimHashes.DirtyWater));
+                            codes.Insert(
+                                start++,
+                                new CodeInstruction(
+                                    OpCodes.Ldfld,
+                                    AccessTools.Field(typeof(HandSanitizer), "consumedElement")
+                                )
+                            );
+
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldc_I4, (int)SimHashes.DirtyWater));
                             codes.Insert(start++, new CodeInstruction(OpCodes.Ceq));
                             codes.Insert(start++, new CodeInstruction(OpCodes.Brfalse, 0x0D));
-                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldloc_S, (byte) 4));
+                            codes.Insert(start++, new CodeInstruction(OpCodes.Ldloc_S, (byte)4));
                             codes.Insert(start++, new CodeInstruction(OpCodes.Ldc_R4, 1.3f));
                             codes.Insert(start++, new CodeInstruction(OpCodes.Mul));
                             codes.Insert(start, new CodeInstruction(OpCodes.Br, 0x02));
@@ -725,46 +707,31 @@ namespace RealisticValues
             [HarmonyPatch(typeof(FloorLampConfig), "CreateBuildingDef")]
             public class LampHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.008f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.008f; }
             }
 
             [HarmonyPatch(typeof(CeilingLightConfig), "CreateBuildingDef")]
             public class CeilingLightHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.010f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.010f; }
             }
 
             [HarmonyPatch(typeof(PhonoboxConfig), "CreateBuildingDef")]
             public class JukebotHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.960f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.960f; }
             }
 
             [HarmonyPatch(typeof(ArcadeMachineConfig), "CreateBuildingDef")]
             public class ArcadeHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 1.200f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 1.200f; }
             }
 
             [HarmonyPatch(typeof(EspressoMachineConfig), "CreateBuildingDef")]
             public class EspressoHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.480f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.480f; }
             }
         }
 
@@ -803,10 +770,7 @@ namespace RealisticValues
             [HarmonyPatch(typeof(TelescopeConfig), "CreateBuildingDef")]
             public class TelescopeHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.ExhaustKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.ExhaustKilowattsWhenActive = 0.120f; }
             }
 
             [HarmonyPatch(typeof(ShearingStationConfig), "CreateBuildingDef")]
@@ -832,37 +796,25 @@ namespace RealisticValues
             [HarmonyPatch(typeof(ClothingFabricatorConfig), "CreateBuildingDef")]
             public class ClothingFabricatorHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.240f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.240f; }
             }
 
             [HarmonyPatch(typeof(SuitFabricatorConfig), "CreateBuildingDef")]
             public class ExosuitForgeHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.480f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.480f; }
             }
 
             [HarmonyPatch(typeof(SuitLockerConfig), "CreateBuildingDef")]
             public class AtmoSuitDockHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
 
             [HarmonyPatch(typeof(JetSuitLockerConfig), "CreateBuildingDef")]
             public class JetSuitDockHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
         }
 
@@ -871,28 +823,19 @@ namespace RealisticValues
             [HarmonyPatch(typeof(LogicElementSensorGasConfig), "CreateBuildingDef")]
             public class GasSensorHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.025f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.025f; }
             }
 
             [HarmonyPatch(typeof(CheckpointConfig), "CreateBuildingDef")]
             public class CheckpointHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.100f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.100f; }
             }
 
             [HarmonyPatch(typeof(CometDetectorConfig), "CreateBuildingDef")]
             public class CometHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.120f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.120f; }
             }
         }
 
@@ -921,10 +864,7 @@ namespace RealisticValues
             [HarmonyPatch(typeof(SolidLogicValveConfig), "CreateBuildingDef")]
             public class ConveyorShutoffHeatPatch
             {
-                public static void Postfix(ref BuildingDef __result)
-                {
-                    __result.SelfHeatKilowattsWhenActive = 0.010f;
-                }
+                public static void Postfix(ref BuildingDef __result) { __result.SelfHeatKilowattsWhenActive = 0.010f; }
             }
 
             [HarmonyPatch(typeof(AutoMinerConfig), "CreateBuildingDef")]
