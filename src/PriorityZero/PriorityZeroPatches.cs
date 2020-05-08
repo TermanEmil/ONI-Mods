@@ -6,195 +6,212 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Harmony;
+using STRINGS;
 using UnityEngine;
 
 namespace PriorityZero
 {
-    public class ModOnLoad
+    public class PriorityZero
     {
+        public const string                       ZeroPriority      = "PriorityZero.zeroPriority.png";
+        public const string                       ZeroTool          = "PriorityZero.zeroTool.png";
+        public const PriorityScreen.PriorityClass PriorityZeroClass = (PriorityScreen.PriorityClass)(-2);
+        public const int                          PriorityZeroValue = -200;
+
         public static void OnLoad()
         {
             Debug.Log(
-                $"[PriorityZero] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}");
+                $"[PriorityZero] Loading mod version {FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}"
+            );
         }
     }
 
-    public static class Util
-    {
-        public const string ZeroTool = "zeroTool.png";
-        public const string ZeroPriority = "zeroPriority.png";
-        public static readonly string ModPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
-    }
-
-    [HarmonyPatch(typeof(Chore), MethodType.Constructor, typeof(ChoreType), typeof(ChoreProvider), typeof(bool),
-        typeof(Action<Chore>), typeof(Action<Chore>), typeof(Action<Chore>), typeof(PriorityScreen.PriorityClass),
-        typeof(int), typeof(bool), typeof(bool), typeof(int), typeof(bool), typeof(ReportManager.ReportType))]
-    public class Chore_ctor_Patch
+    [HarmonyPatch(
+        typeof(Chore),
+        MethodType.Constructor,
+        typeof(ChoreType),
+        typeof(ChoreProvider),
+        typeof(bool),
+        typeof(Action<Chore>),
+        typeof(Action<Chore>),
+        typeof(Action<Chore>),
+        typeof(PriorityScreen.PriorityClass),
+        typeof(int),
+        typeof(bool),
+        typeof(bool),
+        typeof(int),
+        typeof(bool),
+        typeof(ReportManager.ReportType)
+    )]
+    public class Chore_Ctor_Patch
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
         {
-            var patched = false;
-            foreach (var instruction in origCode)
-                if (!patched && instruction.opcode == OpCodes.Blt)
+            List<CodeInstruction> codes = origCode.ToList();
+            foreach(var c in codes)
+            {
+                if(c.opcode == OpCodes.Blt)
                 {
-                    patched = true;
-                    instruction.operand = 0;
-                    yield return instruction;
+                    c.operand = 0;
+                    return codes;
                 }
-                else
-                {
-                    yield return instruction;
-                }
+            }
 
-            if (!patched) Debug.LogWarning("[PriorityZero] Unable to find Chore patch offset.");
+            Debug.LogWarning("[PriorityZero] Unable to find Chore patch offset.");
+            return codes;
         }
     }
 
     [HarmonyPatch(typeof(MinionTodoChoreEntry), nameof(MinionTodoChoreEntry.Apply))]
-    public class MinionTodoChoreEntry_Apply_Patch
+    public static class MinionTodoChoreEntry_Apply_Patch
     {
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
-        {
-            var patched = false;
-            foreach (var instruction in origCode)
-                if (!patched && instruction.opcode == OpCodes.Ldc_I4_1)
-                {
-                    patched = true;
-                    yield return new CodeInstruction(OpCodes.Ldc_I4_0);
-                }
-                else
-                {
-                    yield return instruction;
-                }
+        private static readonly Sprite PriorityZeroIcon = CreateIconSprite();
 
-            if (!patched) Debug.LogWarning("[PriorityZero] Unable to find TodoChoreEntry offset.");
+        private static Sprite CreateIconSprite()
+        {
+            var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            using var zeroStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(PriorityZero.ZeroPriority);
+            using var memStream = new MemoryStream();
+            if(zeroStream != null)
+            {
+                zeroStream.CopyTo(memStream);
+                tex.LoadImage(memStream.ToArray());
+            }
+
+            return Sprite.Create(tex, new Rect(0f, 0f, 100f, 100f), Vector2.zero);
+        }
+
+        public static void Postfix(MinionTodoChoreEntry __instance, Chore.Precondition.Context context)
+        {
+            if(context.chore.masterPriority.priority_class == PriorityZero.PriorityZeroClass)
+            {
+                __instance.priorityIcon.sprite = PriorityZeroIcon;
+                __instance.priorityLabel.text = "0";
+            }
         }
     }
 
     [HarmonyPatch(typeof(MinionTodoSideScreen), nameof(MinionTodoSideScreen.priorityInfo), MethodType.Getter)]
-    public class MinionTodoSideScreen_priorityInfo_Patch
+    public static class MinionTodoSideScreen_PriorityInfo_Patch
     {
-        private static readonly JobsTableScreen.PriorityInfo PriorityZeroInfo =
-            new JobsTableScreen.PriorityInfo(-2, CreatePriZeroSprite(), "Priority Zero");
+        private static readonly JobsTableScreen.PriorityInfo PriorityZeroInfo = new JobsTableScreen.PriorityInfo(
+            (int)PriorityZero.PriorityZeroClass,
+            CreatePriZeroSprite(),
+            "Priority Zero"
+        );
 
         private static Sprite CreatePriZeroSprite()
         {
             var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            tex.LoadImage(File.ReadAllBytes(Path.Combine(Util.ModPath, Util.ZeroPriority)));
+            using var zeroStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(PriorityZero.ZeroPriority);
+            using var memStream = new MemoryStream();
+            if(zeroStream != null)
+            {
+                zeroStream.CopyTo(memStream);
+                tex.LoadImage(memStream.ToArray());
+            }
+
             return Sprite.Create(tex, new Rect(0f, 0f, 100f, 100f), Vector2.zero);
         }
 
         public static void Postfix(MinionTodoSideScreen __instance, List<JobsTableScreen.PriorityInfo> __result)
         {
-            if (__result.Contains(PriorityZeroInfo)) return;
+            if(__result.Contains(PriorityZeroInfo))
+                return;
 
             __result.Add(PriorityZeroInfo);
             Traverse.Create(__instance).Field("_priorityInfo").SetValue(__result);
         }
     }
 
-    [HarmonyPatch(typeof(Prioritizable), nameof(Prioritizable.SetMasterPriority))]
-    public class Prioritizable_SetMasterPriority_Patch
-    {
-        public static void Prefix(Prioritizable __instance, ref PrioritySetting priority)
-        {
-            if (priority.priority_value == 0)
-            {
-                priority.priority_class = (PriorityScreen.PriorityClass) (-2);
-                priority.priority_value = -200;
-            }
-        }
-    }
-
-
     [HarmonyPatch(typeof(PrioritizeTool), "OnPrefabInit")]
-    public class PrioritizeTool_OnPrefabInit_Patch
+    public static class PrioritizeTool_OnPrefabInit_Patch
     {
         public static void Postfix(PrioritizeTool __instance)
         {
             var zeroTexture = new Texture2D(2, 2);
-            zeroTexture.LoadImage(File.ReadAllBytes(Path.Combine(Util.ModPath, Util.ZeroTool)));
-            var newCursors = __instance.cursors.ToList();
+            using var toolStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(PriorityZero.ZeroTool);
+            using var memStream = new MemoryStream();
+            if(toolStream != null)
+            {
+                toolStream.CopyTo(memStream);
+                zeroTexture.LoadImage(memStream.ToArray());
+            }
+
+            List<Texture2D> newCursors = __instance.cursors.ToList();
             newCursors.Insert(0, zeroTexture);
             __instance.cursors = newCursors.ToArray();
         }
     }
 
-
     [HarmonyPatch(typeof(PrioritizeTool), nameof(PrioritizeTool.Update))]
-    public class PrioritizeTool_Update_Patch
+    public static class PrioritizeTool_Update_Patch
     {
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
+        public static void Prefix()
         {
-            var patched = false;
-            foreach (var instruction in origCode)
-                if (!patched && instruction.opcode == OpCodes.Sub)
-                {
-                    patched = true;
-                    yield return new CodeInstruction(OpCodes.Pop);
-                }
-                else
-                {
-                    yield return instruction;
-                }
+            var priority = Traverse.Create(ToolMenu.Instance.PriorityScreen).Field("lastSelectedPriority");
+            var value = (PrioritySetting)priority.GetValue();
+            if(value.priority_class == PriorityZero.PriorityZeroClass)
+                value.priority_value = 1;
+            else
+                value.priority_value += 1;
 
-            if (!patched) Debug.LogWarning("[PriorityZero] Unable to find priority cursor offset.");
+            priority.SetValue(value);
+        }
+
+        public static void Postfix()
+        {
+            var priority = Traverse.Create(ToolMenu.Instance.PriorityScreen).Field("lastSelectedPriority");
+            var value = (PrioritySetting)priority.GetValue();
+            if(value.priority_class == PriorityZero.PriorityZeroClass)
+                value.priority_value = PriorityZero.PriorityZeroValue;
+            else
+                value.priority_value -= 1;
+
+            priority.SetValue(value);
         }
     }
 
     [HarmonyPatch(typeof(PriorityScreen), nameof(PriorityScreen.InstantiateButtons))]
-    public class PriorityScreen_InstantiateButtons_Patch
+    public static class PriorityScreen_InstantiateButtons_Patch
     {
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
+        public static void Prefix(PriorityScreen __instance, Action<PrioritySetting> on_click, bool playSelectionSound)
         {
-            var patched = false;
-            foreach (var inst in origCode)
-                if (!patched && inst.opcode == OpCodes.Ldc_I4_1)
-                {
-                    patched = true;
-                    yield return new CodeInstruction(OpCodes.Ldc_I4_0);
-                }
-                else
-                {
-                    yield return inst;
-                }
+            var buttonPrefab = (PriorityButton)Traverse.Create(__instance).Field("buttonPrefab_basic").GetValue();
+            var priorityButton = Util.KInstantiateUI<PriorityButton>(
+                buttonPrefab.gameObject,
+                buttonPrefab.transform.parent.gameObject
+            );
 
-            if (!patched) Debug.Log("[PriorityZero] Error finding Priority Screen Buttons offset.");
+            priorityButton.playSelectionSound = playSelectionSound;
+            priorityButton.onClick = on_click;
+            priorityButton.text.text = "0";
+            priorityButton.priority = new PrioritySetting(
+                PriorityZero.PriorityZeroClass,
+                PriorityZero.PriorityZeroValue
+            );
+
+            priorityButton.tooltip.SetSimpleTooltip(string.Format(UI.PRIORITYSCREEN.BASIC, 0));
+
+            var buttonsField = Traverse.Create(__instance).Field("buttons_basic");
+            var buttons = (List<PriorityButton>)buttonsField.GetValue();
+            buttons.Insert(0, priorityButton);
+            buttonsField.SetValue(buttons);
         }
     }
 
     [HarmonyPatch(typeof(PriorityScreen), nameof(PriorityScreen.SetScreenPriority))]
-    public class PriorityScreen_SetScreenPriority_Patch
+    public static class PriorityScreen_SetScreenPriority_Patches
     {
+        // TODO: Clean up
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
         {
-            var patched = false;
-            var preLdloc0 = false;
-            foreach (var instruction in origCode)
-                if (!patched)
-                {
-                    if (instruction.opcode == OpCodes.Ldloc_0)
-                    {
-                        preLdloc0 = true;
-                        yield return instruction;
-                    }
-                    else if (preLdloc0 && instruction.opcode == OpCodes.Ldc_I4_1)
-                    {
-                        patched = true;
-                        yield return new CodeInstruction(OpCodes.Ldc_I4_0);
-                    }
-                    else
-                    {
-                        preLdloc0 = false;
-                        yield return instruction;
-                    }
-                }
-                else
-                {
-                    yield return instruction;
-                }
-
-            if (!patched) Debug.LogWarning("[PriorityZero] Unable to find set Priority Screen offset.");
+            List<CodeInstruction> codes = origCode.ToList();
+            var lab = codes[28].labels;
+            codes.RemoveRange(28, 35);
+            // This is the NEW 28
+            codes[28].labels = lab;
+            return codes;
         }
     }
 }
