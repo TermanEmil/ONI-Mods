@@ -189,7 +189,6 @@ namespace PriorityZero
             );
 
             priorityButton.tooltip.SetSimpleTooltip(string.Format(UI.PRIORITYSCREEN.BASIC, 0));
-
             __instance.buttons_basic.Insert(0, priorityButton);
         }
     }
@@ -201,10 +200,37 @@ namespace PriorityZero
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
         {
             List<CodeInstruction> codes = origCode.ToList();
-            var lab = codes[28].labels;
-            codes.RemoveRange(28, 35);
-            // This is the NEW 28
-            codes[28].labels = lab;
+            var buttonsBasic = AccessTools.Field(typeof(PriorityScreen), nameof(PriorityScreen.buttons_basic));
+            var setPriority = AccessTools.Property(typeof(PriorityButton), nameof(PriorityButton.priority))
+                                         .GetSetMethod();
+
+            var setSimpleTooltip = AccessTools.Method(typeof(ToolTip), nameof(ToolTip.SetSimpleTooltip));
+            List<Label> labels = codes[28].labels;
+            var buttonsIdx1 = codes.FindIndex(ci => ci.operand is FieldInfo f && f == buttonsBasic);
+            var priIdx = codes.FindIndex(ci => ci.operand is MethodInfo m && m == setPriority);
+            if(buttonsIdx1 != -1 && priIdx != -1)
+            {
+                codes.RemoveRange(buttonsIdx1 - 1, priIdx - buttonsIdx1 + 2);
+            }
+            else
+            {
+                Debug.LogWarning("[PriorityZero] Unable to patch SetScreenPriority");
+                return codes;
+            }
+
+            var buttonsIdx2 = codes.FindIndex(ci => ci.operand is FieldInfo f && f == buttonsBasic);
+            var tooltipIdx = codes.FindIndex(ci => ci.operand is MethodInfo m && m == setSimpleTooltip);
+            if(buttonsIdx2 != -1 && tooltipIdx != -1)
+            {
+                codes[tooltipIdx + 1].labels = labels;
+                codes.RemoveRange(buttonsIdx2 - 1, tooltipIdx - buttonsIdx2 + 2);
+            }
+            else
+            {
+                Debug.LogWarning("[PriorityZero] Unable to patch SetScreenPriority");
+                return codes;
+            }
+
             return codes;
         }
     }
