@@ -5,14 +5,14 @@
         public Controller.Instance Smi;
         public Storage             Storage;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             Smi = new Controller.Instance(this);
             Smi.StartSM();
         }
 
-        protected override void OnCleanUp()
+        public override void OnCleanUp()
         {
             Smi?.StopSM(nameof(OnCleanUp));
             base.OnCleanUp();

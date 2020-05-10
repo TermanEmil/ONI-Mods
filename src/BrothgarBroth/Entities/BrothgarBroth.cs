@@ -11,14 +11,14 @@ namespace BrothgarBroth.Entities
             SetReportType(ReportManager.ReportType.PersonalTime);
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             _smi = new BrothgarBrothSm.Instance(this);
             _smi.StartSM();
         }
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             overrideAnims = new[] {Assets.GetAnim("anim_interacts_juicer_kanim")};
@@ -26,7 +26,7 @@ namespace BrothgarBroth.Entities
             SetWorkTime(5f);
         }
 
-        protected override void OnStartWork(Worker worker)
+        public override void OnStartWork(Worker worker)
         {
             var controller = GetComponent<KBatchedAnimController>();
             if(controller == null)
@@ -38,7 +38,7 @@ namespace BrothgarBroth.Entities
             controller.animScale = 0f;
         }
 
-        protected override void OnCompleteWork(Worker worker)
+        public override void OnCompleteWork(Worker worker)
         {
             var effects = worker.GetComponent<Effects>();
             effects.Add(BrothEffects.BrothCooldownEffect, true);

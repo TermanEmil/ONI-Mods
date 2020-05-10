@@ -110,7 +110,7 @@ namespace ShinebugReactor
 
         public float CurrentWattage;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             if (_shinebugs == null)
