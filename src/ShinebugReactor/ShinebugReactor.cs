@@ -194,96 +194,94 @@ namespace ShinebugReactor
         public override void EnergySim200ms(float dt)
         {
             base.EnergySim200ms(dt);
-            var circuitId = CircuitID;
-            operational.SetFlag(wireConnectedFlag, circuitId != ushort.MaxValue);
+
+            operational.SetFlag(wireConnectedFlag, CircuitID != ushort.MaxValue);
             if (!operational.IsOperational)
             {
                 operational.SetActive(false);
                 return;
             }
 
-            var toRemove = new List<ShinebugEggSimulator>();
-#if DEBUG
-            Debug.Log($"Started with {_shinebugEggs.Count} eggs and {_shinebugs.Count} shinebugs");
-#endif
-            foreach (var egg in _shinebugEggs)
-            {
-                if (!egg.Simulate(dt)) continue;
-#if DEBUG
-                Debug.Log($"Egg name {egg.Name}");
-#endif
-                _shinebugs.Add(new ShinebugSimulator(egg.Name.Replace("Egg", ""), 0, egg.GrownLifeTime, egg.LuxToGive));
-                var eggShell =
-                    Util.KInstantiate(Assets.GetPrefab((Tag) "EggShell"), gameObject.transform.GetPosition());
-                eggShell.GetComponent<PrimaryElement>().Mass = 0.1f;
-                eggShell.SetActive(true);
-                toRemove.Add(egg);
-            }
-
-            foreach (var r in toRemove)
-            {
-                _shinebugEggs.Remove(r);
-                _storage.items.Remove(r.EggItem);
-            }
-
-#if DEBUG
-            Debug.Log($"Ended with {_shinebugEggs.Count} eggs and {_shinebugs.Count} shinebugs");
-#endif
-
-            CurrentWattage = 0.0f;
-            var shinebugsRemove = new List<ShinebugSimulator>();
-#if DEBUG
-            Debug.Log($"Reactor contains {_shinebugs.Count} bugs");
-#endif
-            foreach (var shinebug in _shinebugs)
-            {
-                CurrentWattage += shinebug.Lux * 0.00159f;
-
-                // Skip if not time to die
-                if (!shinebug.Simulate(dt)) continue;
-
-#if DEBUG
-                Debug.Log($"Shinebug name: {shinebug.Name}");
-#endif
-                var eggName = shinebug.Name + "Egg";
-                var eggItem = GameUtil.KInstantiate(Assets.GetPrefab(eggName),
-                    Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Front),
-                    Grid.SceneLayer.Front);
-                var modiferComponents = eggItem.GetComponents<Modifiers>();
-                foreach (var modifier in modiferComponents)
-                    Destroy(modifier);
-#if DEBUG
-                Debug.Log($"Shinebug Egg: {eggItem}");
-#endif
-                var eggStats = _shinebugEggValues[eggName];
-                _shinebugEggs.Add(new ShinebugEggSimulator(eggName, eggStats.TimeToHatch, eggStats.AdultLife,
-                    eggStats.AdultLux, eggItem));
-                _storage.items.Add(eggItem);
-                shinebugsRemove.Add(shinebug);
-            }
-
-            foreach (var r in shinebugsRemove)
-                _shinebugs.Remove(r);
-#if DEBUG
-            Debug.Log($"Total j/s is {CurrentWattage}");
-#endif
-
-            CurrentWattage = Mathf.Clamp(CurrentWattage, 0.0f, 1250.0f);
-
-            operational.SetActive(CurrentWattage > 0.0f);
-            Game.Instance.accumulators.Accumulate(_accumulator, CurrentWattage * dt);
-            if (CurrentWattage > 0.0f)
-            {
-                var toGen = CurrentWattage * dt;
-                GenerateJoules(Mathf.Max(toGen, dt));
-#if DEBUG
-                Debug.Log($"Generating {toGen} over {dt} seconds");
-#endif
-            }
-
+            var initialShinebugAndEggsCount = _shinebugs.Count + _shinebugEggs.Count;
+            SimulatePower(dt);
+            SimulateShinebugEggs(dt);
+            SimulateShinebugs(dt);
             UpdateStatusItem();
+            var finalShinebugAndEggsCount = _shinebugs.Count + _shinebugEggs.Count;
+
+            if (initialShinebugAndEggsCount != finalShinebugAndEggsCount)
+                Debug.LogError($"Started with: {initialShinebugAndEggsCount}. Ended with {finalShinebugAndEggsCount}");
         }
 
+        private void SimulatePower(float dt)
+        {
+            CurrentWattage = ShinebugPowerMath.ComputeShinebugWattage(_shinebugs.Sum(x => x.Lux));
+            
+            operational.SetActive(CurrentWattage > 0.0f);
+
+            var toGenerate = CurrentWattage * dt;
+            Game.Instance.accumulators.Accumulate(_accumulator, toGenerate);
+            
+            if (toGenerate > 0.0f)
+                GenerateJoules(Mathf.Max(toGenerate, dt));
+        }
+
+        private void SimulateShinebugEggs(float dt)
+        {
+            foreach (var egg in _shinebugEggs.ToList())
+            {
+                if (!egg.Simulate(dt))
+                    continue;
+
+                var shinebug = HatchShinebugEgg(egg);
+                
+                _shinebugs.Add(shinebug);
+                _shinebugEggs.Remove(egg);
+                _storage.items.Remove(egg.EggItem);
+            }
+        }
+
+        private ShinebugSimulator HatchShinebugEgg(ShinebugEggSimulator egg)
+        {
+            var shinebug = new ShinebugSimulator(
+                name: egg.Name.Replace("Egg", ""),
+                maxAge: egg.GrownLifeTime,
+                lux: egg.LuxToGive);
+
+            SpawnUtility.SpawnShinebugEggShell(transform.GetPosition());
+            return shinebug;
+        }
+
+        private void SimulateShinebugs(float dt)
+        {
+            foreach (var shinebug in _shinebugs.ToList())
+            {
+                if (!shinebug.Simulate(dt))
+                    continue;
+
+                var egg = LayAnEgg(shinebug);
+
+                _shinebugEggs.Add(egg);
+                _storage.items.Add(egg.EggItem);
+                _shinebugs.Remove(shinebug);
+            }
+        }
+
+        private ShinebugEggSimulator LayAnEgg(ShinebugSimulator shinebug)
+        {
+            var eggName = shinebug.Name + "Egg";
+            var eggStats = _shinebugEggValues[eggName];
+
+            var eggGameObject = SpawnUtility.SpawnShinebugEgg(eggName, transform.position);
+            var egg = new ShinebugEggSimulator(
+                eggName,
+                eggStats.TimeToHatch,
+                eggStats.AdultLife,
+                eggStats.AdultLux,
+                eggGameObject);
+
+            return egg;
+        }
 
         private void UpdateStatusItem()
         {
