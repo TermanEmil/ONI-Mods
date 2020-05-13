@@ -114,17 +114,17 @@ namespace PriorityZero
             return Sprite.Create(tex, new Rect(0f, 0f, 100f, 100f), Vector2.zero);
         }
 
-        public static void Postfix(List<JobsTableScreen.PriorityInfo> __result)
+        public static void Postfix(MinionTodoSideScreen __instance, List<JobsTableScreen.PriorityInfo> __result)
         {
             if(__result.Contains(PriorityZeroInfo))
                 return;
 
             __result.Add(PriorityZeroInfo);
-            MinionTodoSideScreen._priorityInfo = __result;
+            Traverse.Create(__instance).Field("_priorityInfo").SetValue(__result);
         }
     }
 
-    [HarmonyPatch(typeof(PrioritizeTool), nameof(PrioritizeTool.OnPrefabInit))]
+    [HarmonyPatch(typeof(PrioritizeTool), "OnPrefabInit")]
     public static class PrioritizeTool_OnPrefabInit_Patch
     {
         public static void Postfix(PrioritizeTool __instance)
@@ -149,24 +149,26 @@ namespace PriorityZero
     {
         public static void Prefix()
         {
-            var value = ToolMenu.Instance.priorityScreen.lastSelectedPriority;
+            var priority = Traverse.Create(ToolMenu.Instance.PriorityScreen).Field("lastSelectedPriority");
+            var value = (PrioritySetting)priority.GetValue();
             if(value.priority_class == PriorityZero.PriorityZeroClass)
                 value.priority_value = 1;
             else
                 value.priority_value += 1;
 
-            ToolMenu.Instance.priorityScreen.lastSelectedPriority = value;
+            priority.SetValue(value);
         }
 
         public static void Postfix()
         {
-            var value = ToolMenu.Instance.priorityScreen.lastSelectedPriority;
+            var priority = Traverse.Create(ToolMenu.Instance.PriorityScreen).Field("lastSelectedPriority");
+            var value = (PrioritySetting)priority.GetValue();
             if(value.priority_class == PriorityZero.PriorityZeroClass)
                 value.priority_value = PriorityZero.PriorityZeroValue;
             else
                 value.priority_value -= 1;
 
-            ToolMenu.Instance.priorityScreen.lastSelectedPriority = value;
+            priority.SetValue(value);
         }
     }
 
@@ -175,9 +177,10 @@ namespace PriorityZero
     {
         public static void Prefix(PriorityScreen __instance, Action<PrioritySetting> on_click, bool playSelectionSound)
         {
+            var buttonPrefab = (PriorityButton)Traverse.Create(__instance).Field("buttonPrefab_basic").GetValue();
             var priorityButton = Util.KInstantiateUI<PriorityButton>(
-                __instance.buttonPrefab_basic.gameObject,
-                __instance.buttonPrefab_basic.transform.parent.gameObject
+                buttonPrefab.gameObject,
+                buttonPrefab.transform.parent.gameObject
             );
 
             priorityButton.playSelectionSound = playSelectionSound;
@@ -189,7 +192,11 @@ namespace PriorityZero
             );
 
             priorityButton.tooltip.SetSimpleTooltip(string.Format(UI.PRIORITYSCREEN.BASIC, 0));
-            __instance.buttons_basic.Insert(0, priorityButton);
+
+            var buttonsField = Traverse.Create(__instance).Field("buttons_basic");
+            var buttons = (List<PriorityButton>)buttonsField.GetValue();
+            buttons.Insert(0, priorityButton);
+            buttonsField.SetValue(buttons);
         }
     }
 
@@ -200,7 +207,7 @@ namespace PriorityZero
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> origCode)
         {
             List<CodeInstruction> codes = origCode.ToList();
-            var buttonsBasic = AccessTools.Field(typeof(PriorityScreen), nameof(PriorityScreen.buttons_basic));
+            var buttonsBasic = AccessTools.Field(typeof(PriorityScreen), "buttons_basic");
             var setPriority = AccessTools.Property(typeof(PriorityButton), nameof(PriorityButton.priority))
                                          .GetSetMethod();
 

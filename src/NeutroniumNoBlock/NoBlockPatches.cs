@@ -18,7 +18,7 @@ namespace UnblockableRockets
     {
         public static void Postfix(ref bool __result, ref ConditionFlightPathIsClear __instance)
         {
-            __instance.obstructedTile = 0;
+            Traverse.Create(__instance).Field("obstructedTile").SetValue(default(int));
             __result = true;
         }
     }

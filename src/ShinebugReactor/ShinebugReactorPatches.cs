@@ -20,41 +20,26 @@ namespace ShinebugReactor
             var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
             var confFile = Path.Combine(assemblyPath, "Config.json");
             var defaultConf = Path.Combine(assemblyPath, "Config_Default.json");
-            if(!File.Exists(confFile))
+            if (!File.Exists(confFile))
             {
                 Debug.Log(
-                    "[ShinebugReactor] Could not find Config.json configuration file, creating from default configuration."
-                );
-
+                    "[ShinebugReactor] Could not find Config.json configuration file, creating from default configuration.");
                 File.Copy(defaultConf, confFile);
             }
 
             ConfigManager = new ConfigManager<ReactorConfig>();
             ConfigManager.ReadConfig();
 
-            StringUtils.AddBuildingStrings(
-                ShinebugReactorConfig.Id,
-                ShinebugReactorConfig.DisplayName,
-                ShinebugReactorConfig.Description,
-                ShinebugReactorConfig.Effect
-            );
-
+            StringUtils.AddBuildingStrings(ShinebugReactorConfig.Id, ShinebugReactorConfig.DisplayName,
+                ShinebugReactorConfig.Description, ShinebugReactorConfig.Effect);
             BuildingUtils.AddBuildingToPlanScreen(GameStrings.PlanMenuCategory.Power, ShinebugReactorConfig.Id);
-            BuildingUtils.AddBuildingToTechnology(
-                GameStrings.Technology.Power.RenewableEnergy,
-                ShinebugReactorConfig.Id
-            );
+            BuildingUtils.AddBuildingToTechnology(GameStrings.Technology.Power.RenewableEnergy,
+                ShinebugReactorConfig.Id);
 
             Strings.Add("STRINGS.BUILDING.STATUSITEMS.SHINEBUGREACTORWATTAGE.NAME", "Current Wattage: {Wattage}");
-            Strings.Add(
-                "STRINGS.BUILDING.STATUSITEMS.SHINEBUGREACTORWATTAGE.TOOLTIP",
-                "This reactor is generating " +
-                UI.FormatAsPositiveRate("{Wattage}") +
-                " of " +
-                UI.PRE_KEYWORD +
-                "Power" +
-                UI.PST_KEYWORD
-            );
+            Strings.Add("STRINGS.BUILDING.STATUSITEMS.SHINEBUGREACTORWATTAGE.TOOLTIP",
+                "This reactor is generating " + UI.FormatAsPositiveRate("{Wattage}") + " of " + UI.PRE_KEYWORD +
+                "Power" + UI.PST_KEYWORD);
         }
 
         [HarmonyPatch(typeof(BuildingStatusItems), "CreateStatusItems")]
@@ -62,19 +47,19 @@ namespace ShinebugReactor
         {
             public static void Postfix(BuildingStatusItems __instance)
             {
-                __instance.CreateStatusItem(
-                    "ShinebugReactorWattage",
-                    "BUILDING",
-                    string.Empty,
-                    StatusItem.IconType.Info,
-                    NotificationType.Neutral,
-                    false,
-                    OverlayModes.Power.ID
-                );
+                var method = Traverse.Create(__instance).Method("CreateStatusItem", new[]
+                {
+                    typeof(string), typeof(string), typeof(string),
+                    typeof(StatusItem.IconType), typeof(NotificationType), typeof(bool), typeof(HashedString),
+                    typeof(bool), typeof(int)
+                });
+                ReactorStatusItem.ShinebugReactorWattageStatus = (StatusItem) method.GetValue("ShinebugReactorWattage",
+                    "BUILDING", string.Empty, StatusItem.IconType.Info, NotificationType.Neutral, false,
+                    OverlayModes.Power.ID, true, 129022);
 
                 ReactorStatusItem.ShinebugReactorWattageStatus.resolveStringCallback = (str, data) =>
                 {
-                    var reactor = (ShinebugReactor)data;
+                    var reactor = (ShinebugReactor) data;
                     str = str.Replace("{Wattage}", GameUtil.GetFormattedWattage(reactor.CurrentWattage));
                     return str;
                 };
