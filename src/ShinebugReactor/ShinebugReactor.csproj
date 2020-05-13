@@ -80,6 +80,7 @@
     <Compile Include="ShinebugReactorPatches.cs" />
     <Compile Include="ShinebugSimulator.cs" />
     <Compile Include="REACTORSTRINGS.cs" />
+    <Compile Include="ShowHideContentsButton.cs" />
     <Compile Include="SpawnUtility.cs" />
   </ItemGroup>
   <ItemGroup>

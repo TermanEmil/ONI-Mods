@@ -44,6 +44,7 @@ namespace ShinebugReactor
             go.AddOrGet<SolidConduitConsumer>();
             go.AddOrGet<ShinebugReactor>();
             go.AddOrGetDef<PoweredActiveController.Def>();
+            go.AddOrGet<ShowHideContentsButton>();
         }
     }
 }

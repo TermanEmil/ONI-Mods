@@ -10,4 +10,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("ShinebugReactor")]
 [assembly: AssemblyCopyright("Copyright © asquared31415 2020")]
 
-[assembly: AssemblyVersion("2020.5.8.36212")]
+[assembly: AssemblyVersion("2020.5.13.7961")]
