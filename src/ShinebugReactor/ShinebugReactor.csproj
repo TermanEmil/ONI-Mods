@@ -79,6 +79,7 @@
     <Compile Include="ShinebugReactorConfig.cs" />
     <Compile Include="ShinebugReactorPatches.cs" />
     <Compile Include="ShinebugSimulator.cs" />
+    <Compile Include="REACTORSTRINGS.cs" />
     <Compile Include="SpawnUtility.cs" />
   </ItemGroup>
   <ItemGroup>
