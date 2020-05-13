@@ -74,10 +74,12 @@
     </Compile>
     <Compile Include="ReactorConfig.cs" />
     <Compile Include="ShinebugEggSimulator.cs" />
+    <Compile Include="ShinebugPowerMath.cs" />
     <Compile Include="ShinebugReactor.cs" />
     <Compile Include="ShinebugReactorConfig.cs" />
     <Compile Include="ShinebugReactorPatches.cs" />
     <Compile Include="ShinebugSimulator.cs" />
+    <Compile Include="SpawnUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config_Default.json">
