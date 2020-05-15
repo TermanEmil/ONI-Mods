@@ -45,6 +45,7 @@ namespace ShinebugReactor
             go.AddOrGet<ShinebugReactor>();
             go.AddOrGetDef<PoweredActiveController.Def>();
             go.AddOrGet<ShowHideContentsButton>();
+            go.AddOrGet<HatchAllEggsButton>();
         }
     }
 }

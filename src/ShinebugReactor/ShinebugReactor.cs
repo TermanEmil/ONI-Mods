@@ -213,6 +213,12 @@ namespace ShinebugReactor
                 Debug.LogError($"Started with: {initialShinebugAndEggsCount}. Ended with {finalShinebugAndEggsCount}");
         }
 
+        public void HatchAll()
+        {
+            foreach (var egg in _shinebugEggs.ToList())
+                HatchShinebugEgg(egg);
+        }
+
         private void SimulatePower(float dt)
         {
             CurrentWattage = ShinebugPowerMath.ComputeShinebugWattage(_shinebugs.Sum(x => x.Lux));
@@ -230,14 +236,8 @@ namespace ShinebugReactor
         {
             foreach (var egg in _shinebugEggs.ToList())
             {
-                if (!egg.Simulate(dt))
-                    continue;
-
-                var shinebug = HatchShinebugEgg(egg);
-                
-                _shinebugs.Add(shinebug);
-                _shinebugEggs.Remove(egg);
-                _storage.items.Remove(egg.EggItem);
+                if (egg.Simulate(dt))
+                    HatchShinebugEgg(egg);
             }
         }
 
@@ -249,6 +249,10 @@ namespace ShinebugReactor
                 lux: egg.LuxToGive);
 
             SpawnUtility.SpawnShinebugEggShell(transform.GetPosition());
+
+            _shinebugs.Add(shinebug);
+            _shinebugEggs.Remove(egg);
+            _storage.items.Remove(egg.EggItem);
             return shinebug;
         }
 
@@ -256,14 +260,8 @@ namespace ShinebugReactor
         {
             foreach (var shinebug in _shinebugs.ToList())
             {
-                if (!shinebug.Simulate(dt))
-                    continue;
-
-                var egg = LayAnEgg(shinebug);
-
-                _shinebugEggs.Add(egg);
-                _storage.items.Add(egg.EggItem);
-                _shinebugs.Remove(shinebug);
+                if (shinebug.Simulate(dt))
+                    LayAnEgg(shinebug);
             }
         }
 
@@ -280,6 +278,9 @@ namespace ShinebugReactor
                 eggStats.AdultLux,
                 eggGameObject);
 
+            _shinebugEggs.Add(egg);
+            _storage.items.Add(egg.EggItem);
+            _shinebugs.Remove(shinebug);
             return egg;
         }
 
