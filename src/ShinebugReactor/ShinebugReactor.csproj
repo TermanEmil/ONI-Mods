@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('..\..\packages\ILMerge.3.0.29\build\ILMerge.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -83,6 +83,7 @@
     <Compile Include="Buttons\HatchAllEggsButton.cs" />
     <Compile Include="Buttons\ShowHideContentsButton.cs" />
     <Compile Include="SpawnUtility.cs" />
+    <Compile Include="ShinebugStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config_Default.json">

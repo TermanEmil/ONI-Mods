@@ -23,9 +23,7 @@ namespace ShinebugReactor
                 Grid.CellToPosCBC(Grid.PosToCell(position), Grid.SceneLayer.Front),
                 Grid.SceneLayer.Front);
 
-            foreach (var modifier in egg.GetComponents<Modifiers>())
-                Object.Destroy(modifier);
-
+            egg.SetActive(false);
             return egg;
         }
     }

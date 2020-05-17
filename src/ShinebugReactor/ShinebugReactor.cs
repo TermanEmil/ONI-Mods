@@ -12,94 +12,9 @@ namespace ShinebugReactor
         public static StatusItem ShinebugReactorWattageStatus;
     }
 
-    public struct ShinebugEggData
-    {
-        public float TimeToHatch;
-        public float AdultLife;
-        public float AdultLux;
-
-        public override string ToString()
-        {
-            return $"Egg has {TimeToHatch}s egg time and makes {AdultLux} Lux for {AdultLife}s";
-        }
-    }
-
     [SerializationConfig(MemberSerialization.OptIn)]
     public class ShinebugReactor : Generator
     {
-        private readonly Dictionary<string, ShinebugEggData> _shinebugEggValues =
-            new Dictionary<string, ShinebugEggData>
-            {
-                {
-                    "LightBugBlackEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 9000f,
-                        AdultLife = 45000f,
-                        AdultLux = 0f
-                    }
-                },
-                {
-                    "LightBugBlueEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
-                        AdultLux = 1800f
-                    }
-                },
-                {
-                    "LightBugEgg",
-                    new ShinebugEggData
-                    {
-#if DEBUG
-                        TimeToHatch = 15f,
-                        AdultLife = 45f,
-#else
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
-#endif
-                        AdultLux = 1800f
-                    }
-                },
-                {
-                    "LightBugCrystalEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 9000f,
-                        AdultLife = 45000f,
-                        AdultLux = 1800f
-                    }
-                },
-                {
-                    "LightBugOrangeEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
-                        AdultLux = 1800
-                    }
-                },
-                {
-                    "LightBugPinkEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
-                        AdultLux = 1800f
-                    }
-                },
-                {
-                    "LightBugPurpleEgg",
-                    new ShinebugEggData
-                    {
-                        TimeToHatch = 3000f,
-                        AdultLife = 15000f,
-                        AdultLux = 1800f
-                    }
-                }
-            };
-
         private HandleVector<int>.Handle _accumulator = HandleVector<int>.InvalidHandle;
 
         [Serialize] private List<ShinebugEggSimulator> _shinebugEggs;
@@ -135,12 +50,6 @@ namespace ShinebugReactor
                 shinebug.Name = shinebug.Name.Replace("Egg", "");
 
             _accumulator = Game.Instance.accumulators.Add("Element", this);
-#if DEBUG
-            Debug.Log($"Eggs when loaded: {_shinebugEggs.Count}");
-            foreach (var egg in _shinebugEggs) Debug.Log($"\t{egg}");
-            Debug.Log($"Bugs when loaded: {_shinebugs.Count}");
-            foreach (var shinebug in _shinebugs) Debug.Log($"\t{shinebug}");
-#endif
         }
 
         private void OnActiveChanged(object data)
@@ -153,38 +62,36 @@ namespace ShinebugReactor
 
         private void OnStorageChanged(object data)
         {
-            var go = data as GameObject;
+            var item = data as GameObject;
+            if (item is null)
+                return;
 
-            if (go == null) return;
-            var nameStr = go.name;
-            if (!_shinebugEggValues.ContainsKey(nameStr))
+            var stats = ShinebugStats.Get(item.name);
+            if (stats is null)
             {
-                var dropped = _storage.Drop(go);
+                var dropped = _storage.Drop(item);
                 dropped.transform.SetPosition(transform.GetPosition() + new Vector3(-4f, 1f, 0));
             }
             else
             {
-                Destroy(go.GetComponent<StateMachineController>());
-                var modiferComponents = go.GetComponents<Modifiers>();
-                foreach (var modifier in modiferComponents)
-                    Destroy(modifier);
-                var values = _shinebugEggValues[nameStr];
-                _shinebugEggs.Add(new ShinebugEggSimulator(nameStr, values.TimeToHatch, values.AdultLife,
-                    values.AdultLux, go));
+                if (_storage.items.Contains(item))
+                {
+                    // The item was added
+                    item.SetActive(false);
+
+                    _storage.items.Add(item);
+                    _shinebugEggs.Add(new ShinebugEggSimulator { Name = item.name, Incubation = stats.TimeToHatch });
+                }
+                else
+                {
+                    // The item was removed
+                    item.SetActive(true);
+                }
             }
         }
 
         private void OnDeconstruct(object data)
         {
-            foreach (var item in _storage.items)
-                if (_shinebugEggValues.Keys.Contains(item.name))
-                {
-                    var def = item.AddOrGetDef<IncubationMonitor.Def>();
-                    def.spawnedCreature = new Tag(item.name.Replace("Egg", "Baby"));
-                    // 100 divided by numbers seconds to hatch
-                    def.baseIncubationRate = 100.0f / _shinebugEggValues[item.name].TimeToHatch;
-                }
-
             foreach (var shinebug in _shinebugs)
                 GameUtil.KInstantiate(Assets.GetPrefab(shinebug.Name.Replace("Egg", "")),
                     Grid.CellToPosCBC(Grid.PosToCell(transform.position), Grid.SceneLayer.Creatures),
@@ -221,7 +128,7 @@ namespace ShinebugReactor
 
         private void SimulatePower(float dt)
         {
-            CurrentWattage = ShinebugPowerMath.ComputeShinebugWattage(_shinebugs.Sum(x => x.Lux));
+            CurrentWattage = ShinebugPowerMath.ComputeShinebugWattage(_shinebugs.Sum(x => ShinebugStats.Get(x.Name).AdultLux));
             
             operational.SetActive(CurrentWattage > 0.0f);
 
@@ -236,23 +143,26 @@ namespace ShinebugReactor
         {
             foreach (var egg in _shinebugEggs.ToList())
             {
-                if (egg.Simulate(dt))
+                egg.Simulate(dt);
+                if (egg.TimeToHatch)
                     HatchShinebugEgg(egg);
             }
         }
 
         private ShinebugSimulator HatchShinebugEgg(ShinebugEggSimulator egg)
         {
-            var shinebug = new ShinebugSimulator(
-                name: egg.Name.Replace("Egg", ""),
-                maxAge: egg.GrownLifeTime,
-                lux: egg.LuxToGive);
+            var stats = ShinebugStats.Get(egg.Name);
+            var shinebug = new ShinebugSimulator
+            {
+                Name = egg.Name,
+                MaxAge = stats.AdultLife
+            };
 
             SpawnUtility.SpawnShinebugEggShell(transform.GetPosition());
 
             _shinebugs.Add(shinebug);
             _shinebugEggs.Remove(egg);
-            _storage.items.Remove(egg.EggItem);
+            _storage.items.Remove(_storage.items.First(x => x.PrefabID().Name == egg.Name));
             return shinebug;
         }
 
@@ -260,27 +170,25 @@ namespace ShinebugReactor
         {
             foreach (var shinebug in _shinebugs.ToList())
             {
-                if (shinebug.Simulate(dt))
-                    LayAnEgg(shinebug);
+                shinebug.Simulate(dt);
+                if (shinebug.IsDead)
+                    LayAnEggAndDie(shinebug);
             }
         }
 
-        private ShinebugEggSimulator LayAnEgg(ShinebugSimulator shinebug)
+        private ShinebugEggSimulator LayAnEggAndDie(ShinebugSimulator shinebug)
         {
-            var eggName = shinebug.Name + "Egg";
-            var eggStats = _shinebugEggValues[eggName];
-
-            var eggGameObject = SpawnUtility.SpawnShinebugEgg(eggName, transform.position);
-            var egg = new ShinebugEggSimulator(
-                eggName,
-                eggStats.TimeToHatch,
-                eggStats.AdultLife,
-                eggStats.AdultLux,
-                eggGameObject);
-
+            var stats = ShinebugStats.Get(shinebug.Name);
+            var egg = new ShinebugEggSimulator
+            {
+                Name = shinebug.Name,
+                Incubation = stats.TimeToHatch
+            };
             _shinebugEggs.Add(egg);
-            _storage.items.Add(egg.EggItem);
             _shinebugs.Remove(shinebug);
+
+            var eggGameObject = SpawnUtility.SpawnShinebugEgg(egg.Name, transform.position);
+            _storage.items.Add(eggGameObject);
             return egg;
         }
 
